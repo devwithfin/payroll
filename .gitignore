@@ -1,0 +1,11 @@
+
+# root package
+node_modules
+
+# fe package
+frontend/node_modules
+
+# be package
+backend/node_modules
+
+
