@@ -6,7 +6,7 @@ require('dotenv').config();
 
 // import category route
 const authRoute = require('./routers/authRoute');
-const categoryRoute = require('./routers/categoryRoute');
+// const categoryRoute = require('./routers/categoryRoute');
 
 // enable CORS for frontend 
 app.use(
@@ -21,7 +21,7 @@ app.use(express.json());
 
 // use routes
 app.use('/api/v1/auth', authRoute );
-app.use('/api/v1/category', categoryRoute);
+// app.use('/api/v1/category', categoryRoute);
 
 // get port from .env
 const PORT = process.env.PORT;
