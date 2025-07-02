@@ -1,6 +1,6 @@
-# 🚀 My App
+# 🚀 Payroll App
 
-A general-purpose application built to demonstrate clean architecture, modular design, and scalability. Built with modern technologies and best practices in mind.
+A web-based Payroll Management System designed to simplify and automate employee salary calculations. This system enables HR or finance departments to manage payroll, taxes, deductions, and salary slips efficiently.
 
 ## 🧰 Tech Stack
 - **Frontend**: React.js  
@@ -8,20 +8,21 @@ A general-purpose application built to demonstrate clean architecture, modular d
 - **Database**: MySQL  
 - **Styling**: Bootstrap 5
 
-## ✨ Features
-- 🔧 Modular and scalable project structure  
-- ⚙️ Configurable environment with `.env`  
-- 🚀 Easy deployment setup  
-- 🧪 Ready for testing and CI/CD integration  
-- 📱 Responsive UI
+## 📌 Features
+- 🧑 Employee data management  
+- 🕒 Attendance & leave tracking  
+- 💰 Automatic salary calculation (base salary, allowances, deductions)  
+- 📄 Digital payslip generation  
+- 🧾 Tax (PPh 21) and BPJS calculation  
+- 📊 Payroll reporting and export (PDF/Excel)
 
 ## 📦 Installation
 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/devwithfin/project-name
-cd projet-name
+git clone https://github.com/devwithfin/payroll
+cd payroll
 ```
 
 ### 2. Install Project Dependencies
@@ -44,8 +45,8 @@ PORT=4000
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=
-DB_NAME=db_name
-JWT_SECRET=jwt_secret
+DB_NAME=payroll
+JWT_SECRET=jwt_payroll
 
 ```
 
@@ -63,6 +64,12 @@ npm run dev
 ## 📁 Folder Structure
 ```
 backend/
+├── config/
+│   └── db.js
+├── controllers/
+│   └── ...
+├── middlewares/
+│   └── ...
 ├── routers/
 │   └── ...
 ├── .env
@@ -70,26 +77,24 @@ backend/
 ├── index.js
 
 database/
-├── .sql
+├── payroll.sql
 
 frontend/
 ├── public/
 │   └── ...
 ├── src/
 │   ├── assets/
-│   │    └── ...
+│   │   └── ...
 │   ├── components/
-│   │    └── ...
+│   │   └── ...
 │   │   ├── common/
-│   │    └── ...
+│   │       └── ...
 │   │   ├── dashboard/
-│   │    └── ...
+│   │       └── ...
 │   │   ├── modals/
-│   │    └── ...
-│   ├── helpers/
-│   │    └── ...
+│   │       └── ...
 │   ├── hooks/
-│   │    └── ...
+│   │       └── ...
 │   ├── layouts/
 │   │   └── AppLayout.jsx
 │   ├── libs/
@@ -99,7 +104,7 @@ frontend/
 │   │   ├── Profile.jsx
 │   │   └── ...
 │   ├── services/
-│   │    └── ...
+│   │   └── ...
 │   ├── routers/
 │   │   ├── AppRoute.jsx
 │   │   └── ProtectedRoute.jsx
@@ -114,7 +119,8 @@ frontend/
 **Hesti Indriyani (230444180002)** — [GitHub](https://github.com/HestiIndriyani)
 
 
-
 ## 📄 License
 
-This project is licensed under the MIT License — see the [LICENSE](./LICENSE) file for details.
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Made With](https://img.shields.io/badge/Made%20with-React%20%26%20Express-blue)
+
