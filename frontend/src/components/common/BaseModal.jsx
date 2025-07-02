@@ -1,3 +1,4 @@
+// components/common/basemodal
 import React from "react";
 
 export default function BaseModal({ title, children, footer, onClose }) {

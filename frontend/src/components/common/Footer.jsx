@@ -1,3 +1,4 @@
+// components/common/footer
 const Footer = () => {
   return (
     <footer className="py-3 bg-light" style={{ marginLeft: "225px" }}>

@@ -1,5 +1,6 @@
+// components/common/navbar
 import React, { useState } from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import fontawesome icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
@@ -8,14 +9,16 @@ import {
   faBell,
   faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
+// link to navigate
 import { Link } from "react-router-dom";
-import useLogin from "../../hooks/useAuth";
+// auth hook
+import useAuth from "../../hooks/useAuth";
 
 const Navbar = () => {
-  const role_name = localStorage.getItem("role_name");
+  // state active item for dropdown item
   const [activeItem, setActiveItem] = useState("");
-
-  const { handleLogout } = useLogin();
+  // handle logout
+  const { handleLogout } = useAuth();
 
   return (
     <nav
@@ -68,7 +71,7 @@ const Navbar = () => {
                   className="text-secondary fw-medium"
                   style={{ fontSize: "12px" }}
                 >
-                  {role_name}
+                 {/* role name / username */}
                 </span>
               </div>
               <img
@@ -90,7 +93,7 @@ const Navbar = () => {
             >
               <li>
                 <Link
-                  to="/admin/profile"
+                  to="/profile"
                   className="dropdown-item d-flex align-items-center text-decoration-none"
                   style={{
                     color: activeItem === "profile" ? "#fff" : "#000",

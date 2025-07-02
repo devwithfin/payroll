@@ -122,7 +122,7 @@ export default function Table({
           </div>
           <SearchInput
             type="text"
-            placeholder="Cari..."
+            placeholder="Search..."
             value={filterText}
             onChange={(e) => {
               setFilterText(e.target.value);

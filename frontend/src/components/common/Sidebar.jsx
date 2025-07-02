@@ -1,4 +1,8 @@
+// components/common/sidebar
+import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
+
+// Import fontawesome icon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBuilding,
@@ -9,46 +13,31 @@ import {
   faAngleRight,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState, useEffect, useRef } from "react";
 
 const Sidebar = () => {
-  const location = useLocation();
-  const sidebarRef = useRef(null);
-  const [openMasterData, setOpenMasterData] = useState(false);
-  const [openTransactions, setOpenTransactions] = useState(false);
+  const sidebarRef = useRef(null); 
+  const location = useLocation(); // get current path location
+  const [openMasterData, setOpenMasterData] = useState(false); // toggle expand master data
+  const [openTransactions, setOpenTransactions] = useState(false); // toggle expand transactions
 
-  const role = localStorage.getItem("role_name")?.toLowerCase();
-
-  const canAccess = {
-    dashboard: ["superadmin", "cashier", "purchasing", "sales", "inventory manager"],
-    categories: ["superadmin", "purchasing", "inventory manager"],
-    products: ["superadmin", "purchasing", "inventory manager"],
-    suppliers: ["superadmin", "purchasing", "inventory manager"],
-    customers: ["superadmin", "inventory manager"],
-    roles: ["superadmin"],
-    users: ["superadmin"],
-    archived: ["superadmin"],
-    transactionsPurchase: ["superadmin", "purchasing", "inventory manager"],
-    historyPurchases: ["superadmin", "purchasing", "inventory manager"],
-    transactionsSale: ["superadmin", "sales", "inventory manager", "cashier"],
-    historySales: ["superadmin", "sales", "inventory manager", "cashier"],
-    inventory: ["superadmin", "cashier", "purchasing", "sales", "inventory manager"],
-  };
-
+  // active path dropdown
   const isActive = (path) => location.pathname === path;
 
+  // toggle menu master data
   const toggleMenuMasterData = (e) => {
     e.stopPropagation();
     setOpenMasterData(!openMasterData);
     setOpenTransactions(false);
   };
 
+  // toggle menu transactions
   const toggleMenuTransactions = (e) => {
     e.stopPropagation();
     setOpenTransactions(!openTransactions);
     setOpenMasterData(false);
   };
 
+  // close dropdown whhen click outside sidebar
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
@@ -66,6 +55,7 @@ const Sidebar = () => {
 
   return (
     <>
+      {/* inline styling CSS for sidebar */}
       <style>{`
         .nav-link {
           color: rgba(255, 255, 255, 0.5);
@@ -110,149 +100,117 @@ const Sidebar = () => {
           zIndex: 1030,
         }}
       >
+        {/* logo sidebar */}
         <div className="text-center py-4 fw-bold">
           <Link
-            to="/admin/dashboard"
+            to="/dashboard"
             className="text-white text-decoration-none d-flex gap-1 align-items-center justify-content-center"
           >
-            <span>POS</span>
+            <span>Title Page</span>
             <FontAwesomeIcon icon={faBuilding} size="2x" />
           </Link>
         </div>
+
         <hr className="mx-3" style={{ borderColor: "rgba(255, 255, 255, 0.8)", marginTop: "0.5rem" }} />
 
+        {/* menu list */}
         <ul className="nav flex-column px-1 py-3">
-          {canAccess.dashboard.includes(role) && (
-            <li className="nav-item mb-2">
-              <Link
-                to="/admin/dashboard"
-                className={`nav-link fw-medium d-flex align-items-center gap-2 ${isActive("/admin/dashboard") ? "active" : ""}`}
-                style={{ fontSize: "14px" }}
-              >
-                <FontAwesomeIcon icon={faHome} />
-                <span>Dashboard</span>
-              </Link>
-            </li>
-          )}
+          {/* dashboard */}
+          <li className="nav-item mb-2">
+            <Link
+              to="/dashboard"
+              className={`nav-link fw-medium d-flex align-items-center gap-2 ${isActive("/dashboard") ? "active" : ""}`}
+              style={{ fontSize: "14px" }}
+            >
+              <FontAwesomeIcon icon={faHome} />
+              <span>Dashboard</span>
+            </Link>
+          </li>
 
-          {(canAccess.categories.includes(role) ||
-            canAccess.products.includes(role) ||
-            canAccess.suppliers.includes(role) ||
-            canAccess.customers.includes(role) ||
-            canAccess.roles.includes(role) ||
-            canAccess.users.includes(role)) && (
-            <li className="nav-item mb-2">
-              <div
-                className={`nav-link fw-medium d-flex align-items-center justify-content-between`}
-                onClick={toggleMenuMasterData}
-                style={{ fontSize: "14px", cursor: "pointer" }}
-              >
-                <div className="d-flex align-items-center gap-2">
-                  <FontAwesomeIcon icon={faCog} />
-                  <span>Master Data</span>
-                </div>
-                <FontAwesomeIcon icon={openMasterData ? faAngleDown : faAngleRight} />
+          {/* menu master data */}
+          <li className="nav-item mb-2">
+            <div
+              className={`nav-link fw-medium d-flex align-items-center justify-content-between`}
+              onClick={toggleMenuMasterData}
+              style={{ fontSize: "14px", cursor: "pointer" }}
+            >
+              <div className="d-flex align-items-center gap-2">
+                <FontAwesomeIcon icon={faCog} />
+                <span>Master Data</span>
               </div>
+              <FontAwesomeIcon icon={openMasterData ? faAngleDown : faAngleRight} />
+            </div>
 
-              {openMasterData && (
-                <div className="submenu shadow-sm mt-1 py-2 px-3">
-                  {canAccess.categories.includes(role) && (
-                    <Link to="/admin/data/categories" className={`d-block py-1 ${isActive("/admin/data/categories") ? "fw-bold text-dark" : "text-muted"}`}>
-                      Categories
-                    </Link>
-                  )}
-                  {canAccess.products.includes(role) && (
-                    <Link to="/admin/data/products" className={`d-block py-1 ${isActive("/admin/data/products") ? "fw-bold text-dark" : "text-muted"}`}>
-                      Products
-                    </Link>
-                  )}
-                  {canAccess.suppliers.includes(role) && (
-                    <Link to="/admin/data/suppliers" className={`d-block py-1 ${isActive("/admin/data/suppliers") ? "fw-bold text-dark" : "text-muted"}`}>
-                      Suppliers
-                    </Link>
-                  )}
-                  {canAccess.customers.includes(role) && (
-                    <Link to="/admin/data/customers" className={`d-block py-1 ${isActive("/admin/data/customers") ? "fw-bold text-dark" : "text-muted"}`}>
-                      Customers
-                    </Link>
-                  )}
-                  {canAccess.roles.includes(role) && (
-                    <Link to="/admin/data/roles" className={`d-block py-1 ${isActive("/admin/data/roles") ? "fw-bold text-dark" : "text-muted"}`}>
-                      Roles
-                    </Link>
-                  )}
-                  {canAccess.users.includes(role) && (
-                    <Link to="/admin/data/users" className={`d-block py-1 ${isActive("/admin/data/users") ? "fw-bold text-dark" : "text-muted"}`}>
-                      Users
-                    </Link>
-                  )}
-                </div>
-              )}
-            </li>
-          )}
-
-          {(canAccess.transactionsPurchase.includes(role) ||
-            canAccess.transactionsSale.includes(role) ||
-            canAccess.historyPurchases.includes(role) ||
-            canAccess.historySales.includes(role) ||
-            canAccess.inventory.includes(role)) && (
-            <li className="nav-item mb-2">
-              <div
-                className={`nav-link fw-medium d-flex align-items-center justify-content-between`}
-                onClick={toggleMenuTransactions}
-                style={{ fontSize: "14px", cursor: "pointer" }}
-              >
-                <div className="d-flex align-items-center gap-2">
-                  <FontAwesomeIcon icon={faFile} />
-                  <span>Transactions</span>
-                </div>
-                <FontAwesomeIcon icon={openTransactions ? faAngleDown : faAngleRight} />
+            {openMasterData && (
+              <div className="submenu shadow-sm mt-1 py-2 px-3">
+                <Link to="master/categories" className={`d-block py-1 ${isActive("master/categories") ? "fw-bold text-dark" : "text-muted"}`}>
+                  Categories
+                </Link>
+                <Link to="master/products" className={`d-block py-1 ${isActive("master/products") ? "fw-bold text-dark" : "text-muted"}`}>
+                  Products
+                </Link>
+                <Link to="master/suppliers" className={`d-block py-1 ${isActive("master/suppliers") ? "fw-bold text-dark" : "text-muted"}`}>
+                  Suppliers
+                </Link>
+                <Link to="master/customers" className={`d-block py-1 ${isActive("master/customers") ? "fw-bold text-dark" : "text-muted"}`}>
+                  Customers
+                </Link>
+                <Link to="master/roles" className={`d-block py-1 ${isActive("master/roles") ? "fw-bold text-dark" : "text-muted"}`}>
+                  Roles
+                </Link>
+                <Link to="master/users" className={`d-block py-1 ${isActive("master/users") ? "fw-bold text-dark" : "text-muted"}`}>
+                  Users
+                </Link>
               </div>
+            )}
+          </li>
 
-              {openTransactions && (
-                <div className="submenu shadow-sm mt-1 py-2 px-3">
-                  {canAccess.transactionsPurchase.includes(role) && (
-                    <Link to="/admin/transactions/purchase" className={`d-block py-1 ${isActive("/admin/transactions/purchase") ? "fw-bold text-dark" : "text-muted"}`}>
-                      Purchase
-                    </Link>
-                  )}
-                  {canAccess.historyPurchases.includes(role) && (
-                    <Link to="/admin/transactions/purchases/history" className={`d-block py-1 ${isActive("/admin/transactions/purchases/history") ? "fw-bold text-dark" : "text-muted"}`}>
-                      History Purchases
-                    </Link>
-                  )}
-                  {canAccess.transactionsSale.includes(role) && (
-                    <Link to="/admin/transactions/sale" className={`d-block py-1 ${isActive("/admin/transactions/sale") ? "fw-bold text-dark" : "text-muted"}`}>
-                      Sale
-                    </Link>
-                  )}
-                   {canAccess.historySales.includes(role) && (
-                    <Link to="/admin/transactions/sales/history" className={`d-block py-1 ${isActive("/admin/transactions/sales/history") ? "fw-bold text-dark" : "text-muted"}`}>
-                      History Sales
-                    </Link>
-                  )}
-                  {canAccess.inventory.includes(role) && (
-                    <Link to="/admin/transactions/inventory" className={`d-block py-1 ${isActive("/admin/transactions/inventory") ? "fw-bold text-dark" : "text-muted"}`}>
-                      Inventory
-                    </Link>
-                  )}
-                </div>
-              )}
-            </li>
-          )}
+          {/* menu transactions */}
+          <li className="nav-item mb-2">
+            <div
+              className={`nav-link fw-medium d-flex align-items-center justify-content-between`}
+              onClick={toggleMenuTransactions}
+              style={{ fontSize: "14px", cursor: "pointer" }}
+            >
+              <div className="d-flex align-items-center gap-2">
+                <FontAwesomeIcon icon={faFile} />
+                <span>Transactions</span>
+              </div>
+              <FontAwesomeIcon icon={openTransactions ? faAngleDown : faAngleRight} />
+            </div>
 
-          {canAccess.archived.includes(role) && (
-            <li className="nav-item mb-2">
-              <Link
-                to="/admin/archived"
-                className={`nav-link fw-medium d-flex align-items-center gap-2 ${isActive("/admin/archived") ? "active" : ""}`}
-                style={{ fontSize: "14px" }}
-              >
-                <FontAwesomeIcon icon={faTrash} />
-                <span>Archived</span>
-              </Link>
-            </li>
-          )}
+            {openTransactions && (
+              <div className="submenu shadow-sm mt-1 py-2 px-3">
+                <Link to="transactions/purchase" className={`d-block py-1 ${isActive("/ransactions/purchase") ? "fw-bold text-dark" : "text-muted"}`}>
+                  Purchase
+                </Link>
+                <Link to="transactions/purchases/history" className={`d-block py-1 ${isActive("transactions/purchases/history") ? "fw-bold text-dark" : "text-muted"}`}>
+                  History Purchases
+                </Link>
+                <Link to="transactions/sale" className={`d-block py-1 ${isActive("transactions/sale") ? "fw-bold text-dark" : "text-muted"}`}>
+                  Sale
+                </Link>
+                <Link to="transactions/sales/history" className={`d-block py-1 ${isActive("transactions/sales/history") ? "fw-bold text-dark" : "text-muted"}`}>
+                  History Sales
+                </Link>
+                <Link to="transactions/inventory" className={`d-block py-1 ${isActive("transactions/inventory") ? "fw-bold text-dark" : "text-muted"}`}>
+                  Inventory
+                </Link>
+              </div>
+            )}
+          </li>
+
+          {/* menu archived */}
+          <li className="nav-item mb-2">
+            <Link
+              to="/archived"
+              className={`nav-link fw-medium d-flex align-items-center gap-2 ${isActive("/archived") ? "active" : ""}`}
+              style={{ fontSize: "14px" }}
+            >
+              <FontAwesomeIcon icon={faTrash} />
+              <span>Archived</span>
+            </Link>
+          </li>
         </ul>
       </div>
     </>

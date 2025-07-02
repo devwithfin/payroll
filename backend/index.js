@@ -1,18 +1,18 @@
 // index setup
 const express = require('express');
 const app = express();
+// cors
 const cors = require('cors');
 require('dotenv').config();
 
-// import category route
+// import routers/auth
 const authRoute = require('./routers/authRoute');
-// const categoryRoute = require('./routers/categoryRoute');
 
 // enable CORS for frontend 
 app.use(
   cors({
-    origin: 'http://localhost:5173', // allowed frontend URL
-    credentials: true,               // allow cookies and credentials
+    origin: 'http://localhost:5173',  
+    credentials: true,             
   })
 );
 
@@ -21,7 +21,6 @@ app.use(express.json());
 
 // use routes
 app.use('/api/v1/auth', authRoute );
-// app.use('/api/v1/category', categoryRoute);
 
 // get port from .env
 const PORT = process.env.PORT;
