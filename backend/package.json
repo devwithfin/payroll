@@ -2,10 +2,15 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
- "scripts": {
+  "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "migrate": "npx sequelize-cli db:migrate",
+    "drop-migrate": "npx sequelize-cli db:migrate:undo:all",
+    "seed": "npx sequelize-cli db:seed:all",
+    "drop-seed": "npx sequelize-cli db:seed:undo:all",
+    "postinstall": "patch-package"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +25,7 @@
     "jsonwebtoken": "^9.0.2",
     "mysql": "^2.18.1",
     "mysql2": "^3.14.1",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "sequelize": "^6.37.7"
   }
 }

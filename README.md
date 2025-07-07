@@ -36,21 +36,18 @@ cd backend
 npm install
 cd ../
 ```
+### 2. Install Project Dependencies
 
-### 3. Setup Environment Variables
-
-Create a `.env` file inside the `backend/` folder, then fill it with:
-```env
-PORT=4000
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=
-DB_NAME=payroll
-JWT_SECRET=jwt_payroll
-
+```bash
+npm install
+cd frontend
+npm install 
+cd ../
+cd backend
+npm install
+cd ../
 ```
-
-### 4. Run Project
+### 3. Run Project
 Run in root folder :
 ```bash
 npm run dev
@@ -69,6 +66,10 @@ backend/
 ├── controllers/
 │   └── ...
 ├── middlewares/
+│   └── ...
+├── migrations/
+│   └── ...
+├── models/
 │   └── ...
 ├── routers/
 │   └── ...
