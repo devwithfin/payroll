@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import { isTokenValid, clearAuthData, parseJwt } from "../utils/authToken";
+import { isTokenValid, parseJwt, clearAuthData } from '../utils/authToken';
 
-const ProtectedRoute = () => {
+const ProtectedRoute = ({ allowedRoles }) => {
   const [isValid, setIsValid] = useState(null);
+  const location = useLocation();
   const timerRef = useRef(null);
 
   useEffect(() => {
@@ -13,9 +14,8 @@ const ProtectedRoute = () => {
       if (!isTokenValid(token)) {
         await Swal.fire({
           icon: 'warning',
-          title: 'Session expired',
-          text: 'Token is invalid or expired. Please re-login.',
-          confirmButtonText: 'OK',
+          title: 'Session Expired',
+          text: 'Please login again.',
         });
         clearAuthData();
         setIsValid(false);
@@ -23,30 +23,33 @@ const ProtectedRoute = () => {
       }
 
       const decoded = parseJwt(token);
-      const currentTime = Math.floor(Date.now() / 1000);
-      const timeout = (decoded.exp - currentTime) * 1000;
+      const userRole = decoded.role;  
 
-      timerRef.current = setTimeout(async () => {
+      if (!allowedRoles.includes(userRole)) {
         await Swal.fire({
-          icon: 'info',
-          title: 'Session timeout',
-          text: 'Token expires. You will be logged out.',
-          confirmButtonText: 'OK',
+          icon: 'error',
+          title: 'Access Denied',
+          text: 'You do not have access to this page.',
         });
+        setIsValid(false);
+        return;
+      }
+
+      const timeUntilExpire = (decoded.exp - Math.floor(Date.now() / 1000)) * 1000;
+      timerRef.current = setTimeout(() => {
         clearAuthData();
         setIsValid(false);
-      }, timeout);
+      }, timeUntilExpire);
 
       setIsValid(true);
     };
 
     checkToken();
-
     return () => clearTimeout(timerRef.current);
-  }, []);
+  }, [allowedRoles]);
 
   if (isValid === null) return <div>Loading...</div>;
-  return isValid ? <Outlet /> : <Navigate to="/" />;
+  return isValid ? <Outlet /> : <Navigate to="/" state={{ from: location }} />;
 };
 
 export default ProtectedRoute;
