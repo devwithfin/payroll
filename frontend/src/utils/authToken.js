@@ -1,4 +1,4 @@
-// decode token payload
+
 export function parseJwt(token) {
   try {
     return JSON.parse(atob(token.split('.')[1]));
@@ -7,7 +7,6 @@ export function parseJwt(token) {
   }
 }
 
-// cek apakah token masih berlaku
 export function isTokenValid(token) {
   if (!token) return false;
 
@@ -22,7 +21,6 @@ export function isTokenValid(token) {
   }
 }
 
-// hapus semua data login
 export function clearAuthData() {
   localStorage.removeItem('token');
   localStorage.removeItem('username');
