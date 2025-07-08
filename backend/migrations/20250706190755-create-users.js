@@ -19,7 +19,7 @@ module.exports = {
         allowNull: false
       },
       role: {
-        type: Sequelize.ENUM('Admin', 'Employee', 'HR', 'Finance'),
+        type: Sequelize.ENUM('HR', 'Finance', 'Employee'), // contoh: 'employee', 'hr', 'finance'
         allowNull: false
       },
       created_at: {
