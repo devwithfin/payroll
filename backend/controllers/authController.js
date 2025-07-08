@@ -1,93 +1,77 @@
-// controllers/auth
-
-// connection database
-const db = require("../config/db");
-// token jwt
-const jwt = require("jsonwebtoken");
-// encrypt pass with bcrypt
+const { User } = require("../models");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-require("dotenv").config();
+module.exports = {
+  login: async (req, res) => {
+    const { username, password } = req.body;
 
-// controller login
-exports.login = async (req, res) => {
-  const { username, password } = req.body;
+    try {
+      const user = await User.findOne({ where: { username } });
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        return res
+          .status(401)
+          .json({ message: "Username or password is incorrect" });
+      }
+
+      const payload = {
+        id_user: user.id_user,
+        role: user.role,
+      };
+
+      const token = jwt.sign(payload, process.env.JWT_SECRET, {
+        expiresIn: "1d",
+      });
+
+      res.json({
+        message: "Successfully login",
+        token,
+        user: {
+          id_user: user.id_user,
+          username: user.username,
+          role: user.role,
+        },
+      });
+    } catch (err) {
+      console.error("Login error:", err);
+      res.status(500).json({ message: "Server error" });
+    }
+  },
+
+  profile: async (req, res) => {
+    try {
+      const user = await User.findByPk(req.user.id_user, {
+        attributes: ["id_user", "username", "role", "created_at"],
+      });
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      res.json({
+        message: "User profile fetched successfully",
+        user,
+      });
+    } catch (err) {
+      console.error("Profile error:", err);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  },
+
+  logout: async (req, res) => {
   try {
-    // validate empty input
-    if (!username || !password) {
-      return res.status(400).json({ message: "Username and Password required" });
-    }
-    // get data user by username
-    const [rows] = await db.execute(
-      `SELECT u.id, u.username, u.password_hash, r.name AS role_name
-       FROM users AS u
-       INNER JOIN roles AS r ON r.id = u.role_id
-       WHERE u.username = ?`,
-      [username]
-    );
+    console.log(`User ${req.user.id_user} logged out`);
 
-    // if user not found
-    if (rows.length === 0) {
-      return res.status(401).json({ message: "User not found" });
-    }
-
-    const user = rows[0];
-
-    // if is there a pass hash
-    if (!user.password_hash) {
-      return res.status(500).json({ message: "User password not found" });
-    }
-
-    // compare input pass with hash pass in database
-    const valid = await bcrypt.compare(password, user.password_hash);
-    if (!valid) {
-      return res.status(401).json({ message: "Invalid password" });
-    }
-
-    // make jwt token for auth
-    const token = jwt.sign(
-      { id: user.id, username: user.username },
-      process.env.JWT_SECRET,
-      { expiresIn: "1h" } // exp token
-    );
-
-    // res success login
-    res.status(200).json({
-      message: "Successfully login",
-      token,  // info token
-    });
-  } catch (err) {
-    // res err login
-    console.error(err.message);
-    res.status(500).json({ message: "Internal server error" });
+    return res.status(200).json({ message: "Successfully logged out" });
+  } catch (error) {
+    console.error("Logout error:", error);
+    return res.status(500).json({ message: "Server error" });
   }
-};
+}
 
-// controller logout
-exports.logout = (req, res) => {
-  res.status(200).json({ message: "Logout success" });
-};
-
-// controller get profile user by token id
-exports.getProfile = async (req, res) => {
-  try {
-    const [rows] = await db.execute(
-      `SELECT u.username, r.name AS role_name, u.updated_at
-       FROM users AS u
-       JOIN roles AS r ON u.role_id = r.id
-       WHERE u.id = ?`,
-      [req.user.id] // get id user from middleware/auth
-    );
-
-    // if user not found
-    if (rows.length === 0) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    // send profile data
-    res.status(200).json(rows[0]);
-  } catch (err) {
-    console.error("Get profile error:", err);
-    res.status(500).json({ message: "Server error" });
-  }
 };
