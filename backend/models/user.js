@@ -4,11 +4,16 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      // Define associations here if needed
+      // Tidak ada relasi untuk sekarang
     }
   }
 
   User.init({
+    id_user: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     username: {
       type: DataTypes.STRING(50),
       allowNull: false,
@@ -19,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     role: {
-      type: DataTypes.ENUM('Admin', 'Employee', 'HR', 'Finance'),
+      type: DataTypes.ENUM('HR', 'Finance', 'Employee'),
       allowNull: false
     }
   }, {

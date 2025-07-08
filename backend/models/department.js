@@ -2,15 +2,15 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class Departement extends Model {
+  class Department extends Model {
     static associate(models) {
-      Departement.hasMany(models.Employee, {
-        foreignKey: 'departement_id'
+      Department.hasMany(models.Employee, {
+        foreignKey: 'department_id'
       });
     }
   }
 
-  Departement.init({
+  Department.init({
     department_name: {
       type: DataTypes.STRING(100),
       allowNull: false,
@@ -18,8 +18,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    modelName: 'Departement',
-    tableName: 'departements',
+    modelName: 'Department',
+    tableName: 'departments',
     timestamps: true,
     createdAt: 'created_at',
     updatedAt: 'updated_at',
@@ -27,5 +27,5 @@ module.exports = (sequelize, DataTypes) => {
     deletedAt: 'deleted_at'
   });
 
-  return Departement;
+  return Department;
 };

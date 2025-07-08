@@ -2,42 +2,37 @@
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
-  class Attendance extends Model {
+  class Allowance extends Model {
     static associate(models) {
-      Attendance.belongsTo(models.Employee, {
-        foreignKey: 'employee_id',
-        as: 'employee'
-      });
+      // relasi dengan model lain bisa ditambahkan nanti jika diperlukan
     }
   }
 
-  Attendance.init({
-    attendance_date: {
-      type: DataTypes.DATEONLY,
-      allowNull: false
+  Allowance.init({
+    allowance_id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
     },
-    check_in_time: {
-      type: DataTypes.TIME,
-      allowNull: false
+    allowance_name: {
+      type: DataTypes.STRING(100),
+      allowNull: false,
+      unique: true
     },
-    check_out_time: {
-      type: DataTypes.TIME,
-      allowNull: false
+    is_taxable: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     },
-    status: {
-      type: DataTypes.ENUM('Present', 'Sick', 'Leave', 'Absent'),
-      allowNull: false
-    },
-    notes: {
-      type: DataTypes.TEXT,
-      allowNull: true
+    is_fixed: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     }
   }, {
     sequelize,
-    modelName: 'Attendance',
-    tableName: 'attendances',
-    timestamps: true,
+    modelName: 'Allowance',
+    tableName: 'allowances',
+    timestamps: false
   });
 
-  return Attendance;
+  return Allowance;
 };
