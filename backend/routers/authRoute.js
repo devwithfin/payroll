@@ -1,19 +1,10 @@
-// routers/auth
-const express = require("express");
+const express = require('express');
 const router = express.Router();
+const authController = require('../controllers/authController');
+const authMiddleware = require('../middlewares/authMiddleware');
 
-// import controllers/auth
-const authController = require("../controllers/authController");
-// import middlewares/auth to verify jwt token
-const { authenticateToken } = require("../middlewares/authMiddleware");
-
-// login route
-router.post("/login", authController.login);
-
-// logout route
-router.post("/logout", authController.logout);
-
-// get profile of logged-in user route
-router.get("/profile", authenticateToken, authController.getProfile);
+router.post('/login', authController.login);
+router.post("/logout", authMiddleware, authController.logout);
+router.get('/profile', authMiddleware, authController.profile);
 
 module.exports = router;
