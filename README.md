@@ -36,17 +36,6 @@ cd backend
 npm install
 cd ../
 ```
-### 2. Install Project Dependencies
-
-```bash
-npm install
-cd frontend
-npm install 
-cd ../
-cd backend
-npm install
-cd ../
-```
 ### 3. Run Project
 Run in root folder :
 ```bash
