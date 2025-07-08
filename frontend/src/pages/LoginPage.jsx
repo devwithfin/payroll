@@ -1,11 +1,11 @@
 // pages/loginPage
 import React from "react";
 // import hooks/auth
-import useLogin from "../hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 
 const LoginPage = () => {
   // handle login
-  const { handleLogin } = useLogin();
+  const { handleLogin } = useAuth();
 
   return (
     <div
