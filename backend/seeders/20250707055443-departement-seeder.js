@@ -18,5 +18,7 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete('departments', null, {});
+    await queryInterface.sequelize.query('ALTER TABLE departments AUTO_INCREMENT = 1');
+
   }
 };

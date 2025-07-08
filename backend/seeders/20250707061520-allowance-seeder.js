@@ -38,5 +38,7 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete('allowances', null, {});
+    await queryInterface.sequelize.query('ALTER TABLE allowances AUTO_INCREMENT = 1');
+
   }
 };

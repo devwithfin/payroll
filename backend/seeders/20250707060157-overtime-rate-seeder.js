@@ -30,5 +30,7 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete('overtime_rates', null, {});
+    await queryInterface.sequelize.query('ALTER TABLE overtime_rates AUTO_INCREMENT = 1');
+
   }
 };

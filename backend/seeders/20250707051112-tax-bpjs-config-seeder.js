@@ -48,5 +48,6 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete("tax_bpjs_config", null, {});
+    await queryInterface.sequelize.query('ALTER TABLE tax_bpjs_config AUTO_INCREMENT = 1');
   },
 };
