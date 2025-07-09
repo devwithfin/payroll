@@ -26,7 +26,7 @@ module.exports = {
       },
       {
         employee_id: 2,
-        id_user: 2,
+        id_user: 3,
         position_id : 2,
         department_id : 2,
         employee_nik : "3302020912040002",
@@ -46,7 +46,7 @@ module.exports = {
       },
       {
         employee_id: 3,
-        id_user: 3,
+        id_user: 2,
         position_id : 9,
         department_id : 6,
         employee_nik : "3204131012030008",
