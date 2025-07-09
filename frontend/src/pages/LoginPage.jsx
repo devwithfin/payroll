@@ -1,10 +1,7 @@
 // pages/loginPage
 import React from "react";
-// import hooks/auth
 import useAuth from "../hooks/useAuth";
-
 const LoginPage = () => {
-  // handle login
   const { handleLogin } = useAuth();
 
   return (
@@ -17,7 +14,7 @@ const LoginPage = () => {
         style={{ maxWidth: "400px", width: "100%" }}
       >
         <h1 className="text-center mb-4 fw-medium" style={{ fontSize: "24px" }}>
-         Login
+          Login
         </h1>
         <form onSubmit={handleLogin} className="mt-2">
           <div className="mb-3">

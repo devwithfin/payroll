@@ -1,3 +1,4 @@
+// model/attedance
 'use strict';
 const { Model } = require('sequelize');
 
@@ -12,6 +13,11 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   Attendance.init({
+     attendance_id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     attendance_date: {
       type: DataTypes.DATEONLY,
       allowNull: false

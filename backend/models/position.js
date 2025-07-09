@@ -1,10 +1,10 @@
+// model/position
 'use strict';
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class Position extends Model {
     static associate(models) {
-      // Jika ada relasi lain nanti
       Position.hasMany(models.Employee, {
         foreignKey: 'position_id'
       });
@@ -12,6 +12,11 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   Position.init({
+    position_id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
   position_name: {
     type: DataTypes.STRING(100),
     allowNull: false,

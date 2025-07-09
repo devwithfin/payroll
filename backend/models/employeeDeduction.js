@@ -1,3 +1,4 @@
+// model/employeededuction
 'use strict';
 const { Model } = require('sequelize');
 
@@ -14,6 +15,11 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   EmployeeDeduction.init({
+      emp_deduction_id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
     employee_id: {
       type: DataTypes.INTEGER,
       allowNull: false

@@ -1,3 +1,4 @@
+// model/employeeallowance
 'use strict';
 const { Model } = require('sequelize');
 
@@ -16,6 +17,11 @@ EmployeeAllowance.belongsTo(models.Allowance, {
   }
 
   EmployeeAllowance.init({
+     emp_allowance_id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
+      },
     employee_id: {
       type: DataTypes.INTEGER,
       allowNull: false

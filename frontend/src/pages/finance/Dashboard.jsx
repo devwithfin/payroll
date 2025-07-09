@@ -1,5 +1,4 @@
-// admin/finance
-// hr/dashboard
+// pages/finance/dashboard
 export default function Dashboard() {
-  return <h2>Welcome Finance</h2>;
+  return <h2></h2>;
 }

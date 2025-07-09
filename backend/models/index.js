@@ -1,4 +1,4 @@
-// backend/models/index.js
+// model/index.js
 
 'use strict';
 

@@ -1,10 +1,11 @@
+// model/taxbpjsconfig
 'use strict';
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
   class TaxBpjsConfig extends Model {
     static associate(models) {
-      // No associations for now (standalone config table)
+    
     }
   }
 

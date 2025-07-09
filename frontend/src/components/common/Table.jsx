@@ -1,6 +1,9 @@
+// components/common/table
 import React, { useState } from "react";
 import DataTable from "react-data-table-component";
 import styled from "styled-components";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const customStyles = {
   table: {
@@ -20,7 +23,8 @@ const customStyles = {
       fontWeight: "bold",
       fontSize: "14px",
       textAlign: "center",
-      backgroundColor: "#f8f9fc",
+      backgroundColor: "#ffffff",
+      color: "#333333",
       borderBottom: "1px solid #ddd",
       borderRight: "1px solid #ddd",
       padding: "10px",
@@ -94,14 +98,23 @@ export default function Table({
     : columns;
 
   return (
-    <div className="card shadow-lg border-0" style={{ width: "100%" }}>
-      <div className="card-header py-3" style={{ backgroundColor: "#F8F9FC" }}>
-        <div className="d-flex justify-content-between align-items-center">
+    <div className="card border-0" style={{ width: "100%" }}>
+      <div className="card-header py-0" style={{ backgroundColor: "#fff" }}>
+        <div className="d-flex mb-2 justify-content-between align-items-center">
           <h6 className="mb-0" style={{ color: "#446AD7" }}>
             {title}
           </h6>
           {showAddButton && (
-            <button className="btn btn-primary btn-sm" onClick={onAdd}>
+            <button
+              onClick={onAdd}
+              className="btn btn-sm d-flex align-items-center gap-2"
+              style={{
+                backgroundColor: "#1071B9",
+                borderColor: "#1071B9",
+                color: "#fff",
+              }}
+            >
+              <FontAwesomeIcon icon={faPlus} />
               Add {title}
             </button>
           )}

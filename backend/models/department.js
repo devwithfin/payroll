@@ -1,3 +1,4 @@
+// model/department
 'use strict';
 const { Model } = require('sequelize');
 
@@ -11,6 +12,11 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   Department.init({
+     department_id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     department_name: {
       type: DataTypes.STRING(100),
       allowNull: false,

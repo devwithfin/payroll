@@ -1,3 +1,4 @@
+// model/calculatedovertime
 'use strict';
 const { Model } = require('sequelize');
 
@@ -17,6 +18,11 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   CalculatedOvertime.init({
+     calculated_id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true
+    },
     request_id: {
       type: DataTypes.INTEGER,
       allowNull: false

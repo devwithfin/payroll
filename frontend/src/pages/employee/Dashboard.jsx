@@ -1,4 +1,4 @@
-// hr/dashboard
+// pages/employee/dashboard
 export default function Dashboard() {
-  return <h2>Welcome Employee</h2>;
+  return <h2></h2>;
 }

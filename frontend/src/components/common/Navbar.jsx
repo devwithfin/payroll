@@ -1,145 +1,177 @@
 // components/common/navbar
-import React, { useState } from "react";
-// import fontawesome icon
+import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
   faSignOutAlt,
-  faSearch,
   faBell,
   faEnvelope,
+  faCaretDown,
 } from "@fortawesome/free-solid-svg-icons";
-// link to navigate
-import { Link } from "react-router-dom";
-// auth hook
+import { Link, useLocation } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
+import { useAuthContext } from "../../contexts/AuthContext";
 
 const Navbar = () => {
-  // state active item for dropdown item
-  const [activeItem, setActiveItem] = useState("");
-  // handle logout
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const { handleLogout } = useAuth();
+  const { user } = useAuthContext();
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const pageTitles = {
+    "/hr/dashboard": "HR Dashboard",
+    "/hr/positions": "Positions",
+    "/hr/departments": "Departments",
+    "/hr/employees": "Employees",
+    "/hr/attendances": "Attendances",
+    "/hr/allowances": "Allowances",
+    "/hr/deductions": "Deductions",
+    "/hr/overtimes": "Approval Overtime",
+    "/hr/profile": "HR Profile",
+
+    "/finance/dashboard": "Finance Dashboard",
+
+    "/employee/dashboard": "Employee Dashboard",
+    "/employee/attendances": "Recapitulation Attendances",
+    "/employee/overtimes": "Request Overtime",
+    "/employee/profile": "Employee Profile",
+  };
+
+  const pageTitle = pageTitles[location.pathname];
+
+  const fullName = user?.employee?.full_name || user?.username || "-";
+  const email = user?.employee?.email || "-";
 
   return (
     <nav
-      className="navbar bg-white py-3 shadow-sm"
-      style={{ position: "sticky", top: 0, zIndex: 900 }}
+      className="navbar py-3"
+      style={{
+        backgroundColor: "#F9FBFD",
+        position: "sticky",
+        top: 0,
+        zIndex: 900,
+        width: "100%",
+      }}
     >
-      <div className="container-fluid mx-4 d-flex justify-content-between align-items-center">
-        <form className="d-flex align-items-center" role="search">
-          <div className="input-group">
-            <input
-              type="search"
-              className="form-control bg-light border-0 py-2"
-              placeholder="Search for..."
-              aria-label="Search"
-              style={{ fontSize: "14px", width: "350px" }}
-            />
-            <button
-              type="submit"
-              className="btn border-0 shadow-none py-2"
-              style={{ backgroundColor: "#4E73DF" }}
-            >
-              <FontAwesomeIcon icon={faSearch} className="text-white fw-bold" />
-            </button>
-          </div>
-        </form>
+      <div className="container-fluid px-4 d-flex justify-content-between align-items-center">
+        <h6
+          className="m-0 fw-semibold"
+          style={{ fontSize: "20px", color: "#212529" }}
+        >
+          {pageTitle}
+        </h6>
 
-        <ul className="navbar-nav flex-row align-items-center gap-3">
-          <li className="nav-item">
-            <FontAwesomeIcon icon={faEnvelope} role="button" style={{ color: "#DAD3E2" }} />
-          </li>
-          <li className="nav-item">
-            <FontAwesomeIcon icon={faBell} role="button" style={{ color: "#DAD3E2" }} />
-          </li>
+        <div className="d-flex align-items-center gap-3">
+          <input
+            type="text"
+            placeholder="Search for..."
+            className="form-control form-control-sm"
+            style={{
+              width: "220px",
+              fontSize: "13px",
+              padding: "8px 12px",
+              backgroundColor: "#ffffff",
+              borderRadius: "0.375rem",
+            }}
+          />
 
-          <li className="nav-item mx-3">
-            <div style={{ height: "36px", borderLeft: "0.1px solid #ccc" }} />
-          </li>
+          <FontAwesomeIcon icon={faEnvelope} style={{ color: "#ADB5BD" }} />
+          <FontAwesomeIcon icon={faBell} style={{ color: "#ADB5BD" }} />
 
-          <li className="nav-item position-relative">
+          <div
+            style={{
+              height: "32px",
+              borderLeft: "1px solid #dee2e6",
+              margin: "0 12px",
+            }}
+          />
+
+          <div className="position-relative" ref={dropdownRef}>
             <div
-              id="userDropdown"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              role="button"
-              tabIndex="0"
-              className="d-flex align-items-center cursor-pointer"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+              className="d-flex gap-2 align-items-center cursor-pointer"
+              style={{ userSelect: "none" }}
             >
-              <div className="d-flex flex-column me-2">
-                <span
-                  className="text-secondary fw-medium"
-                  style={{ fontSize: "12px" }}
-                >
-                 {/* role name / username */}
-                </span>
-              </div>
               <img
-                src="/images/profile.svg"
-                alt="User Profile"
+                src="/images/logo.png"
+                alt="User"
                 style={{ width: "2rem", height: "2rem", borderRadius: "50%" }}
               />
+              <div className="d-flex flex-column text-end me-1">
+                <span className="fw-semibold" style={{ fontSize: "13px" }}>
+                  {fullName}
+                  <FontAwesomeIcon
+                    icon={faCaretDown}
+                    style={{
+                      fontSize: "12px",
+                      marginLeft: "6px",
+                      transform: dropdownOpen
+                        ? "rotate(180deg)"
+                        : "rotate(0deg)",
+                      transition: "transform 0.3s",
+                    }}
+                  />
+                </span>
+                <span className="text-muted" style={{ fontSize: "12px" }}>
+                  {email}
+                </span>
+              </div>
             </div>
 
-            <ul
-              className="dropdown-menu dropdown-menu-end shadow"
-              aria-labelledby="userDropdown"
-              style={{
-                position: "absolute",
-                top: "52px",
-                border: "none",
-                boxShadow: "none",
-              }}
-            >
-              <li>
-                <Link
-                  to="/profile"
-                  className="dropdown-item d-flex align-items-center text-decoration-none"
-                  style={{
-                    color: activeItem === "profile" ? "#fff" : "#000",
-                    backgroundColor: activeItem === "profile" ? "#4e73df" : "transparent",
-                  }}
-                  onMouseDown={() => setActiveItem("profile")}
-                  onMouseUp={() => setActiveItem("")}
-                  onMouseLeave={() => setActiveItem("")}
-                >
-                  <FontAwesomeIcon
-                    icon={faUser}
-                    className="me-2"
-                    style={{ width: "30px", color: "#DAD3E2" }}
-                  />
-                  <span style={{ fontSize: "14px" }}>Profile</span>
-                </Link>
-              </li>
-
-              <li><hr className="dropdown-divider" /></li>
-
-              <li>
-                <button
-                  type="button"
-                  className="dropdown-item d-flex align-items-center"
-                  onClick={handleLogout}
-                  style={{
-                    fontSize: "14px",
-                    paddingLeft: "25px",
-                    color: activeItem === "logout" ? "#fff" : "#000",
-                    backgroundColor: activeItem === "logout" ? "#4e73df" : "transparent",
-                  }}
-                  onMouseDown={() => setActiveItem("logout")}
-                  onMouseUp={() => setActiveItem("")}
-                  onMouseLeave={() => setActiveItem("")}
-                >
-                  <FontAwesomeIcon
-                    icon={faSignOutAlt}
-                    className="me-3"
-                    style={{ color: "#DAD3E2" }}
-                  />
-                  <span>Logout</span>
-                </button>
-              </li>
-            </ul>
-          </li>
-        </ul>
+            {dropdownOpen && (
+              <ul
+                className="dropdown-menu dropdown-menu-end shadow show"
+                style={{
+                  display: "block",
+                  position: "absolute",
+                  top: "calc(100% + 10px)",
+                  right: 0,
+                  minWidth: "180px",
+                  fontSize: "13px",
+                  backgroundColor: "#fff",
+                  zIndex: 999,
+                  border: "1px solid #dee2e6",
+                  borderRadius: "0.375rem",
+                  padding: "0.5rem 0",
+                }}
+              >
+                <li>
+                  <Link
+                    to="/profile"
+                    className="dropdown-item d-flex align-items-center gap-2"
+                  >
+                    <FontAwesomeIcon icon={faUser} />
+                    Profile
+                  </Link>
+                </li>
+                <li>
+                  <hr className="dropdown-divider" />
+                </li>
+                <li>
+                  <button
+                    type="button"
+                    className="dropdown-item d-flex align-items-center gap-2"
+                    onClick={handleLogout}
+                  >
+                    <FontAwesomeIcon icon={faSignOutAlt} />
+                    Logout
+                  </button>
+                </li>
+              </ul>
+            )}
+          </div>
+        </div>
       </div>
     </nav>
   );

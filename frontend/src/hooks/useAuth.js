@@ -1,75 +1,91 @@
-// hooks/useAuth.js
-import { useCallback } from "react";
+// hooks/useAuth
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { login, logout } from "../services/authService";
+import withReactContent from "sweetalert2-react-content";
+import { login } from "../services/authService";
+import API from "../libs/axiosInstance";
+import { useAuthContext } from "../contexts/AuthContext";
+
+const MySwal = withReactContent(Swal);
 
 export default function useAuth() {
   const navigate = useNavigate();
+  const { setUser, fetchProfile } = useAuthContext();
 
-  const handleLogin = useCallback(async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     const username = e.target.username.value;
     const password = e.target.password.value;
 
     try {
       const { data } = await login(username, password);
+      const role = data.user.role;
 
-      const role = data.user.role; 
-      
       localStorage.setItem("token", data.token);
-      localStorage.setItem("username", data.user.username);
       localStorage.setItem("role", role);
 
-      let redirectPath = "/";
-      if (role === "HR") redirectPath = "/hr/dashboard";
-      else if (role === "Finance") redirectPath = "/finance/dashboard";
-      else if (role === "Employee") redirectPath = "/employee/dashboard";
+      await fetchProfile();
 
-      Swal.fire({
+      await MySwal.fire({
         icon: "success",
-        title: "Login Successfully!",
-        text: "Welcome back!",
-        timer: 1000,
+        title: "Login Successful",
+        html: "Welcome back!",
         showConfirmButton: false,
+        timer: 1200,
         timerProgressBar: true,
-        willClose: () => {
-          navigate(redirectPath);
-        }
+        background: "#f0f9ff",
+        color: "#333",
+        didOpen: () => {
+          Swal.showLoading();
+        },
       });
 
-    } catch (error) {
-      const message = error.response?.data?.message || "Please try again!";
-      Swal.fire({
+      const redirectMap = {
+        HR: "/hr/dashboard",
+        Finance: "/finance/dashboard",
+        Employee: "/employee/dashboard",
+      };
+
+      navigate(redirectMap[role] || "/");
+    } catch (err) {
+      const message =
+        err.response?.data?.message || "Incorrect username or password";
+
+      MySwal.fire({
         icon: "error",
-        title: "Failed to Login",
+        title: "Login Failed",
         text: message,
+        confirmButtonColor: "#1071b9",
       });
     }
-  }, [navigate]);
+  };
 
-  const handleLogout = useCallback(async () => {
+  const handleLogout = async () => {
     try {
-      const token = localStorage.getItem("token");
-      await logout(token);
-      localStorage.clear();
-      Swal.fire({
-        icon: "success",
-        title: "Logout Successful",
-        text: "See you again!",
-        timer: 1000,
-        showConfirmButton: false,
-      }).then(() => {
-        navigate("/");
+      await API.post("/auth/logout", null, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
     } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Logout Failed",
-        text: error.response?.data?.message || "Please try again!",
-      });
+      console.error("Logout error:", error);
     }
-  }, [navigate]);
+
+    await MySwal.fire({
+      icon: "success",
+      title: "Logout Successful",
+      text: "See you again!",
+      showConfirmButton: false,
+      timer: 1500,
+      timerProgressBar: true,
+      background: "#f8fafc",
+      color: "#333",
+    });
+
+    localStorage.removeItem("token");
+    setUser(null);
+    navigate("/login");
+  };
 
   return { handleLogin, handleLogout };
 }

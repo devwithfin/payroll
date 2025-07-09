@@ -4,7 +4,7 @@ const Footer = () => {
     <footer className="py-3 bg-light" style={{ marginLeft: "225px" }}>
       <div className="d-flex justify-content-center w-100">
         <span className="small text-muted">
-          Copyright © MyPage {new Date().getFullYear()}
+          Copyright © Payroll App {new Date().getFullYear()}
         </span>
       </div>
     </footer>

@@ -23,6 +23,5 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete('positions', null, {});
     await queryInterface.sequelize.query('ALTER TABLE positions AUTO_INCREMENT = 1');
-
   }
 };

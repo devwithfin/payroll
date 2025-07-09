@@ -1,4 +1,4 @@
-// components/common/basemodal
+// components/common/base-modal
 import React from "react";
 
 export default function BaseModal({ title, children, footer, onClose }) {
@@ -37,7 +37,7 @@ export default function BaseModal({ title, children, footer, onClose }) {
       >
         <div
           style={{
-            backgroundColor: "#0d6efd",
+            backgroundColor: "#107189",
             color: "white",
             padding: "12px 20px",
             display: "flex",

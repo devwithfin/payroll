@@ -1,5 +1,6 @@
+// test/addUser
 const bcrypt = require('bcrypt');
-const { User } = require('../models'); // pastikan path models sesuai
+const { User } = require('../models'); 
 
 async function insertUser() {
   try {
