@@ -16,32 +16,57 @@ A web-based Payroll Management System designed to simplify and automate employee
 - 🧾 Tax (PPh 21) and BPJS calculation  
 - 📊 Payroll reporting and export (PDF/Excel)
 
-## 📦 Installation
+## 📦 Setup Instructions
 
-### 1. Clone the Repository
+### 🧪 1. Requirements 
+- Node.js
+- MySQL (via Laragon, XAMPP, or other local DB server)
+- Git
+
+### 📥 2.  Clone the Repository 
 
 ```bash
 git clone https://github.com/devwithfin/payroll
 cd payroll
 ```
 
-### 2. Install Project Dependencies
+### 📦 3. Install Dependencies 
 
 ```bash
+# Install root dependencies
 npm install
+# Install fron dependencies
 cd frontend
 npm install 
 cd ../
+# Install backend dependencies
 cd backend
 npm install
 cd ../
 ```
-### 3. Run Project
-Run in root folder :
-```bash
-npm run dev
+
+### 🛠️ 4. Configure Database  
+Ensure your MySQL server is running (via Laragon/XAMPP). Then:
+
+Create a new MySQL database :
+```
+CREATE DATABASE payroll;
+USE payroll;
 ```
 
+### 5. Run Migrations & Seeders 🧱
+
+```bash
+cd backend
+npm run migrate
+npm run seed
+```
+
+### 6. Run the Project  🚀 
+
+```
+npm run dev
+```
 > Backend Running on : http://localhost:4000
 
 > Frontend Running on: http://localhost:5173
