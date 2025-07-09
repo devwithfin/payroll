@@ -9,8 +9,7 @@
     "migrate": "npx sequelize-cli db:migrate",
     "drop-migrate": "npx sequelize-cli db:migrate:undo:all",
     "seed": "npx sequelize-cli db:seed:all",
-    "drop-seed": "npx sequelize-cli db:seed:undo:all",
-    "postinstall": "patch-package"
+    "drop-seed": "npx sequelize-cli db:seed:undo:all"
   },
   "author": "",
   "license": "ISC",
