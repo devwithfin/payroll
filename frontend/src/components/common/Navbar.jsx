@@ -34,7 +34,7 @@ const Navbar = () => {
     "/hr/positions": "Positions",
     "/hr/departments": "Departments",
     "/hr/employees": "Employees",
-    "/hr/attendances": "Attendances",
+    "/hr/attendances": "Recapitulation Attendances",
     "/hr/allowances": "Allowances",
     "/hr/deductions": "Deductions",
     "/hr/overtimes": "Approval Overtime",
@@ -43,7 +43,7 @@ const Navbar = () => {
     "/finance/dashboard": "Finance Dashboard",
 
     "/employee/dashboard": "Employee Dashboard",
-    "/employee/attendances": "Recapitulation Attendances",
+    "/employee/attendances": "Attendances",
     "/employee/overtimes": "Request Overtime",
     "/employee/profile": "Employee Profile",
   };
