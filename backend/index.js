@@ -6,6 +6,8 @@ require('dotenv').config();
 
 const authRoute = require('./routers/authRoute');
 const positionRoute = require('./routers/positionRoute')
+const departmentRoute = require('./routers/departmentRoute')
+const employeeRoute = require('./routers/employeeRoute')
  
 app.use(
   cors({
@@ -19,6 +21,8 @@ app.use(express.json());
 
 app.use('/api/v1/auth', authRoute );
 app.use("/api/v1/positions", positionRoute);
+app.use("/api/v1/departments", departmentRoute);
+app.use("/api/v1/employees", employeeRoute);
 
 
 const PORT = process.env.PORT;
