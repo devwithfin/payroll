@@ -1,12 +1,11 @@
-// model/user
 "use strict";
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      User.hasOne(models.Employee, {
-        foreignKey: "id_user",
+      User.belongsTo(models.Employee, {
+        foreignKey: "employee_id",
         as: "employee",
       });
     }
@@ -18,6 +17,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
+      },
+      employee_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        unique: true,
       },
       username: {
         type: DataTypes.STRING(50),
