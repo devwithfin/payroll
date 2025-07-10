@@ -1,4 +1,6 @@
-// controller/auth
+// controllers/auth.js
+"use strict";
+
 const { User, Employee } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -7,7 +9,17 @@ module.exports = {
   login: async (req, res) => {
     const { username, password } = req.body;
     try {
-      const user = await User.findOne({ where: { username } });
+      const user = await User.findOne({
+        where: { username },
+        include: [
+          {
+            model: Employee,
+            as: "employee",
+            attributes: ["full_name", "email"],
+          },
+        ],
+      });
+
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
@@ -20,18 +32,20 @@ module.exports = {
       const payload = { id_user: user.id_user, role: user.role };
       const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-      res.json({
+      return res.status(200).json({
         message: "Login successful",
         token,
         user: {
           id_user: user.id_user,
           username: user.username,
           role: user.role,
+          full_name: user.employee?.full_name || null,
+          email: user.employee?.email || null,
         },
       });
     } catch (err) {
       console.error("Login error:", err);
-      res.status(500).json({ message: "Server error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   },
 
@@ -53,13 +67,13 @@ module.exports = {
         return res.status(404).json({ message: "User not found" });
       }
 
-      res.json({
+      return res.status(200).json({
         message: "User profile fetched successfully",
         user,
       });
     } catch (err) {
       console.error("Profile error:", err);
-      res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   },
 
