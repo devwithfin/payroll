@@ -64,13 +64,29 @@ npm run seed
 
 ### 6. Run the Project  🚀 
 
-```
+```bash
 npm run dev
 ```
 > Backend Running on : http://localhost:4000
 
 > Frontend Running on: http://localhost:5173
 
+
+### 7. User Info (Login) 
+
+```bash
+# as HR
+email : anggarabayu@gmail.com
+password : password123
+
+# as Finance
+email : dewipustis@gmail.com
+password : password123
+
+# as Employee
+email : alfiansyahcahyow@gmail.com
+password : password123
+```
 
 ## 📁 Folder Structure
 ```
