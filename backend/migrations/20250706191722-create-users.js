@@ -5,9 +5,17 @@ module.exports = {
     await queryInterface.createTable("users", {
       id_user: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
+        autoIncrement: true,
+        allowNull: false,
+      },
+      employee_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        unique: true,
+        references: { model: "employees", key: "employee_id" },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
       },
       username: {
         type: Sequelize.STRING(50),
@@ -19,7 +27,7 @@ module.exports = {
         allowNull: false,
       },
       role: {
-        type: Sequelize.ENUM("HR", "Finance", "Employee"), // contoh: 'employee', 'hr', 'finance'
+        type: Sequelize.ENUM("HR", "Finance", "Employee"),
         allowNull: false,
       },
       created_at: {
@@ -35,12 +43,11 @@ module.exports = {
       deleted_at: {
         type: Sequelize.DATE,
         allowNull: true,
-        defaultValue: null,
       },
     });
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.dropTable("users");
   },
 };
