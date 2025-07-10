@@ -76,7 +76,7 @@ npm run dev
 
 ```bash
 # as HR
-email : anggarabayu@gmail.com
+email : bayuanggara@gmail.com
 password : password123
 
 # as Finance
