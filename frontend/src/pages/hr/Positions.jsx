@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 import Table from "../../components/common/Table";
+import { formatRupiah } from "../../utils/formatCurrency"; 
 import AddModal from "../../components/modals/position/AddModal";
 import EditModal from "../../components/modals/position/EditModal";
 
@@ -62,47 +63,61 @@ export default function Positions() {
   };
 
   const handleDelete = (row) => {
-  Swal.fire({
-    title: "Are you sure?",
-    text: `Delete position "${row.position_name}"?`,
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#d33",
-    cancelButtonColor: "#1071b9",
-    confirmButtonText: "Yes!",
-  }).then(async (result) => {
-    if (result.isConfirmed) {
-      try {
-        await deletePosition(row.position_id); 
-        fetchPositions();
-        toast.success("Position deleted successfully");
-      } catch (err) {
-        const errMsg = err.response?.data?.message || "Failed to delete position";
-        toast.error(errMsg);
+    Swal.fire({
+      title: "Are you sure?",
+      text: `Delete position "${row.position_name}"?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#1071b9",
+      confirmButtonText: "Yes!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deletePosition(row.position_id);
+          fetchPositions();
+          toast.success("Position deleted successfully");
+        } catch (err) {
+          const errMsg =
+            err.response?.data?.message || "Failed to delete position";
+          toast.error(errMsg);
+        }
       }
-    }
-  });
-};
+    });
+  };
 
   const renderColumnsWithPage = (currentPage, perPage) => [
     {
       name: "#",
       selector: (row, index) => (currentPage - 1) * perPage + index + 1,
       sortable: true,
-      width: "80px",
+      width: "50px",
     },
     {
       name: "Position Name",
       selector: (row) => row.position_name,
       sortable: true,
-      width: "635px",
+      width: "230px",
     },
     {
-      name: "Base Salary",
-      selector: (row) =>
-        `Rp ${Number(row.base_salary).toLocaleString("id-ID")}`,
+      name: "Department Name",
+      selector: (row) => row.department.department_name,
       sortable: true,
-      width: "180px",
+      width: "230px",
+    },
+    
+    {
+      name: "Base Salary",
+      selector: (row) => formatRupiah(row.base_salary),
+      sortable: true,
+      width: "200px",
+    },
+
+    {
+      name: "Job Allowance",
+      selector: (row) => formatRupiah(row.job_allowance),
+      sortable: true,
+      width: "200px",
     },
     {
       name: "Actions",
@@ -150,8 +165,6 @@ export default function Positions() {
           onSave={handleUpdate}
         />
       )}
-
-      
     </div>
   );
 }
