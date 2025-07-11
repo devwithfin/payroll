@@ -113,6 +113,17 @@ const SidebarHR = () => {
           </li>
 
           <div className="section-title">Organization</div>
+           <li className="nav-item mb-2">
+            <Link
+              to="/hr/departments"
+              className={`nav-link fw-medium ${
+                isActive("/hr/departments") ? "active" : ""
+              }`}
+            >
+              <FontAwesomeIcon icon={faBuilding} />
+              Departments
+            </Link>
+          </li>
           <li className="nav-item mb-2">
             <Link
               to="/hr/positions"
@@ -122,17 +133,6 @@ const SidebarHR = () => {
             >
               <FontAwesomeIcon icon={faBuilding} />
               Positions
-            </Link>
-          </li>
-          <li className="nav-item mb-2">
-            <Link
-              to="/hr/departments"
-              className={`nav-link fw-medium ${
-                isActive("/hr/departments") ? "active" : ""
-              }`}
-            >
-              <FontAwesomeIcon icon={faBuilding} />
-              Departments
             </Link>
           </li>
           <li className="nav-item mb-2">
