@@ -54,14 +54,16 @@ const AppLayout = () => {
         {/* Outlet Section */}
         <div
           style={{
-            flex: 1,
-            padding: "1.5rem",
-            backgroundColor: "#ffffff",
-            margin: "1rem",
-            borderRadius: "0.5rem",
-            boxShadow: "0 0 10px rgba(0,0,0,0.05)",
-            overflow: "auto",
-          }}
+  padding: "1.5rem",
+  backgroundColor: "#ffffff",
+  margin: "1rem",
+  borderRadius: "0.5rem",
+  boxShadow: "0 0 10px rgba(0,0,0,0.05)",
+  overflow: "visible", // atau bisa dihilangkan
+  height: "fit-content", // biar tinggi mengikuti isi
+  maxHeight: "calc(100vh - 100px)", // optional supaya gak terlalu tinggi
+}
+}
         >
           <Outlet />
         </div>
