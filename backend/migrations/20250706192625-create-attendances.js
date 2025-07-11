@@ -37,7 +37,12 @@ module.exports = {
       },
       notes: {
         type: Sequelize.TEXT
-      }
+      },
+      status_processed: {
+        type: Sequelize.ENUM("Unprocessed", "Processed"),
+        allowNull: false,
+        defaultValue: "Unprocessed",
+      },
     });
   },
 
