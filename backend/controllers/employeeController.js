@@ -8,7 +8,7 @@ const EmployeeController = {
           "employee_id", "id_user", "position_id", "department_id",
           "employee_nik", "full_name", "dob", "gender", "address",
           "phone_number", "email", "employment_status", "join_date",
-          "resignation_date", "npwp_number", "pt_kp", "bank_account_number",
+          "resignation_date", "npwp_number", "pt_kp", "role","bank_account_number",
           "bank_name", "created_at", "updated_at", "deleted_at"
         ],
         include: [
@@ -58,7 +58,7 @@ const EmployeeController = {
           "employee_id", "id_user", "position_id", "department_id",
           "employee_nik", "full_name", "dob", "gender", "address",
           "phone_number", "email", "employment_status", "join_date",
-          "resignation_date", "npwp_number", "pt_kp", "bank_account_number",
+          "resignation_date", "npwp_number", "pt_kp", "role","bank_account_number",
           "bank_name", "created_at", "updated_at", "deleted_at"
         ],
         include: [
