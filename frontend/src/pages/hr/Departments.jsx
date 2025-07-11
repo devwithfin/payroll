@@ -38,83 +38,55 @@ export default function Departments() {
 
   const handleSave = async (newDepartment) => {
     try {
-      const nameExists = departments.some(
-        (d) =>
-          d.department_name.toLowerCase() ===
-          newDepartment.department_name.toLowerCase()
-      );
-
-      if (nameExists) {
-        toast.error("Department name already exists");
-        return;
-      }
-
-      const res = await createDepartment(newDepartment);
-      setDepartments((prev) => [res.data.data, ...prev]);
+      await createDepartment(newDepartment);
       setShowAddModal(false);
+      fetchDepartments();
       toast.success("Department successfully saved");
     } catch (err) {
-      let errorMsg =
+      const errorMsg =
         err.response?.data?.message || "Failed to save department";
-
-      if (err.response?.status === 500) {
-        errorMsg =
-          "Internal server error. The department name might already exist.";
-      }
-
       toast.error(errorMsg);
       console.error(err);
     }
   };
 
-  const handleUpdate = async (updatedDepartment) => {
-  try {
-    await updateDepartment(updatedDepartment.department_id, {
-      department_name: updatedDepartment.department_name,
+  const handleUpdate = async (updatedData) => {
+    try {
+      await updateDepartment(updatedData.id, updatedData);
+      setShowEditModal(false);
+      fetchDepartments();
+      toast.success("Department successfully updated");
+    } catch (err) {
+      const errorMsg =
+        err.response?.data?.message || "Failed to update department";
+      toast.error(errorMsg);
+      console.error(err);
+    }
+  };
+
+  const handleDelete = (row) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: `Delete department "${row.department_name}"?`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#1071b9",
+      confirmButtonText: "Yes!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deleteDepartment(row.department_id);
+          fetchDepartments();
+          toast.success("Department deleted successfully");
+        } catch (err) {
+          const errMsg =
+            err.response?.data?.message || "Failed to delete department";
+          toast.error(errMsg);
+        }
+      }
     });
-
-    setDepartments((prev) =>
-      prev.map((dept) =>
-        dept.department_id === updatedDepartment.department_id
-          ? { ...dept, department_name: updatedDepartment.department_name }
-          : dept
-      )
-    );
-
-    setShowEditModal(false);
-    toast.success("Department updated successfully");
-  } catch (err) {
-    toast.error("Failed to update department");
-    console.error(err);
-  }
-};
-
-
-const handleDelete = async (id) => {
-  const result = await Swal.fire({
-    title: "Are you sure?",
-    text: "This action cannot be undone.",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "Yes, delete it!",
-    cancelButtonText: "Cancel",
-  });
-
-  if (!result.isConfirmed) return;
-
-  try {
-    await deleteDepartment(id);
-    setDepartments((prev) =>
-      prev.filter((dept) => dept.department_id !== id)
-    );
-    toast.success("Department deleted successfully");
-  } catch (err) {
-    toast.error("Failed to delete department");
-    console.error(err);
-  }
-};
-
-
+  };
 
   const renderColumnsWithPage = (currentPage, perPage) => [
     {
@@ -127,7 +99,7 @@ const handleDelete = async (id) => {
       name: "Department Name",
       selector: (row) => row.department_name,
       sortable: true,
-      width: "700px",
+      width: "830px",
     },
     {
       name: "Actions",
@@ -144,7 +116,7 @@ const handleDelete = async (id) => {
             <FontAwesomeIcon icon={faPen} />
           </button>
           <button
-            onClick={() => handleDelete(row.department_id)}
+            onClick={() => handleDelete(row)} // ✅ kirim seluruh objek row
             className="btn btn-sm btn-danger"
             title="Delete"
           >
@@ -165,10 +137,7 @@ const handleDelete = async (id) => {
       />
 
       {showAddModal && (
-        <AddModal
-          onClose={() => setShowAddModal(false)}
-          onSave={handleSave}
-        />
+        <AddModal onClose={() => setShowAddModal(false)} onSave={handleSave} />
       )}
 
       {showEditModal && (
