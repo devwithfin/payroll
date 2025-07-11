@@ -9,6 +9,16 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       },
+      department_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "departments",
+          key: "department_id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "RESTRICT",
+      },
       position_name: {
         type: Sequelize.STRING(100),
         allowNull: false,
