@@ -1,35 +1,55 @@
-// controller/position
-const { Position } = require("../models");
+const { Position, Department } = require("../models");
 
 const PositionController = {
-  getAll: async (req, res) => {
-    try {
-      const positions = await Position.findAll({
-        attributes: ["position_id", "position_name", "base_salary", "created_at", "updated_at", "deleted_at"],
-        order: [["position_id", "DESC"]],
-      });
+  // GET /positions
+getAll: async (req, res) => {
+  try {
+    const positions = await Position.findAll({
+      attributes: [
+        "position_id",
+        "position_name",
+        "base_salary",
+        "job_allowance",
+        "department_id", // ✅ tambahkan ini
+        "created_at",
+        "updated_at"
+      ],
+      include: {
+        model: Department,
+        as: "department",
+        attributes: ["department_id", "department_name"],
+      },
+      order: [["position_id", "DESC"]],
+    });
 
-      if (!positions.length) {
-        return res.status(204).json({
-          message: "No position data found",
-          data: [],
-        });
-      }
-
-      res.status(200).json({
-        message: "Positions fetched successfully",
-        data: positions,
+    if (!positions.length) {
+      return res.status(204).json({
+        message: "No position data found",
+        data: [],
       });
-    } catch (error) {
-      console.error("getAll error:", error);
-      res.status(500).json({ message: "Internal server error" });
     }
-  },
 
+    res.status(200).json({
+      message: "Positions fetched successfully",
+      data: positions,
+    });
+  } catch (error) {
+    console.error("getAll error:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+},
+
+
+  // GET /positions/:id
   getById: async (req, res) => {
     try {
       const position = await Position.findByPk(req.params.id, {
-        attributes: ["position_id", "position_name", "base_salary", "created_at", "updated_at", "deleted_at"],
+        attributes: ["position_id", "position_name", "base_salary", "job_allowance", "created_at", "updated_at"],
+        include: {
+          model: Department,
+          as: "department",
+          attributes: ["department_id", "department_name"],
+        },
       });
 
       if (!position) {
@@ -46,12 +66,19 @@ const PositionController = {
     }
   },
 
+  // POST /positions
   create: async (req, res) => {
     try {
-      const { position_name, base_salary } = req.body;
-      const newPosition = await Position.create({ position_name, base_salary });
+      const { position_name, base_salary, department_id, job_allowance } = req.body;
 
-      res.status(200).json({
+      const newPosition = await Position.create({
+        position_name,
+        base_salary,
+        department_id,
+        job_allowance: job_allowance ?? 0,
+      });
+
+      res.status(201).json({
         message: "Position created successfully",
         data: newPosition,
       });
@@ -61,16 +88,22 @@ const PositionController = {
     }
   },
 
+  // PUT /positions/:id
   update: async (req, res) => {
-    try { 
-      const { position_name, base_salary } = req.body;
-      const position = await Position.findByPk(req.params.id);
+    try {
+      const { position_name, base_salary, department_id, job_allowance } = req.body;
 
+      const position = await Position.findByPk(req.params.id);
       if (!position) {
         return res.status(404).json({ message: "Position not found" });
       }
 
-      await position.update({ position_name, base_salary });
+      await position.update({
+        position_name,
+        base_salary,
+        department_id,
+        job_allowance,
+      });
 
       res.status(200).json({
         message: "Position updated successfully",
@@ -82,10 +115,10 @@ const PositionController = {
     }
   },
 
+  // DELETE /positions/:id
   destroy: async (req, res) => {
     try {
       const position = await Position.findByPk(req.params.id);
-
       if (!position) {
         return res.status(404).json({ message: "Position not found" });
       }
