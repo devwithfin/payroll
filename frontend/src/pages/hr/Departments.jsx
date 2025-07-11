@@ -93,13 +93,13 @@ export default function Departments() {
       name: "#",
       selector: (row, index) => (currentPage - 1) * perPage + index + 1,
       sortable: true,
-      width: "80px",
+      width: "50px",
     },
     {
       name: "Department Name",
       selector: (row) => row.department_name,
       sortable: true,
-      width: "830px",
+      width: "860px",
     },
     {
       name: "Actions",
