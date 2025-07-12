@@ -17,7 +17,7 @@ const getWorkdays = (startDate, endDate) => {
 
 const randomStatus = (dayIndex, employeeId) => {
   if ((employeeId === 1 && dayIndex === 5) || (employeeId === 2 && dayIndex === 10)) {
-    return { status: "Sick", notes: "Flue" };
+    return { status: "Sick", notes: "Flu" };
   }
   if (employeeId === 3 && dayIndex === 15) {
     return { status: "Leave", notes: "Urusan keluarga" };
@@ -27,7 +27,7 @@ const randomStatus = (dayIndex, employeeId) => {
 
 const randomTime = (hourStart, minuteRange = 15) => {
   const hour = hourStart;
-  const minute = Math.floor(Math.random() * (minuteRange + 1));  
+  const minute = Math.floor(Math.random() * (minuteRange + 1));
   const second = Math.floor(Math.random() * 60);
   return `${hour.toString().padStart(2, "0")}:${minute
     .toString()
@@ -36,16 +36,19 @@ const randomTime = (hourStart, minuteRange = 15) => {
 
 module.exports = {
   async up(queryInterface) {
-    const start = new Date("2025-05-26");
-    const end = new Date("2025-06-25");
-    const dates = getWorkdays(start, end);
+    const today = new Date();
     const attendances = [];
 
-    dates.forEach((date, idx) => {
+    // Simulasi periode 1: 26 Mei – 25 Juni (Processed)
+    const period1Start = new Date("2025-05-26");
+    const period1End = new Date("2025-06-25");
+    const dates1 = getWorkdays(period1Start, period1End);
+
+    dates1.forEach((date, idx) => {
       [1, 2, 3].forEach((employeeId) => {
         const { status, notes } = randomStatus(idx, employeeId);
-        const checkIn = randomTime(8, 15);  
-        const checkOut = randomTime(17, 15);  
+        const checkIn = randomTime(8);
+        const checkOut = randomTime(17);
         attendances.push({
           employee_id: employeeId,
           attendance_date: date.toISOString().split("T")[0],
@@ -53,7 +56,29 @@ module.exports = {
           check_out_time: checkOut,
           status,
           notes,
-          status_processed: "Processed"
+          status_processed: "Processed",
+        });
+      });
+    });
+
+    // Simulasi periode 2: 26 Juni – hari ini (Unprocessed)
+    const period2Start = new Date("2025-06-26");
+    const period2End = today;
+    const dates2 = getWorkdays(period2Start, period2End);
+
+    dates2.forEach((date, idx) => {
+      [1, 2, 3].forEach((employeeId) => {
+        const { status, notes } = randomStatus(idx, employeeId);
+        const checkIn = randomTime(8);
+        const checkOut = randomTime(17);
+        attendances.push({
+          employee_id: employeeId,
+          attendance_date: date.toISOString().split("T")[0],
+          check_in_time: checkIn,
+          check_out_time: checkOut,
+          status,
+          notes,
+          status_processed: "Unprocessed",
         });
       });
     });
@@ -64,10 +89,9 @@ module.exports = {
   async down(queryInterface) {
     await queryInterface.bulkDelete("attendances", {
       attendance_date: {
-        [Op.between]: ["2024-05-26", "2024-06-25"],
+        [Op.between]: ["2025-05-26", new Date().toISOString().split("T")[0]],
       },
     });
-    await queryInterface.bulkDelete("attendances", null, {});
     await queryInterface.sequelize.query('ALTER TABLE attendances AUTO_INCREMENT = 1');
   },
 };

@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "PayrollPeriod",
       tableName: "payroll_periods",
-      timestamps: true,
+      timestamps: false,
     }
   );
 

@@ -1,5 +1,4 @@
 // service/employee
-// services/department
 import API from '../libs/axiosInstance';
 
 export const getAllEmployees = () => API.get('/employees');
