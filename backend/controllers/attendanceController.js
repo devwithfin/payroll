@@ -1,4 +1,4 @@
-// controllers/attendanceController.js
+// controller/attendance
 const { Attendance, Employee } = require("../models");
 
 const AttendanceController = {

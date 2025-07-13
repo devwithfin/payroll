@@ -1,3 +1,4 @@
+// controller/payroll-period
 const { PayrollPeriod } = require("../models");
 
 exports.getAllPeriods = async (req, res) => {

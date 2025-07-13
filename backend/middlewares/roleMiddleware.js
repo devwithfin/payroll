@@ -1,4 +1,4 @@
-// middleware/allowedrole
+// middleware/allowed-role
 module.exports = function (...allowedRoles) {
   return function (req, res, next) {
     if (!req.user || !allowedRoles.includes(req.user.role)) {

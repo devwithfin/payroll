@@ -1,4 +1,4 @@
-// controllers/auth.js
+// controller/auth
 "use strict";
 
 const { User, Employee } = require("../models");
@@ -26,11 +26,15 @@ module.exports = {
 
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-        return res.status(401).json({ message: "Username or password is incorrect" });
+        return res
+          .status(401)
+          .json({ message: "Username or password is incorrect" });
       }
 
       const payload = { id_user: user.id_user, role: user.role };
-      const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "1h" });
+      const token = jwt.sign(payload, process.env.JWT_SECRET, {
+        expiresIn: "1h",
+      });
 
       return res.status(200).json({
         message: "Login successful",

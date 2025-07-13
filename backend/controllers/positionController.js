@@ -1,50 +1,54 @@
 const { Position, Department } = require("../models");
 
 const PositionController = {
-  // GET /positions
-getAll: async (req, res) => {
-  try {
-    const positions = await Position.findAll({
-      attributes: [
-        "position_id",
-        "position_name",
-        "base_salary",
-        "job_allowance",
-        "department_id", // ✅ tambahkan ini
-        "created_at",
-        "updated_at"
-      ],
-      include: {
-        model: Department,
-        as: "department",
-        attributes: ["department_id", "department_name"],
-      },
-      order: [["position_id", "DESC"]],
-    });
-
-    if (!positions.length) {
-      return res.status(204).json({
-        message: "No position data found",
-        data: [],
+  getAll: async (req, res) => {
+    try {
+      const positions = await Position.findAll({
+        attributes: [
+          "position_id",
+          "position_name",
+          "base_salary",
+          "job_allowance",
+          "department_id", // ✅ tambahkan ini
+          "created_at",
+          "updated_at",
+        ],
+        include: {
+          model: Department,
+          as: "department",
+          attributes: ["department_id", "department_name"],
+        },
+        order: [["position_id", "DESC"]],
       });
+
+      if (!positions.length) {
+        return res.status(204).json({
+          message: "No position data found",
+          data: [],
+        });
+      }
+
+      res.status(200).json({
+        message: "Positions fetched successfully",
+        data: positions,
+      });
+    } catch (error) {
+      console.error("getAll error:", error);
+      res.status(500).json({ message: "Internal server error" });
     }
+  },
 
-    res.status(200).json({
-      message: "Positions fetched successfully",
-      data: positions,
-    });
-  } catch (error) {
-    console.error("getAll error:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-},
-
-
-  // GET /positions/:id
   getById: async (req, res) => {
     try {
       const position = await Position.findByPk(req.params.id, {
-        attributes: ["position_id", "position_name", "base_salary", "job_allowance", "created_at", "updated_at"],
+        attributes: [
+          "position_id",
+          "position_name",
+          "base_salary",
+          "job_allowance",
+          "created_at",
+          "updated_at",
+        ],
         include: {
           model: Department,
           as: "department",
@@ -66,10 +70,10 @@ getAll: async (req, res) => {
     }
   },
 
-  // POST /positions
   create: async (req, res) => {
     try {
-      const { position_name, base_salary, department_id, job_allowance } = req.body;
+      const { position_name, base_salary, department_id, job_allowance } =
+        req.body;
 
       const newPosition = await Position.create({
         position_name,
@@ -88,10 +92,10 @@ getAll: async (req, res) => {
     }
   },
 
-  // PUT /positions/:id
   update: async (req, res) => {
     try {
-      const { position_name, base_salary, department_id, job_allowance } = req.body;
+      const { position_name, base_salary, department_id, job_allowance } =
+        req.body;
 
       const position = await Position.findByPk(req.params.id);
       if (!position) {
@@ -115,7 +119,6 @@ getAll: async (req, res) => {
     }
   },
 
-  // DELETE /positions/:id
   destroy: async (req, res) => {
     try {
       const position = await Position.findByPk(req.params.id);

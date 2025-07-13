@@ -1,3 +1,4 @@
+// controller/employee
 const { Employee, Department, Position } = require("../models");
 
 const EmployeeController = {
@@ -5,29 +6,48 @@ const EmployeeController = {
     try {
       const employees = await Employee.findAll({
         attributes: [
-          "employee_id", "id_user", "position_id", "department_id",
-          "employee_nik", "full_name", "dob", "gender", "address",
-          "phone_number", "email", "employment_status", "join_date",
-          "resignation_date", "npwp_number", "pt_kp", "role","bank_account_number",
-          "bank_name", "created_at", "updated_at", "deleted_at"
+          "employee_id",
+          "id_user",
+          "position_id",
+          "department_id",
+          "employee_nik",
+          "full_name",
+          "dob",
+          "gender",
+          "address",
+          "phone_number",
+          "email",
+          "employment_status",
+          "join_date",
+          "resignation_date",
+          "npwp_number",
+          "pt_kp",
+          "role",
+          "bank_account_number",
+          "bank_name",
+          "created_at",
+          "updated_at",
+          "deleted_at",
         ],
         include: [
           {
             model: Department,
             as: "department",
-            attributes: ["department_name"]
+            attributes: ["department_name"],
           },
           {
             model: Position,
             as: "position",
-            attributes: ["position_name"]
-          }
+            attributes: ["position_name"],
+          },
         ],
         order: [["employee_id", "DESC"]],
       });
 
       if (!employees.length) {
-        return res.status(204).json({ message: "No employee data found", data: [] });
+        return res
+          .status(204)
+          .json({ message: "No employee data found", data: [] });
       }
 
       const formatted = employees.map((emp) => {
@@ -55,24 +75,41 @@ const EmployeeController = {
     try {
       const emp = await Employee.findByPk(req.params.id, {
         attributes: [
-          "employee_id", "id_user", "position_id", "department_id",
-          "employee_nik", "full_name", "dob", "gender", "address",
-          "phone_number", "email", "employment_status", "join_date",
-          "resignation_date", "npwp_number", "pt_kp", "role","bank_account_number",
-          "bank_name", "created_at", "updated_at", "deleted_at"
+          "employee_id",
+          "id_user",
+          "position_id",
+          "department_id",
+          "employee_nik",
+          "full_name",
+          "dob",
+          "gender",
+          "address",
+          "phone_number",
+          "email",
+          "employment_status",
+          "join_date",
+          "resignation_date",
+          "npwp_number",
+          "pt_kp",
+          "role",
+          "bank_account_number",
+          "bank_name",
+          "created_at",
+          "updated_at",
+          "deleted_at",
         ],
         include: [
           {
             model: Department,
             as: "department",
-            attributes: ["department_name"]
+            attributes: ["department_name"],
           },
           {
             model: Position,
             as: "position",
-            attributes: ["position_name"]
-          }
-        ]
+            attributes: ["position_name"],
+          },
+        ],
       });
 
       if (!emp) {
@@ -94,7 +131,6 @@ const EmployeeController = {
       res.status(500).json({ message: "Internal server error" });
     }
   },
- 
 
   create: async (req, res) => {
     try {
@@ -144,7 +180,7 @@ const EmployeeController = {
       console.error("destroy error:", error);
       res.status(500).json({ message: "Failed to delete employee" });
     }
-  }
+  },
 };
 
 module.exports = EmployeeController;
