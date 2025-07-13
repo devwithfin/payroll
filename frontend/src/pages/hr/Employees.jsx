@@ -1,3 +1,4 @@
+// pages/hr/emmployees
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash, faEye } from "@fortawesome/free-solid-svg-icons";
@@ -39,7 +40,7 @@ export default function Employees() {
   const handleSave = async (data) => {
     try {
       await createEmployee(data);
-      await fetchEmployees(); // ✅ Ambil ulang agar position/department lengkap
+      await fetchEmployees(); 
       setShowAddModal(false);
       toast.success("Employee added successfully");
     } catch (err) {

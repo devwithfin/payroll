@@ -1,3 +1,4 @@
+// components/modals/position/add-modal
 import React, { useState, useEffect } from "react";
 import BaseModal from "../../common/BaseModal";
 import Swal from "sweetalert2";
@@ -6,7 +7,7 @@ import { getAllDepartments } from "../../../services/departmentService";
 export default function AddModal({ onClose, onSave }) {
   const [positionName, setPositionName] = useState("");
   const [baseSalary, setBaseSalary] = useState("");
-  const [jobAllowance, setJobAllowance] = useState(""); // ✅ Tambah state
+  const [jobAllowance, setJobAllowance] = useState(""); 
   const [departmentId, setDepartmentId] = useState("");
 
   const [departments, setDepartments] = useState([]);
@@ -38,7 +39,7 @@ export default function AddModal({ onClose, onSave }) {
     onSave({
       position_name: positionName.trim(),
       base_salary: Number(baseSalary),
-      job_allowance: Number(jobAllowance), // ✅ Kirim job allowance
+      job_allowance: Number(jobAllowance), 
       department_id: Number(departmentId),
     });
   };
@@ -59,7 +60,6 @@ export default function AddModal({ onClose, onSave }) {
       }
     >
       <form onSubmit={handleSubmit}>
-        {/* Position Name */}
         <div className="mb-3">
           <label className="form-label fw-medium">Position Name</label>
           <input
@@ -72,7 +72,6 @@ export default function AddModal({ onClose, onSave }) {
           />
         </div>
 
-        {/* Base Salary */}
         <div className="mb-3">
           <label className="form-label fw-medium">Base Salary</label>
           <input
@@ -85,7 +84,6 @@ export default function AddModal({ onClose, onSave }) {
           />
         </div>
 
-        {/* Job Allowance - ✅ Baru */}
         <div className="mb-3">
           <label className="form-label fw-medium">Job Allowance</label>
           <input

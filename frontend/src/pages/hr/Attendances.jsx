@@ -1,9 +1,10 @@
+// pages/hr/attendances
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Table from "../../components/common/Table";
 import { getAllAttendances } from "../../services/attendanceService";
 import { getAllPayrollPeriods } from "../../services/payrollPeriodService";
-import ModalRecap from "../../components/modals/attendance/ModalRecap";
+import RecapModal from "../../components/modals/attendance/RecapModal";
 
 export default function Attendances() {
   const [attendance, setAttendances] = useState([]);
@@ -194,7 +195,7 @@ export default function Attendances() {
       />
 
       {showRecapModal && (
-        <ModalRecap
+        <RecapModal
           recap={recapData}
           onClose={() => setShowRecapModal(false)}
         />

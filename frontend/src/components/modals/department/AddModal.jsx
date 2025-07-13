@@ -1,4 +1,4 @@
-// components/modal/department/add
+// components/modals/department/add-modal
 import React, { useState } from "react";
 import BaseModal from "../../common/BaseModal";
 import Swal from "sweetalert2";

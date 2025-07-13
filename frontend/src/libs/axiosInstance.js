@@ -1,4 +1,4 @@
-// libs/axiosInstance
+// libs/axios-instance
 import axios from 'axios';
 
 const API = axios.create({

@@ -1,3 +1,4 @@
+// components/modals/employee/info-modal
 import React, { useState } from "react";
 import BaseModal from "../../common/BaseModal";
 
@@ -6,7 +7,6 @@ export default function InfoModal({ employee, onClose }) {
 
   if (!employee) return null;
 
-  // Helpers
   const parseGender = (g) => {
     if (!g) return "-";
     return g === "M" ? "Man" : g === "W" ? "Woman" : "-";
@@ -40,7 +40,6 @@ export default function InfoModal({ employee, onClose }) {
         </button>
       }
     >
-      {/* Tab Headers */}
       <ul className="nav nav-tabs mb-3" role="tablist" style={{ borderBottom: "1px solid #dee2e6" }}>
         {tabs.map((tab) => (
           <li className="nav-item" key={tab.id} role="presentation">
@@ -57,7 +56,6 @@ export default function InfoModal({ employee, onClose }) {
         ))}
       </ul>
 
-      {/* Tab Content */}
       <div
         className="tab-content"
         style={{

@@ -116,7 +116,7 @@ export default function Departments() {
             <FontAwesomeIcon icon={faPen} />
           </button>
           <button
-            onClick={() => handleDelete(row)} // ✅ kirim seluruh objek row
+            onClick={() => handleDelete(row)}  
             className="btn btn-sm btn-danger"
             title="Delete"
           >
