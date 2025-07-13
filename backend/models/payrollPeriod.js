@@ -1,4 +1,4 @@
-// model/payrollperiod
+// model/payroll-period
 "use strict";
 const { Model } = require("sequelize");
 

@@ -1,4 +1,4 @@
-// model/employeeallowance
+// model/employee-allowance
 'use strict';
 const { Model } = require('sequelize');
 

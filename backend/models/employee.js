@@ -1,3 +1,4 @@
+// model/employee
 "use strict";
 const { Model } = require("sequelize");
 

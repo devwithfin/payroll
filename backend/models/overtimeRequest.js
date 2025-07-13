@@ -1,4 +1,4 @@
-// model/overtimerequest
+// model/overtime-request
 "use strict";
 const { Model } = require("sequelize");
 

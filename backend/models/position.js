@@ -1,3 +1,4 @@
+// model/position
 "use strict";
 
 module.exports = (sequelize, DataTypes) => {
@@ -44,8 +45,8 @@ module.exports = (sequelize, DataTypes) => {
     {
       tableName: "positions",
       underscored: true,
-      paranoid: true, // untuk soft delete
-      timestamps: true, // aktifkan otomatis createdAt & updatedAt
+      paranoid: true, 
+      timestamps: true,
       createdAt: "created_at",
       updatedAt: "updated_at",
       deletedAt: "deleted_at",

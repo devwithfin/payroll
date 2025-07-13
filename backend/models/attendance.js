@@ -1,4 +1,4 @@
-// model/attedance
+// model/attendance
 "use strict";
 const { Model } = require("sequelize");
 

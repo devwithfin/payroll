@@ -1,4 +1,4 @@
-// model/payrolldetails
+// model/payroll-details
 "use strict";
 const { Model } = require("sequelize");
 

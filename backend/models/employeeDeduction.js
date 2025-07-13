@@ -1,4 +1,4 @@
-// model/employeededuction
+// model/employee-deduction
 'use strict';
 const { Model } = require('sequelize');
 
