@@ -1,4 +1,4 @@
-// routers/approute
+// routers/app-route
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
@@ -15,6 +15,8 @@ import HRDepartments from "../pages/hr/Departments";
 import HREmployees from "../pages/hr/Employees";
 import HRAttendances from "../pages/hr/Attendances";
 import HROvertimeApproval from "../pages/hr/OvertimeApproval";
+import HRPayrollDraft from "../pages/hr/PayrollDraft";
+import HRSalarySlip from "../pages/hr/SalarySlip";
 import HRAllowances from "../pages/hr/Allowances";
 import HRDeductions from "../pages/hr/Deductions";
 import HRProfile from "../pages/hr/Profile";
@@ -41,6 +43,8 @@ const AppRoute = () => (
           <Route path="/hr/employees" element={<HREmployees />} />
           <Route path="/hr/attendances" element={<HRAttendances />} />
           <Route path="/hr/overtimes" element={<HROvertimeApproval />} />
+          <Route path="/hr/payroll-draft" element={<HRPayrollDraft />} />
+          <Route path="/hr/salary-slip" element={<HRSalarySlip />} />
           <Route path="/hr/allowances" element={<HRAllowances />} />
           <Route path="/hr/deductions" element={<HRDeductions />} />
           <Route path="/hr/profile" element={<HRProfile />} />

@@ -1,3 +1,4 @@
+// controller/position
 const { Position, Department } = require("../models");
 
 const PositionController = {
@@ -9,7 +10,7 @@ const PositionController = {
           "position_name",
           "base_salary",
           "job_allowance",
-          "department_id", // ✅ tambahkan ini
+          "department_id",
           "created_at",
           "updated_at",
         ],
@@ -127,7 +128,6 @@ const PositionController = {
       }
 
       await position.destroy();
-
       res.status(200).json({ message: "Position deleted successfully" });
     } catch (error) {
       console.error("destroy error:", error);

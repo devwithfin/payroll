@@ -31,19 +31,22 @@ const Navbar = () => {
 
   const pageTitles = {
     "/hr/dashboard": "HR Dashboard",
-    "/hr/positions": "Positions",
-    "/hr/departments": "Departments",
-    "/hr/employees": "Employees",
-    "/hr/attendances": "Recapitulation Attendances",
-    "/hr/allowances": "Allowances",
-    "/hr/deductions": "Deductions",
-    "/hr/overtimes": "Approval Overtime",
+    "/hr/positions": "Position Management",
+    "/hr/departments": "Department Management",
+    "/hr/employees": "Employee Management",
+    "/hr/attendances": "Attendance Recapitulation",
+    "/hr/allowances": "Employee Allowance",
+    "/hr/deductions": "Employee Deduction",
+    "/hr/overtimes": "Overtime Approval",
+    "/hr/payroll-draft": "Payroll Draft",
+    "/hr/salary-slip": "Salary Slip",
     "/hr/profile": "HR Profile",
 
     "/finance/dashboard": "Finance Dashboard",
+    "/finance/profile": "HR Profile",
 
     "/employee/dashboard": "Employee Dashboard",
-    "/employee/attendances": "Attendances",
+    "/employee/attendances": "Employee Attendance",
     "/employee/overtimes": "Request Overtime",
     "/employee/profile": "Employee Profile",
   };

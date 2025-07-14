@@ -6,16 +6,16 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
 import Table from "../../components/common/Table";
-import AddModal from "../../components/modals/employee/AddModal";
-import EditModal from "../../components/modals/employee/EditModal";
-import InfoModal from "../../components/modals/employee/InfoModal";
+import AddModal from "../../components/hr/modals/employee/AddModal";
+import EditModal from "../../components/hr/modals/employee/EditModal";
+import InfoModal from "../../components/hr/modals/employee/InfoModal";
 
 import {
   getAllEmployees,
   createEmployee,
   updateEmployee,
   deleteEmployee,
-} from "../../services/EmployeeService";
+} from "../../services/employeeService";
 
 export default function Employees() {
   const [employees, setEmployees] = useState([]);
@@ -69,7 +69,7 @@ export default function Employees() {
       showCancelButton: true,
       confirmButtonColor: "#d33",
       cancelButtonColor: "#1071b9",
-      confirmButtonText: "Yes!",
+      confirmButtonText: "Yes",
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {

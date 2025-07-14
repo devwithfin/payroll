@@ -1,9 +1,9 @@
 // components/modals/employee/add-modal
 import React, { useState, useEffect } from "react";
-import BaseModal from "../../common/BaseModal";
+import BaseModal from "../../../common/BaseModal";
 import Swal from "sweetalert2";
-import { getAllDepartments } from "../../../services/departmentService";
-import { getAllPositions } from "../../../services/positionService";
+import { getAllDepartments } from "../../../../services/departmentService";
+import { getAllPositions } from "../../../../services/positionService";
 
 export default function AddModal({ onClose, onSave }) {
   const [activeTab, setActiveTab] = useState("personal");

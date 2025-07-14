@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import Table from "../../components/common/Table";
 import { getAllAttendances } from "../../services/attendanceService";
 import { getAllPayrollPeriods } from "../../services/payrollPeriodService";
-import RecapModal from "../../components/modals/attendance/RecapModal";
+import RecapModal from "../../components/hr/modals/attendance/RecapModal";
 
 export default function Attendances() {
   const [attendance, setAttendances] = useState([]);
@@ -157,7 +157,7 @@ export default function Attendances() {
   return (
     <div className="container mx-auto p-1">
       <Table
-        title="Attendance History"
+        title="Attendance Recapitulation"
         data={attendance}
         renderColumnsWithPage={renderColumnsWithPage}
         showAddButton={false}
@@ -169,7 +169,7 @@ export default function Attendances() {
                 style={{ minWidth: "180px" }}
                 onClick={handleShowRecap}
               >
-                View Recap
+                Recapitulation
               </button>
             )}
             <select

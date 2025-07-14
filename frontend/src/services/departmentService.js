@@ -1,5 +1,4 @@
-// services/department
-// services/position
+// service/department
 import API from '../libs/axiosInstance';
 
 export const getAllDepartments = () => API.get('/departments');

@@ -1,10 +1,13 @@
-// model/allowance
 "use strict";
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class Allowance extends Model {
-    static associate(models) {}
+    static associate(models) {
+      Allowance.hasMany(models.EmployeeAllowance, {
+        foreignKey: 'allowance_id',
+      });
+    }
   }
 
   Allowance.init(

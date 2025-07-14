@@ -1,6 +1,6 @@
 // components/modals/employee/info-modal
 import React, { useState } from "react";
-import BaseModal from "../../common/BaseModal";
+import BaseModal from "../../../common/BaseModal";
 
 export default function InfoModal({ employee, onClose }) {
   const [activeTab, setActiveTab] = useState("personal");

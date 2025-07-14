@@ -112,7 +112,7 @@ const SidebarHR = () => {
             </Link>
           </li>
 
-          <div className="section-title">Organization</div>
+          <div className="section-title">Management</div>
            <li className="nav-item mb-2">
             <Link
               to="/hr/departments"
@@ -147,7 +147,7 @@ const SidebarHR = () => {
             </Link>
           </li>
 
-          <div className="section-title">Attendance</div>
+          <div className="section-title">Time Management</div>
           <li className="nav-item mb-2">
             <Link
               to="/hr/attendances"
@@ -167,7 +167,7 @@ const SidebarHR = () => {
               }`}
             >
               <FontAwesomeIcon icon={faClock} />
-              Overtime
+              Approval Overtime
             </Link>
           </li>
 
@@ -198,26 +198,27 @@ const SidebarHR = () => {
           <div className="section-title">Payroll</div>
           <li className="nav-item mb-2">
             <Link
-              to="/hr/salary"
+              to="/hr/payroll-draft"
               className={`nav-link fw-medium ${
-                isActive("/hr/salary") ? "active" : ""
+                isActive("/hr/payroll-draft") ? "active" : ""
+              }`}
+            >
+              <FontAwesomeIcon icon={faMoneyBillWave} />
+              Draft Payroll
+            </Link>
+          </li>
+          <li className="nav-item mb-2">
+            <Link
+              to="/hr/salary-slip"
+              className={`nav-link fw-medium ${
+                isActive("/hr/salary-slip") ? "active" : ""
               }`}
             >
               <FontAwesomeIcon icon={faMoneyCheckDollar} />
               Salary Slip
             </Link>
           </li>
-          <li className="nav-item mb-2">
-            <Link
-              to="/hr/payroll/process"
-              className={`nav-link fw-medium ${
-                isActive("/hr/payroll/process") ? "active" : ""
-              }`}
-            >
-              <FontAwesomeIcon icon={faMoneyBillWave} />
-              Process Payroll
-            </Link>
-          </li>
+          
 
           <div className="section-title">Account</div>
           <li className="nav-item mb-2">

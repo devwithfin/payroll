@@ -1,26 +1,29 @@
-// model/employee
 "use strict";
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
- class Employee extends Model {
-  static associate(models) {
-    Employee.belongsTo(models.Position, {
-      foreignKey: 'position_id',
-      as: 'position',
-    });
+  class Employee extends Model {
+    static associate(models) {
+      Employee.belongsTo(models.Position, {
+        foreignKey: "position_id",
+        as: "position",
+      });
 
-    Employee.belongsTo(models.Department, {
-      foreignKey: 'department_id',
-      as: 'department',
-    });
+      Employee.belongsTo(models.Department, {
+        foreignKey: "department_id",
+        as: "department",
+      });
 
-    Employee.hasOne(models.User, {
-      foreignKey: 'employee_id',
-      as: 'user',
-    });
+      Employee.hasOne(models.User, {
+        foreignKey: "employee_id",
+        as: "user",
+      });
+
+      Employee.hasMany(models.EmployeeAllowance, {
+        foreignKey: "employee_id",
+      });
+    }
   }
-}
 
   Employee.init(
     {

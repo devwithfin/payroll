@@ -1,11 +1,11 @@
 // components/modals/attendance/recap-modal
 import React from "react";
-import BaseModal from "../../common/BaseModal";
+import BaseModal from "../../../common/BaseModal";
 
 export default function ModalRecap({ recap, onClose }) {
   return (
     <BaseModal
-      title="Attendance Recap"
+      title="Attendance Recapitulation"
       onClose={onClose}
       footer={
         <button className="btn btn-secondary" onClick={onClose}>

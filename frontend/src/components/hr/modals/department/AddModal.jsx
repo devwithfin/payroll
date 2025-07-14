@@ -1,15 +1,10 @@
-// components/modals/department/edit-modal
-import React, { useEffect, useState } from "react";
-import BaseModal from "../../common/BaseModal";
+// components/modals/department/add-modal
+import React, { useState } from "react";
+import BaseModal from "../../../common/BaseModal";
 import Swal from "sweetalert2";
 
-export default function EditModal({ department, onClose, onSave }) {
-  const [departmentName, setDepartmentName] = useState("");
-
-   useEffect(() => {
-     if (department) {
-       setDepartmentName(department.department_name || "");     }
-   }, [department]);
+export default function AddModal({ onClose, onSave }) {
+  const [departmentName, setDepartmentName] = useState("");;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,16 +17,16 @@ export default function EditModal({ department, onClose, onSave }) {
       });
       return;
     }
-
-  onSave({
-      id: department.department_id,
+    const newData = {
       department_name: departmentName.trim(),
-    });
+    };
+
+    onSave(newData);
   };
 
   return (
     <BaseModal
-      title="Edit Department"
+      title="Add New Department"
       onClose={onClose}
       footer={
         <>
@@ -43,7 +38,7 @@ export default function EditModal({ department, onClose, onSave }) {
             style={{ backgroundColor: "#107189", color: "#fff" }}
             onClick={handleSubmit}
           >
-            Update
+            Save
           </button>
         </>
       }
@@ -56,6 +51,7 @@ export default function EditModal({ department, onClose, onSave }) {
             value={departmentName}
             onChange={(e) => setDepartmentName(e.target.value)}
             className="form-control"
+            placeholder="e.g. Human Resources"
           />
         </div>
       </form>

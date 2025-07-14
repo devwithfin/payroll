@@ -1,4 +1,4 @@
-// services/position
+// service/position
 import API from '../libs/axiosInstance';
 
 export const getAllAttendances = () => API.get('/attendances');

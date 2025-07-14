@@ -1,4 +1,4 @@
-// routers/protectedroute
+// routers/protected-route
 import { useEffect, useRef, useState } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import Swal from "sweetalert2";

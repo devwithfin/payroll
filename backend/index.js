@@ -10,14 +10,16 @@ const departmentRoute = require('./routers/departmentRoute')
 const employeeRoute = require('./routers/employeeRoute')
 const attendanceRoute = require('./routers/attendanceRoute')
 const payrollPeriodRoute = require('./routers/payrollPeriodRoute')
- 
+const employeeAllowanceRoute  = require('./routers/employeeAllowance')
+ const allowanceRoute = require('./routers/allowanceRoute');
+
+
 app.use(
   cors({
     origin: 'http://localhost:5173',  
     credentials: true,             
   })
 );
-
 
 app.use(express.json());
 
@@ -27,6 +29,8 @@ app.use("/api/v1/departments", departmentRoute);
 app.use("/api/v1/employees", employeeRoute);
 app.use("/api/v1/attendances", attendanceRoute);
 app.use("/api/v1/payroll-periods", payrollPeriodRoute);
+app.use("/api/v1/employee-allowances", employeeAllowanceRoute);
+app.use("/api/v1/allowances", allowanceRoute);
 
 
 const PORT = process.env.PORT;

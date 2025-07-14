@@ -2,9 +2,9 @@
 import { Outlet } from "react-router-dom";
 import { useAuthContext } from "../contexts/AuthContext";
 
-import SidebarHR from "../components/common/SidebarHR";
-import SidebarEmployee from "../components/common/SidebarEmployee";
-import SidebarFinance from "../components/common/SidebarFinance";
+import SidebarHR from "../components/hr/SidebarHR";
+import SidebarEmployee from "../components/employee/SidebarEmployee";
+import SidebarFinance from "../components/finance/SidebarFinance";
 import Navbar from "../components/common/Navbar";
 import Footer from "../components/common/Footer";
 

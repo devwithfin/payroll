@@ -5,9 +5,9 @@ import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import Table from "../../components/common/Table";
-import { formatRupiah } from "../../utils/formatCurrency"; 
-import AddModal from "../../components/modals/position/AddModal";
-import EditModal from "../../components/modals/position/EditModal";
+import { formatRupiah } from "../../utils/formatCurrency";
+import AddModal from "../../components/hr/modals/position/AddModal";
+import EditModal from "../../components/hr/modals/position/EditModal";
 
 import {
   getAllPositions,
@@ -71,7 +71,7 @@ export default function Positions() {
       showCancelButton: true,
       confirmButtonColor: "#d33",
       cancelButtonColor: "#1071b9",
-      confirmButtonText: "Yes!",
+      confirmButtonText: "Yes",
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
@@ -106,7 +106,7 @@ export default function Positions() {
       sortable: true,
       width: "230px",
     },
-    
+
     {
       name: "Base Salary",
       selector: (row) => formatRupiah(row.base_salary),

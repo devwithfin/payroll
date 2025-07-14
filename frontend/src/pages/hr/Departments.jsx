@@ -6,8 +6,8 @@ import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 
 import Table from "../../components/common/Table";
-import AddModal from "../../components/modals/department/AddModal";
-import EditModal from "../../components/modals/department/EditModal";
+import AddModal from "../../components/hr/modals/department/AddModal";
+import EditModal from "../../components/hr/modals/department/EditModal";
 
 import {
   getAllDepartments,
@@ -72,7 +72,7 @@ export default function Departments() {
       showCancelButton: true,
       confirmButtonColor: "#d33",
       cancelButtonColor: "#1071b9",
-      confirmButtonText: "Yes!",
+      confirmButtonText: "Yes",
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {

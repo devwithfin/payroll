@@ -38,7 +38,7 @@ const EmployeeController = {
           {
             model: Position,
             as: "position",
-            attributes: ["position_name"],
+            attributes: ["position_name", "job_allowance"], 
           },
         ],
         order: [["employee_id", "DESC"]],
@@ -54,8 +54,9 @@ const EmployeeController = {
         const plain = emp.toJSON();
         return {
           ...plain,
-          department_name: plain.department?.department_name || null,
-          position_name: plain.position?.position_name || null,
+          department_name: plain.department?.department_name || undefined,
+          position_name: plain.position?.position_name || undefined,
+          job_allowance: plain.position?.job_allowance || 0,
           department: undefined,
           position: undefined,
         };
@@ -107,7 +108,7 @@ const EmployeeController = {
           {
             model: Position,
             as: "position",
-            attributes: ["position_name"],
+            attributes: ["position_name", "job_allowance"],
           },
         ],
       });
@@ -119,8 +120,9 @@ const EmployeeController = {
       const plain = emp.toJSON();
       const formatted = {
         ...plain,
-        department_name: plain.department?.department_name || null,
-        position_name: plain.position?.position_name || null,
+        department_name: plain.department?.department_name || undefined,
+        position_name: plain.position?.position_name || undefined,
+        job_allowance: plain.position?.job_allowance || 0,
         department: undefined,
         position: undefined,
       };
