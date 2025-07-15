@@ -28,7 +28,8 @@ module.exports = {
       },
       status: {
         type: Sequelize.ENUM('Open', 'Closed'),
-        allowNull: false
+        allowNull: false,
+        defaultValue: "Open",
       }
     });
   },
