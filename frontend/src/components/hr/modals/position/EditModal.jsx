@@ -7,14 +7,15 @@ import { getAllDepartments } from "../../../../services/departmentService";
 export default function EditModal({ position, onClose, onSave }) {
   const [positionName, setPositionName] = useState("");
   const [baseSalary, setBaseSalary] = useState("");
+  const [jobAllowance, setJobAllowance] = useState(""); // ✅ Added
   const [departmentId, setDepartmentId] = useState("");
-
   const [departments, setDepartments] = useState([]);
 
   useEffect(() => {
     if (position) {
       setPositionName(position.position_name || "");
       setBaseSalary(position.base_salary || "");
+      setJobAllowance(position.job_allowance || ""); // ✅ Set initial value
       setDepartmentId(position.department_id || "");
     }
   }, [position]);
@@ -33,7 +34,7 @@ export default function EditModal({ position, onClose, onSave }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!positionName.trim() || !baseSalary || !departmentId) {
+    if (!positionName.trim() || !baseSalary || !departmentId || jobAllowance === "") {
       Swal.fire({
         icon: "error",
         title: "Incomplete or Invalid Data",
@@ -46,6 +47,7 @@ export default function EditModal({ position, onClose, onSave }) {
       id: position.position_id,
       position_name: positionName.trim(),
       base_salary: Number(baseSalary),
+      job_allowance: Number(jobAllowance), // ✅ Send updated value
       department_id: Number(departmentId),
     });
   };
@@ -67,7 +69,7 @@ export default function EditModal({ position, onClose, onSave }) {
     >
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
-          <label className="form-label">Position Name</label>
+          <label className="form-label fw-medium">Position Name</label>
           <input
             type="text"
             value={positionName}
@@ -77,7 +79,7 @@ export default function EditModal({ position, onClose, onSave }) {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Base Salary</label>
+          <label className="form-label fw-medium">Base Salary</label>
           <input
             type="number"
             value={baseSalary}
@@ -87,7 +89,17 @@ export default function EditModal({ position, onClose, onSave }) {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Department</label>
+          <label className="form-label fw-medium">Job Allowance</label>
+          <input
+            type="number"
+            value={jobAllowance}
+            onChange={(e) => setJobAllowance(e.target.value)}
+            className="form-control"
+          />
+        </div>
+
+        <div className="mb-3">
+          <label className="form-label fw-medium">Department</label>
           <select
             className="form-control"
             value={departmentId}

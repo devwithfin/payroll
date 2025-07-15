@@ -43,7 +43,10 @@ const Navbar = () => {
     "/hr/profile": "HR Profile",
 
     "/finance/dashboard": "Finance Dashboard",
-    "/finance/profile": "HR Profile",
+    "/finance/payroll-periods": "Payroll Periods",
+    "/finance/payroll-process": "Payroll Process",
+    "/finance/salary-slip": "Salary Slip",
+    "/finance/profile": "Finance Profile",
 
     "/employee/dashboard": "Employee Dashboard",
     "/employee/attendances": "Employee Attendance",

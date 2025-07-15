@@ -23,6 +23,9 @@ import HRDeductions from "../pages/hr/Deductions";
 
 // Finance pages
 import FinanceDashboard from "../pages/finance/Dashboard";
+import FinancePayrollPeriod from "../pages/finance/PayrollPeriods";
+import FinancePayrollProcess from "../pages/finance/PayrollProcess";
+import FinanceSalarySlip from "../pages/finance/SalarySlip";
 
 // Employee pages
 import EmployeeDashboard from "../pages/employee/Dashboard";
@@ -54,6 +57,9 @@ const AppRoute = () => (
       <Route element={<ProtectedRoute allowedRoles={["Finance"]} />}>
         <Route element={<AppLayout key="finance-layout" />}>
           <Route path="/finance/dashboard" element={<FinanceDashboard />} />
+          <Route path="/finance/payroll-periods" element={<FinancePayrollPeriod />} />
+          <Route path="/finance/payroll-process" element={<FinancePayrollProcess />} />
+          <Route path="/finance/salary-slip" element={<FinanceSalarySlip />} />
           <Route path="/finance/profile" element={<ProfilePage />} />
         </Route>
       </Route>
