@@ -5,7 +5,7 @@ module.exports = {
     const periods = [];
     const start = new Date('2025-05-26');
 
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 2; i++) {
       const startDate = new Date(start);
       startDate.setMonth(start.getMonth() + i);
 
@@ -14,9 +14,8 @@ module.exports = {
       endDate.setDate(endDate.getDate() - 1);
 
       const payrollDate = new Date(endDate);
-      payrollDate.setDate(payrollDate.getDate() + 10); // contoh: 10 hari setelah akhir absensi
+      payrollDate.setDate(payrollDate.getDate() + 10); 
 
-      // Ambil tanggal tengah periode untuk menentukan "bulan dominan"
       const periodMid = new Date(startDate);
       periodMid.setDate(periodMid.getDate() + 15);
 

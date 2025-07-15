@@ -15,7 +15,6 @@ module.exports = {
     );
     const allowanceData = allowances[0];
 
-    // ⏱️ Periode sebelum payroll 5 Juli
     const effective_date = '2025-05-26';
     const end_date = '2025-06-25';
 
@@ -23,7 +22,6 @@ module.exports = {
 
     employeeData.forEach(emp => {
       allowanceData.forEach(alw => {
-        // Prioritaskan default_amount jika ada, jika tidak ambil dari job_allowance
         const amount = alw.default_amount !== null ? alw.default_amount : emp.job_allowance;
 
         records.push({

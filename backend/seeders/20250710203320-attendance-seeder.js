@@ -39,7 +39,6 @@ module.exports = {
     const today = new Date();
     const attendances = [];
 
-    // Simulasi periode 1: 26 Mei – 25 Juni (Processed)
     const period1Start = new Date("2025-05-26");
     const period1End = new Date("2025-06-25");
     const dates1 = getWorkdays(period1Start, period1End);
@@ -61,7 +60,6 @@ module.exports = {
       });
     });
 
-    // Simulasi periode 2: 26 Juni – hari ini (Unprocessed)
     const period2Start = new Date("2025-06-26");
     const period2End = today;
     const dates2 = getWorkdays(period2Start, period2End);
