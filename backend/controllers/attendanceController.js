@@ -76,55 +76,55 @@ const AttendanceController = {
     }
   },
 
-  create: async (req, res) => {
-    try {
-      const attendanceData = req.body;
-      const newAttendance = await Attendance.create(attendanceData);
+  // create: async (req, res) => {
+  //   try {
+  //     const attendanceData = req.body;
+  //     const newAttendance = await Attendance.create(attendanceData);
 
-      res.status(201).json({
-        message: "Attendance created successfully",
-        data: newAttendance,
-      });
-    } catch (error) {
-      console.error("create error:", error);
-      res.status(500).json({ message: "Failed to create attendance" });
-    }
-  },
+  //     res.status(201).json({
+  //       message: "Attendance created successfully",
+  //       data: newAttendance,
+  //     });
+  //   } catch (error) {
+  //     console.error("create error:", error);
+  //     res.status(500).json({ message: "Failed to create attendance" });
+  //   }
+  // },
 
-  update: async (req, res) => {
-    try {
-      const attendance = await Attendance.findByPk(req.params.id);
-      if (!attendance) {
-        return res.status(404).json({ message: "Attendance not found" });
-      }
+  // update: async (req, res) => {
+  //   try {
+  //     const attendance = await Attendance.findByPk(req.params.id);
+  //     if (!attendance) {
+  //       return res.status(404).json({ message: "Attendance not found" });
+  //     }
 
-      const updatedData = req.body;
-      await attendance.update(updatedData);
+  //     const updatedData = req.body;
+  //     await attendance.update(updatedData);
 
-      res.status(200).json({
-        message: "Attendance updated successfully",
-        data: attendance,
-      });
-    } catch (error) {
-      console.error("update error:", error);
-      res.status(500).json({ message: "Failed to update attendance" });
-    }
-  },
+  //     res.status(200).json({
+  //       message: "Attendance updated successfully",
+  //       data: attendance,
+  //     });
+  //   } catch (error) {
+  //     console.error("update error:", error);
+  //     res.status(500).json({ message: "Failed to update attendance" });
+  //   }
+  // },
 
-  destroy: async (req, res) => {
-    try {
-      const attendance = await Attendance.findByPk(req.params.id);
-      if (!attendance) {
-        return res.status(404).json({ message: "Attendance not found" });
-      }
+  // destroy: async (req, res) => {
+  //   try {
+  //     const attendance = await Attendance.findByPk(req.params.id);
+  //     if (!attendance) {
+  //       return res.status(404).json({ message: "Attendance not found" });
+  //     }
 
-      await attendance.destroy();
-      res.status(200).json({ message: "Attendance deleted successfully" });
-    } catch (error) {
-      console.error("destroy error:", error);
-      res.status(500).json({ message: "Failed to delete attendance" });
-    }
-  }
+  //     await attendance.destroy();
+  //     res.status(200).json({ message: "Attendance deleted successfully" });
+  //   } catch (error) {
+  //     console.error("destroy error:", error);
+  //     res.status(500).json({ message: "Failed to delete attendance" });
+  //   }
+  // }
 };
 
 module.exports = AttendanceController;
