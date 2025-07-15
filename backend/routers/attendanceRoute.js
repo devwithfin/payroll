@@ -7,10 +7,10 @@ router.get("/", attendanceController.getAll);
 
 router.get("/:id", attendanceController.getById);
 
-router.post("/", attendanceController.create);
+// router.post("/", attendanceController.create);
 
-router.put("/:id", attendanceController.update);
+// router.put("/:id", attendanceController.update);
 
-router.delete("/:id", attendanceController.destroy);
+// router.delete("/:id", attendanceController.destroy);
 
 module.exports = router;
