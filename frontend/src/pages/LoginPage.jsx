@@ -63,7 +63,7 @@ const LoginPage = () => {
           <div className="mb-3">
             <input
               type="email"
-              name="username"
+              name="email"
               autoComplete="off"
               className="form-control py-3"
               placeholder="Enter Your Email..."
