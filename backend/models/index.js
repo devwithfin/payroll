@@ -17,12 +17,12 @@ fs.readdirSync(__dirname)
   .filter(file => file !== basename && file.endsWith('.js'))
   .forEach(file => {
     const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
-    db[model.name] = model; // pastikan model.name = 'Employee', 'EmployeeAllowance', dll
+    db[model.name] = model; 
   });
 
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
-    db[modelName].associate(db); // <<== DI SINI associate(models)
+    db[modelName].associate(db); 
   }
 });
 

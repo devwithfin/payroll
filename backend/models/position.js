@@ -1,4 +1,3 @@
-// model/position
 "use strict";
 
 module.exports = (sequelize, DataTypes) => {
@@ -25,36 +24,22 @@ module.exports = (sequelize, DataTypes) => {
       job_allowance: {
         type: DataTypes.DECIMAL(15, 2),
         allowNull: true,
-        defaultValue: 0.00,
-      },
-      created_at: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
-      },
-      updated_at: {
-        type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
-      },
-      deleted_at: {
-        type: DataTypes.DATE,
-        allowNull: true,
+        defaultValue: 0.0,
       },
     },
     {
+      sequelize,
+      modelName: "Positions",
       tableName: "positions",
-      underscored: true,
-      paranoid: true, 
       timestamps: true,
       createdAt: "created_at",
       updatedAt: "updated_at",
+      paranoid: true,
       deletedAt: "deleted_at",
     }
   );
 
-  // Relasi ke Department
-  Position.associate = function (models) {
+  Position.associate = (models) => {
     Position.belongsTo(models.Department, {
       foreignKey: "department_id",
       as: "department",
