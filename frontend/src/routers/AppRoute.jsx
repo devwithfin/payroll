@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ProtectedRoute from "../routers/ProtectedRoute";
 import AppLayout from "../layouts/AppLayout";
 import LoginPage from "../pages/LoginPage";
+import ProfilePage from "../pages/Profile";
 
 // HR pages
 import HRDashboard from "../pages/hr/Dashboard";
@@ -19,7 +20,6 @@ import HRPayrollDraft from "../pages/hr/PayrollDraft";
 import HRSalarySlip from "../pages/hr/SalarySlip";
 import HRAllowances from "../pages/hr/Allowances";
 import HRDeductions from "../pages/hr/Deductions";
-import HRProfile from "../pages/hr/Profile";
 
 // Finance pages
 import FinanceDashboard from "../pages/finance/Dashboard";
@@ -28,7 +28,6 @@ import FinanceDashboard from "../pages/finance/Dashboard";
 import EmployeeDashboard from "../pages/employee/Dashboard";
 import EmployeeAttendances from "../pages/employee/Attendances";
 import EmployeeOvertimeRequest from "../pages/employee/OvertimeRequest";
-import EmployeeProfile from "../pages/employee/Profile";
 
 const AppRoute = () => (
   <>
@@ -47,7 +46,7 @@ const AppRoute = () => (
           <Route path="/hr/salary-slip" element={<HRSalarySlip />} />
           <Route path="/hr/allowances" element={<HRAllowances />} />
           <Route path="/hr/deductions" element={<HRDeductions />} />
-          <Route path="/hr/profile" element={<HRProfile />} />
+          <Route path="/hr/profile" element={<ProfilePage />} />
           {/* route lain */}
         </Route>
       </Route>
@@ -55,6 +54,7 @@ const AppRoute = () => (
       <Route element={<ProtectedRoute allowedRoles={["Finance"]} />}>
         <Route element={<AppLayout key="finance-layout" />}>
           <Route path="/finance/dashboard" element={<FinanceDashboard />} />
+          <Route path="/finance/profile" element={<ProfilePage />} />
         </Route>
       </Route>
 
@@ -69,7 +69,7 @@ const AppRoute = () => (
             path="/employee/overtimes"
             element={<EmployeeOvertimeRequest />}
           />
-          <Route path="/employee/profile" element={<EmployeeProfile />} />
+          <Route path="/employee/profile" element={<ProfilePage />} />
         </Route>
       </Route>
 
