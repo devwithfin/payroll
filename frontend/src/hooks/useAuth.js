@@ -14,11 +14,11 @@ export default function useAuth() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const username = e.target.username.value;
+    const email = e.target.email.value;
     const password = e.target.password.value;
 
     try {
-      const { data } = await login(username, password);
+      const { data } = await login(email, password);
       const role = data.user.role;
 
       localStorage.setItem("token", data.token);
@@ -49,7 +49,7 @@ export default function useAuth() {
       navigate(redirectMap[role] || "/");
     } catch (err) {
       const message =
-        err.response?.data?.message || "Incorrect username or password";
+        err.response?.data?.message || "Incorrect email or password";
 
       MySwal.fire({
         icon: "error",
