@@ -17,7 +17,7 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
-      username: {
+      email: {
         type: Sequelize.STRING(50),
         allowNull: false,
         unique: true,

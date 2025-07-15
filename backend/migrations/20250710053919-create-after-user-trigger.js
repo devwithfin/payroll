@@ -10,7 +10,7 @@ module.exports = {
       BEGIN
         UPDATE employees
         SET id_user = NEW.id_user
-        WHERE email = NEW.username;
+        WHERE email = NEW.email;
       END
     `);
   },
