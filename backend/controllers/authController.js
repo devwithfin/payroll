@@ -7,10 +7,10 @@ const jwt = require("jsonwebtoken");
 
 module.exports = {
   login: async (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
     try {
       const user = await User.findOne({
-        where: { username },
+        where: { email },
         include: [
           {
             model: Employee,
@@ -28,7 +28,7 @@ module.exports = {
       if (!isMatch) {
         return res
           .status(401)
-          .json({ message: "Username or password is incorrect" });
+          .json({ message: "Email or password is incorrect" });
       }
 
       const payload = { id_user: user.id_user, role: user.role };
@@ -41,7 +41,7 @@ module.exports = {
         token,
         user: {
           id_user: user.id_user,
-          username: user.username,
+          email: user.email,
           role: user.role,
           full_name: user.employee?.full_name || null,
           email: user.employee?.email || null,
@@ -57,12 +57,12 @@ module.exports = {
     try {
       const user = await User.findOne({
         where: { id_user: req.user.id_user },
-        attributes: ["id_user", "username", "role"],
+        attributes: ["id_user", "email", "role"],
         include: [
           {
             model: Employee,
             as: "employee",
-            attributes: ["full_name", "email"],
+            attributes: ["employee_nik","dob","full_name","email", "gender","address","employment_status", "join_date", "npwp_number", "pt_kp","bank_account_number", "bank_name"],
           },
         ],
       });
@@ -87,7 +87,7 @@ module.exports = {
       return res.status(200).json({ message: "Successfully logged out" });
     } catch (error) {
       console.error("Logout error:", error);
-      return res.status(500).json({ message: "Inernal server error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   },
 };
