@@ -1,7 +1,7 @@
 // controller/auth
 "use strict";
 
-const { User, Employee } = require("../models");
+const { User, Employee,Position, Department } = require("../models");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -53,34 +53,61 @@ module.exports = {
     }
   },
 
-  profile: async (req, res) => {
-    try {
-      const user = await User.findOne({
-        where: { id_user: req.user.id_user },
-        attributes: ["id_user", "email", "role"],
-        include: [
-          {
-            model: Employee,
-            as: "employee",
-            attributes: ["employee_nik","dob","full_name","email", "gender","address","employment_status", "join_date", "npwp_number", "pt_kp","bank_account_number", "bank_name"],
-          },
-        ],
-      });
+profile: async (req, res) => {
+  try {
+    const user = await User.findOne({
+      where: { id_user: req.user.id_user },
+      attributes: ["id_user", "email", "role"],
+      include: [
+        {
+          model: Employee,
+          as: "employee",
+          attributes: [
+            "department_id",
+            "position_id",
+            "employee_nik",
+            "dob",
+            "full_name",
+            "phone_number",
+            "email",
+            "gender",
+            "address",
+            "employment_status",
+            "join_date",
+            "npwp_number",
+            "pt_kp",
+            "bank_account_number",
+            "bank_name"
+          ],
+          include: [
+            {
+              model: Position,
+              as: "position",
+              attributes: ["position_id", "position_name"]
+            },
+            {
+              model: Department,
+              as: "department",
+              attributes: ["department_id", "department_name"]
+            }
+          ]
+        }
+      ]
+    });
 
-      if (!user) {
-        return res.status(404).json({ message: "User not found" });
-      }
-
-      return res.status(200).json({
-        message: "User profile fetched successfully",
-        user,
-      });
-    } catch (err) {
-      console.error("Profile error:", err);
-      return res.status(500).json({ message: "Internal server error" });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
-  },
 
+    return res.status(200).json({
+      message: "User profile fetched successfully",
+      user,
+    });
+  } catch (err) {
+    console.error("Profile error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+},
   logout: async (req, res) => {
     try {
       console.log(`User ${req.user.id_user} logged out`);

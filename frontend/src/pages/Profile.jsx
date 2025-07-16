@@ -55,9 +55,14 @@ export default function Profile() {
             {renderInput("Birth Date", employee.dob)}
             {renderInput("Gender", employee.gender === "M" ? "Man" : "Woman")}
             {renderInput("Address", employee.address)}
-            {renderInput("PTKP", employee.pt_kp)}
-            {renderInput("Marital Status", employee.marital_status)}
-            {renderInput("Number of Dependents", employee.number_of_dependents)}
+            {renderInput(
+              "Marital Status",
+              employee.pt_kp?.startsWith("K") ? "Married" : "Single"
+            )}
+            {renderInput(
+              "Number of Dependents",
+              employee.pt_kp?.slice(2) || employee.pt_kp?.slice(1) || "0"
+            )}
           </div>
         );
       case "Contact":
@@ -70,8 +75,11 @@ export default function Profile() {
       case "Job":
         return (
           <div className="row">
-            {renderInput("Department Name", employee.department_name)}
-            {renderInput("Position Name", employee.position_name)}
+            {renderInput(
+              "Department Name",
+              employee.department.department_name
+            )}
+            {renderInput("Position Name", employee.position.position_name)}
             {renderInput("Employment Status", employee.employment_status)}
             {renderInput("Join Date", employee.join_date)}
             {renderInput("NPWP Number", employee.npwp_number)}
@@ -91,7 +99,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container ">
       <h3 className="mb-4">My Profile</h3>
       <ul className="nav nav-tabs mb-4">
         {["Personal", "Contact", "Job", "Account Bank"].map((tab) => (
