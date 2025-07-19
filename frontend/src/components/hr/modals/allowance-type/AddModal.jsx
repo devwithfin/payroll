@@ -1,0 +1,1 @@
+// components/modals/allowance-type/add-modal

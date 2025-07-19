@@ -120,7 +120,9 @@ const SidebarHR = () => {
           <li className="nav-item mb-2">
             <Link
               to="/hr/dashboard"
-              className={`nav-link fw-medium ${isActive("/hr/dashboard") ? "active" : ""}`}
+              className={`nav-link fw-medium ${
+                isActive("/hr/dashboard") ? "active" : ""
+              }`}
             >
               <FontAwesomeIcon icon={faHome} />
               Dashboard
@@ -128,16 +130,23 @@ const SidebarHR = () => {
           </li>
 
           {/* Management */}
-          <div className="toggle-header" onClick={() => toggleSection("management")}>
+          <div
+            className="toggle-header"
+            onClick={() => toggleSection("management")}
+          >
             <span>Management</span>
-            <FontAwesomeIcon icon={openSection.management ? faChevronDown : faChevronRight} />
+            <FontAwesomeIcon
+              icon={openSection.management ? faChevronDown : faChevronRight}
+            />
           </div>
           {openSection.management && (
             <>
               <li className="nav-item mb-2">
                 <Link
                   to="/hr/departments"
-                  className={`nav-link fw-medium ${isActive("/hr/departments") ? "active" : ""}`}
+                  className={`nav-link fw-medium ${
+                    isActive("/hr/departments") ? "active" : ""
+                  }`}
                 >
                   <FontAwesomeIcon icon={faBuilding} />
                   Departments
@@ -146,7 +155,9 @@ const SidebarHR = () => {
               <li className="nav-item mb-2">
                 <Link
                   to="/hr/positions"
-                  className={`nav-link fw-medium ${isActive("/hr/positions") ? "active" : ""}`}
+                  className={`nav-link fw-medium ${
+                    isActive("/hr/positions") ? "active" : ""
+                  }`}
                 >
                   <FontAwesomeIcon icon={faBuilding} />
                   Positions
@@ -155,7 +166,9 @@ const SidebarHR = () => {
               <li className="nav-item mb-2">
                 <Link
                   to="/hr/employees"
-                  className={`nav-link fw-medium ${isActive("/hr/employees") ? "active" : ""}`}
+                  className={`nav-link fw-medium ${
+                    isActive("/hr/employees") ? "active" : ""
+                  }`}
                 >
                   <FontAwesomeIcon icon={faUserTie} />
                   Employees
@@ -167,14 +180,18 @@ const SidebarHR = () => {
           {/* Time Management */}
           <div className="toggle-header" onClick={() => toggleSection("time")}>
             <span>Time Management</span>
-            <FontAwesomeIcon icon={openSection.time ? faChevronDown : faChevronRight} />
+            <FontAwesomeIcon
+              icon={openSection.time ? faChevronDown : faChevronRight}
+            />
           </div>
           {openSection.time && (
             <>
               <li className="nav-item mb-2">
                 <Link
                   to="/hr/attendances"
-                  className={`nav-link fw-medium ${isActive("/hr/attendances") ? "active" : ""}`}
+                  className={`nav-link fw-medium ${
+                    isActive("/hr/attendances") ? "active" : ""
+                  }`}
                 >
                   <FontAwesomeIcon icon={faCalendarCheck} />
                   Attendances
@@ -183,7 +200,9 @@ const SidebarHR = () => {
               <li className="nav-item mb-2">
                 <Link
                   to="/hr/overtimes"
-                  className={`nav-link fw-medium ${isActive("/hr/overtimes") ? "active" : ""}`}
+                  className={`nav-link fw-medium ${
+                    isActive("/hr/overtimes") ? "active" : ""
+                  }`}
                 >
                   <FontAwesomeIcon icon={faClock} />
                   Approval Overtime
@@ -193,16 +212,23 @@ const SidebarHR = () => {
           )}
 
           {/* Settings */}
-          <div className="toggle-header" onClick={() => toggleSection("settings")}>
+          <div
+            className="toggle-header"
+            onClick={() => toggleSection("settings")}
+          >
             <span>Settings</span>
-            <FontAwesomeIcon icon={openSection.settings ? faChevronDown : faChevronRight} />
+            <FontAwesomeIcon
+              icon={openSection.settings ? faChevronDown : faChevronRight}
+            />
           </div>
           {openSection.settings && (
             <>
               <li className="nav-item mb-2">
                 <Link
-                  to="/hr/allowance-types"
-                  className={`nav-link fw-medium ${isActive("/hr/allowance-types") ? "active" : ""}`}
+                  to="/hr/allowance-type"
+                  className={`nav-link fw-medium ${
+                    isActive("/hr/allowance-type") ? "active" : ""
+                  }`}
                 >
                   <FontAwesomeIcon icon={faMoneyBill} />
                   Allowance Types
@@ -210,8 +236,10 @@ const SidebarHR = () => {
               </li>
               <li className="nav-item mb-2">
                 <Link
-                  to="/hr/deduction-types"
-                  className={`nav-link fw-medium ${isActive("/hr/deduction-types") ? "active" : ""}`}
+                  to="/hr/deduction-type"
+                  className={`nav-link fw-medium ${
+                    isActive("/hr/deduction-type") ? "active" : ""
+                  }`}
                 >
                   <FontAwesomeIcon icon={faFileInvoiceDollar} />
                   Deduction Types
@@ -221,16 +249,23 @@ const SidebarHR = () => {
           )}
 
           {/* Compensation */}
-          <div className="toggle-header" onClick={() => toggleSection("compensation")}>
+          <div
+            className="toggle-header"
+            onClick={() => toggleSection("compensation")}
+          >
             <span>Compensation</span>
-            <FontAwesomeIcon icon={openSection.compensation ? faChevronDown : faChevronRight} />
+            <FontAwesomeIcon
+              icon={openSection.compensation ? faChevronDown : faChevronRight}
+            />
           </div>
           {openSection.compensation && (
             <>
               <li className="nav-item mb-2">
                 <Link
                   to="/hr/allowances"
-                  className={`nav-link fw-medium ${isActive("/hr/allowances") ? "active" : ""}`}
+                  className={`nav-link fw-medium ${
+                    isActive("/hr/allowances") ? "active" : ""
+                  }`}
                 >
                   <FontAwesomeIcon icon={faMoneyBill} />
                   Allowances
@@ -239,7 +274,9 @@ const SidebarHR = () => {
               <li className="nav-item mb-2">
                 <Link
                   to="/hr/deductions"
-                  className={`nav-link fw-medium ${isActive("/hr/deductions") ? "active" : ""}`}
+                  className={`nav-link fw-medium ${
+                    isActive("/hr/deductions") ? "active" : ""
+                  }`}
                 >
                   <FontAwesomeIcon icon={faFileInvoiceDollar} />
                   Deductions
@@ -249,16 +286,23 @@ const SidebarHR = () => {
           )}
 
           {/* Payroll */}
-          <div className="toggle-header" onClick={() => toggleSection("payroll")}>
+          <div
+            className="toggle-header"
+            onClick={() => toggleSection("payroll")}
+          >
             <span>Payroll</span>
-            <FontAwesomeIcon icon={openSection.payroll ? faChevronDown : faChevronRight} />
+            <FontAwesomeIcon
+              icon={openSection.payroll ? faChevronDown : faChevronRight}
+            />
           </div>
           {openSection.payroll && (
             <>
               <li className="nav-item mb-2">
                 <Link
                   to="/hr/payroll-draft"
-                  className={`nav-link fw-medium ${isActive("/hr/payroll-draft") ? "active" : ""}`}
+                  className={`nav-link fw-medium ${
+                    isActive("/hr/payroll-draft") ? "active" : ""
+                  }`}
                 >
                   <FontAwesomeIcon icon={faMoneyBillWave} />
                   Draft Payroll
@@ -267,7 +311,9 @@ const SidebarHR = () => {
               <li className="nav-item mb-2">
                 <Link
                   to="/hr/salary-slip"
-                  className={`nav-link fw-medium ${isActive("/hr/salary-slip") ? "active" : ""}`}
+                  className={`nav-link fw-medium ${
+                    isActive("/hr/salary-slip") ? "active" : ""
+                  }`}
                 >
                   <FontAwesomeIcon icon={faMoneyCheckDollar} />
                   Salary Slip
@@ -277,15 +323,22 @@ const SidebarHR = () => {
           )}
 
           {/* Account */}
-          <div className="toggle-header" onClick={() => toggleSection("account")}>
+          <div
+            className="toggle-header"
+            onClick={() => toggleSection("account")}
+          >
             <span>Account</span>
-            <FontAwesomeIcon icon={openSection.account ? faChevronDown : faChevronRight} />
+            <FontAwesomeIcon
+              icon={openSection.account ? faChevronDown : faChevronRight}
+            />
           </div>
           {openSection.account && (
             <li className="nav-item mb-2">
               <Link
                 to="/hr/profile"
-                className={`nav-link fw-medium ${isActive("/hr/profile") ? "active" : ""}`}
+                className={`nav-link fw-medium ${
+                  isActive("/hr/profile") ? "active" : ""
+                }`}
               >
                 <FontAwesomeIcon icon={faUser} />
                 Profile

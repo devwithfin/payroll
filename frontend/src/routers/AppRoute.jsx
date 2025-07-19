@@ -15,6 +15,8 @@ import HRPositions from "../pages/hr/Positions";
 import HRDepartments from "../pages/hr/Departments";
 import HREmployees from "../pages/hr/Employees";
 import HRAttendances from "../pages/hr/Attendances";
+import HRAllowanceType from "../pages/hr/AllowanceType";
+import HRDeductionType from "../pages/hr/DeductionType";
 import HROvertimeApproval from "../pages/hr/OvertimeApproval";
 import HRPayrollDraft from "../pages/hr/PayrollDraft";
 import HRSalarySlip from "../pages/hr/SalarySlip";
@@ -44,21 +46,28 @@ const AppRoute = () => (
           <Route path="/hr/departments" element={<HRDepartments />} />
           <Route path="/hr/employees" element={<HREmployees />} />
           <Route path="/hr/attendances" element={<HRAttendances />} />
+          <Route path="/hr/allowance-type" element={<HRAllowanceType />} />
+          <Route path="/hr/deduction-type" element={<HRDeductionType />} />
           <Route path="/hr/overtimes" element={<HROvertimeApproval />} />
           <Route path="/hr/payroll-draft" element={<HRPayrollDraft />} />
           <Route path="/hr/salary-slip" element={<HRSalarySlip />} />
           <Route path="/hr/allowances" element={<HRAllowances />} />
           <Route path="/hr/deductions" element={<HRDeductions />} />
           <Route path="/hr/profile" element={<ProfilePage />} />
-          {/* route lain */}
         </Route>
       </Route>
 
       <Route element={<ProtectedRoute allowedRoles={["Finance"]} />}>
         <Route element={<AppLayout key="finance-layout" />}>
           <Route path="/finance/dashboard" element={<FinanceDashboard />} />
-          <Route path="/finance/payroll-periods" element={<FinancePayrollPeriod />} />
-          <Route path="/finance/payroll-process" element={<FinancePayrollProcess />} />
+          <Route
+            path="/finance/payroll-periods"
+            element={<FinancePayrollPeriod />}
+          />
+          <Route
+            path="/finance/payroll-process"
+            element={<FinancePayrollProcess />}
+          />
           <Route path="/finance/salary-slip" element={<FinanceSalarySlip />} />
           <Route path="/finance/profile" element={<ProfilePage />} />
         </Route>

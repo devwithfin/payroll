@@ -1,5 +1,5 @@
 // pages/hr/allowance
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
 import Swal from "sweetalert2";
@@ -37,12 +37,7 @@ export default function Allowances() {
       .catch(() => toast.error("Failed to load payroll periods"));
   }, []);
 
-  useEffect(() => {
-    if (selectedPeriod) fetchData();
-    else setData([]); // Awalnya kosong
-  }, [selectedPeriod]);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const res = await getAllEmployeeAllowances();
       const { start_date, end_date } = selectedPeriod;
@@ -51,14 +46,19 @@ export default function Allowances() {
         return date >= new Date(start_date) && date <= new Date(end_date);
       });
       setData(filtered);
-    } catch  {
+    } catch {
       toast.error("Failed to fetch employee allowances");
     }
-  };
+  }, [selectedPeriod]);
+
+  useEffect(() => {
+    if (selectedPeriod) fetchData();
+    else setData([]);
+  }, [selectedPeriod, fetchData]);
 
   const handleDelete = (row) => {
     const id = row.emp_allowance_id;
-    console.log("🧪 Deleting ID:", id); // untuk debug
+    console.log("Deleting ID:", id);
 
     if (!id) {
       toast.error("ID not found for selected record");

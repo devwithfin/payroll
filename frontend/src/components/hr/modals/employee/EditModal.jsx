@@ -33,7 +33,12 @@ export default function EditModal({ employee, onClose, onSave }) {
   });
 
   const employmentOptions = [
-    "Permanent", "Contract", "Probation", "Outsourced", "Intern", "Resigned",
+    "Permanent",
+    "Contract",
+    "Probation",
+    "Outsourced",
+    "Intern",
+    "Resigned",
   ];
 
   const genderOptions = [
@@ -46,28 +51,29 @@ export default function EditModal({ employee, onClose, onSave }) {
     { value: "K", label: "Married" },
   ];
 
-  const dependentOptions = [
-    "0", "1", "2", "3"
-  ];
+  const dependentOptions = ["0", "1", "2", "3"];
 
   const bankOptions = [
-    "Bank Central Asia", "Bank Rakyat Indonesia", "Bank Rakyat Indonesia", "Bank Mandiri", "Bank Tabungan Negara"
+    "Bank Central Asia",
+    "Bank Rakyat Indonesia",
+    "Bank Rakyat Indonesia",
+    "Bank Mandiri",
+    "Bank Tabungan Negara",
   ];
 
   useEffect(() => {
     if (employee) {
       const { pt_kp = "" } = employee;
-let marital_status = "";
-let dependents = "0";
+      let marital_status = "";
+      let dependents = "0";
 
-if (pt_kp.startsWith("TK")) {
-  marital_status = "TK";
-  dependents = pt_kp.slice(2) || "0";
-} else if (pt_kp.startsWith("K")) {
-  marital_status = "K";
-  dependents = pt_kp.slice(1) || "0";
-}
-
+      if (pt_kp.startsWith("TK")) {
+        marital_status = "TK";
+        dependents = pt_kp.slice(2) || "0";
+      } else if (pt_kp.startsWith("K")) {
+        marital_status = "K";
+        dependents = pt_kp.slice(1) || "0";
+      }
 
       setFormData({
         full_name: employee.full_name || "",
@@ -92,14 +98,16 @@ if (pt_kp.startsWith("TK")) {
   }, [employee]);
 
   useEffect(() => {
-    getAllDepartments().then(res => setDepartments(res.data?.data || []));
-    getAllPositions().then(res => setAllPositions(res.data?.data || []));
+    getAllDepartments().then((res) => setDepartments(res.data?.data || []));
+    getAllPositions().then((res) => setAllPositions(res.data?.data || []));
   }, []);
 
   useEffect(() => {
     const selected = parseInt(formData.department_id);
     if (!isNaN(selected)) {
-      const filtered = allPositions.filter(p => Number(p.department_id) === selected);
+      const filtered = allPositions.filter(
+        (p) => Number(p.department_id) === selected
+      );
       setFilteredPositions(filtered);
     } else {
       setFilteredPositions([]);
@@ -107,14 +115,18 @@ if (pt_kp.startsWith("TK")) {
   }, [formData.department_id, allPositions]);
 
   const handleChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!formData.full_name || !formData.employee_nik || !formData.email) {
-      return Swal.fire("Error", "Full Name, NIK, and Email are required", "error");
+      return Swal.fire(
+        "Error",
+        "Full Name, NIK, and Email are required",
+        "error"
+      );
     }
 
     const pt_kp = `${formData.marital_status}${formData.dependents}`;
@@ -143,13 +155,17 @@ if (pt_kp.startsWith("TK")) {
       onClose={onClose}
       footer={
         <>
-          <button className="btn btn-secondary" onClick={onClose}>Cancel</button>
-          <button className="btn btn-primary" onClick={handleSubmit}>Update</button>
+          <button className="btn btn-secondary" onClick={onClose}>
+            Cancel
+          </button>
+          <button className="btn btn-primary" onClick={handleSubmit}>
+            Update
+          </button>
         </>
       }
     >
       <ul className="nav nav-tabs mb-3">
-        {tabs.map(tab => (
+        {tabs.map((tab) => (
           <li className="nav-item" key={tab.id}>
             <button
               className={`nav-link ${activeTab === tab.id ? "active" : ""}`}
@@ -163,23 +179,79 @@ if (pt_kp.startsWith("TK")) {
       </ul>
 
       <form onSubmit={handleSubmit}>
-        <div className="tab-content" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+        <div
+          className="tab-content"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1fr",
+            gap: "1rem",
+          }}
+        >
           {activeTab === "personal" && (
             <>
-              <Input label="Full Name" field="full_name" value={formData.full_name} onChange={handleChange} />
-              <Input label="NIK" field="employee_nik" value={formData.employee_nik} onChange={handleChange} />
-              <Input label="Birth Date" type="date" field="dob" value={formData.dob} onChange={handleChange} />
-              <Select label="Gender" field="gender" value={formData.gender} onChange={handleChange} options={genderOptions} />
-              <Input label="Address" field="address" value={formData.address} onChange={handleChange} />
-              <Select label="Marital Status" field="marital_status" value={formData.marital_status} onChange={handleChange} options={maritalOptions} />
-              <Select label="Number of Dependents" field="dependents" value={formData.dependents} onChange={handleChange} options={dependentOptions.map(d => ({ value: d, label: d }))} />
+              <Input
+                label="Full Name"
+                field="full_name"
+                value={formData.full_name}
+                onChange={handleChange}
+              />
+              <Input
+                label="NIK"
+                field="employee_nik"
+                value={formData.employee_nik}
+                onChange={handleChange}
+              />
+              <Input
+                label="Birth Date"
+                type="date"
+                field="dob"
+                value={formData.dob}
+                onChange={handleChange}
+              />
+              <Select
+                label="Gender"
+                field="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                options={genderOptions}
+              />
+              <Input
+                label="Address"
+                field="address"
+                value={formData.address}
+                onChange={handleChange}
+              />
+              <Select
+                label="Marital Status"
+                field="marital_status"
+                value={formData.marital_status}
+                onChange={handleChange}
+                options={maritalOptions}
+              />
+              <Select
+                label="Number of Dependents"
+                field="dependents"
+                value={formData.dependents}
+                onChange={handleChange}
+                options={dependentOptions.map((d) => ({ value: d, label: d }))}
+              />
             </>
           )}
 
           {activeTab === "contact" && (
             <>
-              <Input label="Phone Number" field="phone_number" value={formData.phone_number} onChange={handleChange} />
-              <Input label="Email" field="email" value={formData.email} onChange={handleChange} />
+              <Input
+                label="Phone Number"
+                field="phone_number"
+                value={formData.phone_number}
+                onChange={handleChange}
+              />
+              <Input
+                label="Email"
+                field="email"
+                value={formData.email}
+                onChange={handleChange}
+              />
             </>
           )}
 
@@ -190,26 +262,69 @@ if (pt_kp.startsWith("TK")) {
                 field="department_id"
                 value={formData.department_id}
                 onChange={handleChange}
-                options={departments.map((d) => ({ value: d.department_id, label: d.department_name }))}
+                options={departments.map((d) => ({
+                  value: d.department_id,
+                  label: d.department_name,
+                }))}
               />
               <Select
                 label="Position"
                 field="position_id"
                 value={formData.position_id}
                 onChange={handleChange}
-                options={filteredPositions.map((p) => ({ value: p.position_id, label: p.position_name }))}
+                options={filteredPositions.map((p) => ({
+                  value: p.position_id,
+                  label: p.position_name,
+                }))}
               />
-              <Select label="Employment Status" field="employment_status" value={formData.employment_status} onChange={handleChange} options={employmentOptions.map(e => ({ value: e, label: e }))} />
-              <Input label="Join Date" type="date" field="join_date" value={formData.join_date} onChange={handleChange} />
-              <Input label="NPWP Number" field="npwp_number" value={formData.npwp_number} onChange={handleChange} />
-              <Select label="Role" field="role" value={formData.role} onChange={handleChange} options={["Employee", "HR", "Finance"].map(r => ({ value: r, label: r }))} />
+              <Select
+                label="Employment Status"
+                field="employment_status"
+                value={formData.employment_status}
+                onChange={handleChange}
+                options={employmentOptions.map((e) => ({ value: e, label: e }))}
+              />
+              <Input
+                label="Join Date"
+                type="date"
+                field="join_date"
+                value={formData.join_date}
+                onChange={handleChange}
+              />
+              <Input
+                label="NPWP Number"
+                field="npwp_number"
+                value={formData.npwp_number}
+                onChange={handleChange}
+              />
+              <Select
+                label="Role"
+                field="role"
+                value={formData.role}
+                onChange={handleChange}
+                options={["Employee", "HR", "Finance"].map((r) => ({
+                  value: r,
+                  label: r,
+                }))}
+              />
             </>
           )}
 
           {activeTab === "bank" && (
             <>
-              <Select label="Bank Name" field="bank_name" value={formData.bank_name} onChange={handleChange} options={bankOptions.map(b => ({ value: b, label: b }))} />
-              <Input label="Bank Account Number" field="bank_account_number" value={formData.bank_account_number} onChange={handleChange} />
+              <Select
+                label="Bank Name"
+                field="bank_name"
+                value={formData.bank_name}
+                onChange={handleChange}
+                options={bankOptions.map((b) => ({ value: b, label: b }))}
+              />
+              <Input
+                label="Bank Account Number"
+                field="bank_account_number"
+                value={formData.bank_account_number}
+                onChange={handleChange}
+              />
             </>
           )}
         </div>

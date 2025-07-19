@@ -1,3 +1,4 @@
+// components/modals/allowance/add-modal
 import React, { useEffect, useState } from "react";
 import BaseModal from "../../../common/BaseModal";
 import { createEmployeeAllowance } from "../../../../services/employeeAllowanceService";
@@ -9,6 +10,7 @@ import { toast } from "react-toastify";
 export default function AddModal({ onClose }) {
   const [employees, setEmployees] = useState([]);
   const [allowances, setAllowances] = useState([]);
+  const { employee_id, allowance_id } = form;
   const [form, setForm] = useState({
     employee_id: "",
     allowance_id: "",
@@ -51,24 +53,23 @@ export default function AddModal({ onClose }) {
   }, []);
 
   useEffect(() => {
-    const { employee_id, allowance_id } = form;
-    if (!employee_id || !allowance_id) return;
+  if (!employee_id || !allowance_id) return;
 
-    const allowance = allowances.find(
-      (a) => String(a.allowance_id) === String(allowance_id)
-    );
-    const employee = employees.find(
-      (e) => String(e.employee_id) === String(employee_id)
-    );
+  const allowance = allowances.find(
+    (a) => String(a.allowance_id) === String(allowance_id)
+  );
+  const employee = employees.find(
+    (e) => String(e.employee_id) === String(employee_id)
+  );
 
-    if (!allowance || !employee) return;
+  if (!allowance || !employee) return;
 
-    if (allowance.default_amount !== null) {
-      setForm((prev) => ({ ...prev, amount: allowance.default_amount }));
-    } else if (allowance.allowance_name.toLowerCase().includes("jabatan")) {
-      setForm((prev) => ({ ...prev, amount: employee.job_allowance || "" }));
-    }
-  }, [form.allowance_id, form.employee_id, allowances, employees]);
+  if (allowance.default_amount !== null) {
+    setForm((prev) => ({ ...prev, amount: allowance.default_amount }));
+  } else if (allowance.allowance_name.toLowerCase().includes("tunjangan jabatan")) {
+    setForm((prev) => ({ ...prev, amount: employee.job_allowance || "" }));
+  }
+}, [employee_id, allowance_id, allowances, employees]);
 
   const handleSubmit = async () => {
     const { employee_id, allowance_id, effective_date, end_date } = form;

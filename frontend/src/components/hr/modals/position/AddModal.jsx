@@ -96,7 +96,6 @@ export default function AddModal({ onClose, onSave }) {
           />
         </div>
 
-        {/* Department Dropdown */}
         <div className="mb-3">
           <label className="form-label fw-medium">Department</label>
           <select

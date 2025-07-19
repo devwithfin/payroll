@@ -37,6 +37,8 @@ const Navbar = () => {
     "/hr/attendances": "Attendance Recapitulation",
     "/hr/allowances": "Employee Allowance",
     "/hr/deductions": "Employee Deduction",
+    "/hr/allowance-type": "Allowance Type",
+    "/hr/deduction-type": "Deduction Type",
     "/hr/overtimes": "Overtime Approval",
     "/hr/payroll-draft": "Payroll Draft",
     "/hr/salary-slip": "Salary Slip",

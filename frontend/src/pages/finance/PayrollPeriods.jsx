@@ -50,7 +50,7 @@ export default function PayrollPeriods() {
   const handleUpdate = async (data) => {
     console.log("DATA YANG DIKIRIM SAAT UPDATE:", data);
     try {
-      await updatePayrollPeriod(data.period_id, data); // ✅ pakai period_id
+      await updatePayrollPeriod(data.id, data);  
       setShowEditModal(false);
       fetchPeriods();
       toast.success("Payroll period updated");
@@ -61,7 +61,7 @@ export default function PayrollPeriods() {
   };
 
   const handleDelete = (row) => {
-    console.log("Deleting ID:", row.period_id); // ✅ log untuk debugging
+    console.log("Deleting ID:", row.period_id);  
     Swal.fire({
       title: "Are you sure?",
       text: `Delete period "${row.period_name}"?`,
@@ -69,11 +69,11 @@ export default function PayrollPeriods() {
       showCancelButton: true,
       confirmButtonColor: "#d33",
       cancelButtonColor: "#1071b9",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Yes",
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await deletePayrollPeriod(row.period_id); // ✅ pakai period_id
+          await deletePayrollPeriod(row.period_id); 
           fetchPeriods();
           toast.success("Payroll period deleted");
         } catch (err) {

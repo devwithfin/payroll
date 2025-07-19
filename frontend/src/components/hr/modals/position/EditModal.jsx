@@ -7,7 +7,7 @@ import { getAllDepartments } from "../../../../services/departmentService";
 export default function EditModal({ position, onClose, onSave }) {
   const [positionName, setPositionName] = useState("");
   const [baseSalary, setBaseSalary] = useState("");
-  const [jobAllowance, setJobAllowance] = useState(""); // ✅ Added
+  const [jobAllowance, setJobAllowance] = useState("");  
   const [departmentId, setDepartmentId] = useState("");
   const [departments, setDepartments] = useState([]);
 
@@ -15,7 +15,7 @@ export default function EditModal({ position, onClose, onSave }) {
     if (position) {
       setPositionName(position.position_name || "");
       setBaseSalary(position.base_salary || "");
-      setJobAllowance(position.job_allowance || ""); // ✅ Set initial value
+      setJobAllowance(position.job_allowance || "");  
       setDepartmentId(position.department_id || "");
     }
   }, [position]);
@@ -47,7 +47,7 @@ export default function EditModal({ position, onClose, onSave }) {
       id: position.position_id,
       position_name: positionName.trim(),
       base_salary: Number(baseSalary),
-      job_allowance: Number(jobAllowance), // ✅ Send updated value
+      job_allowance: Number(jobAllowance),
       department_id: Number(departmentId),
     });
   };

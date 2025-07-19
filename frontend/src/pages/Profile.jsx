@@ -1,5 +1,5 @@
 // pages/hr/profile.js
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { getProfile } from "../services/authService";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -10,24 +10,26 @@ export default function Profile() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      fetchProfile();
-    }
-  }, []);
+  const token = localStorage.getItem("token");
+  if (token) {
+    fetchProfile();
+  }
+}, [fetchProfile]);
 
-  const fetchProfile = async () => {
-    try {
-      const res = await getProfile();
-      setUser(res.data.user || null);
-    } catch (error) {
-      if (error.response?.status === 401) {
-        navigate("/login");
-      } else {
-        toast.error("Failed to fetch profile data");
-      }
+
+  const fetchProfile = useCallback(async () => {
+  try {
+    const res = await getProfile();
+    setUser(res.data.user || null);
+  } catch (error) {
+    if (error.response?.status === 401) {
+      navigate("/login");
+    } else {
+      toast.error("Failed to fetch profile data");
     }
-  };
+  }
+}, [navigate]);
+
 
   if (!user) return null;
 

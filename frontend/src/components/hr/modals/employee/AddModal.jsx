@@ -82,14 +82,13 @@ export default function AddModal({ onClose, onSave }) {
       return;
     }
 
-    // Gabungkan marital_status + number_of_dependents jadi 1 field ptkp
     const pt_kp = `${formData.marital_status}${formData.number_of_dependents}`;
 
     const finalData = {
       ...formData,
       department_id: Number(formData.department_id),
       position_id: Number(formData.position_id),
-      pt_kp, // hasil konversi
+      pt_kp, 
     };
 
     delete finalData.marital_status;
@@ -240,7 +239,6 @@ export default function AddModal({ onClose, onSave }) {
   );
 }
 
-// Reusable input component
 function Input({ label, field, value, onChange, type = "text" }) {
   return (
     <div className="mb-3">
@@ -256,7 +254,6 @@ function Input({ label, field, value, onChange, type = "text" }) {
   );
 }
 
-// Reusable select component
 function Select({ label, field, value, onChange, options, useLabel = false }) {
   return (
     <div className="mb-3">

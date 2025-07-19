@@ -40,7 +40,11 @@ export default function InfoModal({ employee, onClose }) {
         </button>
       }
     >
-      <ul className="nav nav-tabs mb-3" role="tablist" style={{ borderBottom: "1px solid #dee2e6" }}>
+      <ul
+        className="nav nav-tabs mb-3"
+        role="tablist"
+        style={{ borderBottom: "1px solid #dee2e6" }}
+      >
         {tabs.map((tab) => (
           <li className="nav-item" key={tab.id} role="presentation">
             <button
@@ -70,8 +74,14 @@ export default function InfoModal({ employee, onClose }) {
             <InfoField label="NIK" value={employee.employee_nik} />
             <InfoField label="Birth Date" value={employee.dob} />
             <InfoField label="Gender" value={parseGender(employee.gender)} />
-            <InfoField label="Marital Status" value={parseMaritalStatus(employee.pt_kp)} />
-            <InfoField label="Number of Dependents" value={parseDependents(employee.pt_kp)} />
+            <InfoField
+              label="Marital Status"
+              value={parseMaritalStatus(employee.pt_kp)}
+            />
+            <InfoField
+              label="Number of Dependents"
+              value={parseDependents(employee.pt_kp)}
+            />
             <InfoField label="Address" value={employee.address} />
           </>
         )}
@@ -87,7 +97,10 @@ export default function InfoModal({ employee, onClose }) {
           <>
             <InfoField label="Department" value={employee.department_name} />
             <InfoField label="Position" value={employee.position_name} />
-            <InfoField label="Employment Status" value={employee.employment_status} />
+            <InfoField
+              label="Employment Status"
+              value={employee.employment_status}
+            />
             <InfoField label="Join Date" value={employee.join_date} />
             <InfoField label="NPWP Number" value={employee.npwp_number} />
             <InfoField label="Role" value={employee.role} />
@@ -97,7 +110,10 @@ export default function InfoModal({ employee, onClose }) {
         {activeTab === "bank" && (
           <>
             <InfoField label="Bank Name" value={employee.bank_name} />
-            <InfoField label="Account Number" value={employee.bank_account_number} />
+            <InfoField
+              label="Account Number"
+              value={employee.bank_account_number}
+            />
           </>
         )}
       </div>
@@ -108,7 +124,10 @@ export default function InfoModal({ employee, onClose }) {
 function InfoField({ label, value }) {
   return (
     <div>
-      <label className="fw-semibold text-muted" style={{ display: "block", marginBottom: "0.25rem" }}>
+      <label
+        className="fw-semibold text-muted"
+        style={{ display: "block", marginBottom: "0.25rem" }}
+      >
         {label}
       </label>
       <div

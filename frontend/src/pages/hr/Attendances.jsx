@@ -1,5 +1,5 @@
 // pages/hr/attendances
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Table from "../../components/common/Table";
 import { getAllAttendances } from "../../services/attendanceService";
@@ -24,15 +24,7 @@ export default function Attendances() {
       .catch(() => toast.error("Failed to load periods"));
   }, []);
 
-  useEffect(() => {
-    if (selectedPeriod) {
-      fetchAttendances();
-    } else {
-      setAttendances([]);
-    }
-  }, [selectedPeriod]);
-
-  const fetchAttendances = async () => {
+  const fetchAttendances = useCallback(async () => {
     try {
       const response = await getAllAttendances();
       const { start_date, end_date } = selectedPeriod;
@@ -44,7 +36,15 @@ export default function Attendances() {
     } catch {
       toast.error("Failed to fetch attendance data");
     }
-  };
+  }, [selectedPeriod]);
+
+  useEffect(() => {
+    if (selectedPeriod) {
+      fetchAttendances();
+    } else {
+      setAttendances([]);
+    }
+  }, [selectedPeriod, fetchAttendances]);
 
   const handleShowRecap = () => {
     if (!selectedPeriod) return;
