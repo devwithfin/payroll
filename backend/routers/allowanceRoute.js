@@ -1,8 +1,15 @@
 // router/allowance
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const controller = require('../controllers/allowanceController');
+const allowanceController = require("../controllers/allowanceController");
 
-router.get('/', controller.getAll);
+router.get("/", allowanceController.getAll);
+router.get("/:id", allowanceController.getById);
+router.post("/", allowanceController.create);
+router.put("/:id", allowanceController.update);
+router.delete("/:id", allowanceController.destroy);
+
+module.exports = router;
+
 
 module.exports = router;
