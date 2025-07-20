@@ -40,6 +40,7 @@ const Navbar = () => {
     "/hr/allowance-type": "Allowance Type",
     "/hr/deduction-type": "Deduction Type",
     "/hr/overtimes": "Overtime Approval",
+    "/hr/overtime-rates": "Overtime Rates",
     "/hr/payroll-draft": "Payroll Draft",
     "/hr/salary-slip": "Salary Slip",
     "/hr/profile": "HR Profile",
