@@ -4,7 +4,9 @@ const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class OvertimeRate extends Model {
-    static associate(models) {}
+    static associate(models) {
+      // relasi di sini jika nanti dibutuhkan
+    }
   }
 
   OvertimeRate.init(
@@ -25,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       description: {
         type: DataTypes.TEXT,
+        allowNull: true,
       },
     },
     {
@@ -32,6 +35,10 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "OvertimeRate",
       tableName: "overtime_rates",
       timestamps: true,
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+      paranoid: true,
+      deletedAt: "deleted_at",
     }
   );
 
