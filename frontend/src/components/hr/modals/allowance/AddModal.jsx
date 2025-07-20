@@ -10,7 +10,6 @@ import { toast } from "react-toastify";
 export default function AddModal({ onClose }) {
   const [employees, setEmployees] = useState([]);
   const [allowances, setAllowances] = useState([]);
-  const { employee_id, allowance_id } = form;
   const [form, setForm] = useState({
     employee_id: "",
     allowance_id: "",
@@ -18,6 +17,7 @@ export default function AddModal({ onClose }) {
     effective_date: "",
     end_date: "",
   });
+  const {employee_id, allowance_id } = form;
 
   useEffect(() => {
     getAllEmployees()
@@ -25,7 +25,7 @@ export default function AddModal({ onClose }) {
       .catch(() => toast.error("Failed to load employees"));
 
     getAllAllowances()
-      .then((res) => setAllowances(res.data))
+      .then((res) => setAllowances(res.data.data))
       .catch(() => toast.error("Failed to load allowances"));
 
     getAllPayrollPeriods()
