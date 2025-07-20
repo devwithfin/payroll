@@ -245,6 +245,17 @@ const SidebarHR = () => {
                   Deduction Types
                 </Link>
               </li>
+              <li className="nav-item mb-2">
+                <Link
+                  to="/hr/overtime-rates"
+                  className={`nav-link fw-medium ${
+                    isActive("/hr/overtime-rates") ? "active" : ""
+                  }`}
+                >
+                  <FontAwesomeIcon icon={faClock} />
+                  Overtime Rates
+                </Link>
+              </li>
             </>
           )}
 
