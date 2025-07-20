@@ -25,7 +25,7 @@ module.exports = {
       },
       id_user: {
         type: Sequelize.INTEGER,
-        allowNull: true, // akan diisi setelah user diinsert lewat trigger
+        allowNull: true,
         unique: true,
       },
       role: {
@@ -64,8 +64,16 @@ module.exports = {
       pt_kp: Sequelize.ENUM("TK0", "TK1", "TK2", "TK3", "K0", "K1", "K2", "K3"),
       bank_account_number: Sequelize.STRING(30),
       bank_name: Sequelize.STRING(50),
-      created_at: { type: Sequelize.DATE, allowNull: false, defaultValue: Sequelize.literal("CURRENT_TIMESTAMP") },
-      updated_at: { type: Sequelize.DATE, allowNull: false, defaultValue: Sequelize.literal("CURRENT_TIMESTAMP") },
+      created_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      },
+      updated_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      },
       deleted_at: { type: Sequelize.DATE, allowNull: true },
     });
   },

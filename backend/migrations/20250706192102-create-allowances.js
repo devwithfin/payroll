@@ -14,10 +14,6 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      is_taxable: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-      },
       is_fixed: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
@@ -26,6 +22,17 @@ module.exports = {
         type: Sequelize.DECIMAL(15, 2),
         allowNull: true,
       },
+      created_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      },
+      updated_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+      },
+      deleted_at: { type: Sequelize.DATE, allowNull: true },
     });
   },
 
