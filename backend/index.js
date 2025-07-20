@@ -13,6 +13,7 @@ const payrollPeriodRoute = require('./routers/payrollPeriodRoute')
 const employeeAllowanceRoute  = require('./routers/employeeAllowance')
 const allowanceRoute = require('./routers/allowanceRoute');
 const deductionRoute = require('./routers/deductionRoute');
+const overtimeRateRoute = require('./routers/overtimeRateRoute');
 
 
 app.use(
@@ -33,6 +34,7 @@ app.use("/api/v1/payroll-periods", payrollPeriodRoute);
 app.use("/api/v1/employee-allowances", employeeAllowanceRoute);
 app.use("/api/v1/allowances", allowanceRoute);
 app.use("/api/v1/deductions", deductionRoute);
+app.use("/api/v1/overtime-rates", overtimeRateRoute);
 
 
 const PORT = process.env.PORT;
