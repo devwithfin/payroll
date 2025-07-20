@@ -22,6 +22,7 @@ import HRPayrollDraft from "../pages/hr/PayrollDraft";
 import HRSalarySlip from "../pages/hr/SalarySlip";
 import HRAllowances from "../pages/hr/Allowances";
 import HRDeductions from "../pages/hr/Deductions";
+import HROvertimeRates from "../pages/hr/OvertimeRates";
 
 // Finance pages
 import FinanceDashboard from "../pages/finance/Dashboard";
@@ -53,6 +54,7 @@ const AppRoute = () => (
           <Route path="/hr/salary-slip" element={<HRSalarySlip />} />
           <Route path="/hr/allowances" element={<HRAllowances />} />
           <Route path="/hr/deductions" element={<HRDeductions />} />
+          <Route path="/hr/overtime-rates" element={<HROvertimeRates />} />
           <Route path="/hr/profile" element={<ProfilePage />} />
         </Route>
       </Route>
