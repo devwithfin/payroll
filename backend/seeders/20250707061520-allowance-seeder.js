@@ -8,25 +8,21 @@ module.exports = {
         {
           allowance_name: "Tunjangan Makan",
           is_fixed: true,
-          is_taxable: true,
           default_amount: 1000000,
         },
         {
           allowance_name: "Tunjangan Transport",
           is_fixed: true,
-          is_taxable: true,
           default_amount: 1000000,
         },
         {
           allowance_name: "Tunjangan Jabatan",
           is_fixed: true,
-          is_taxable: true,
           default_amount: null,
         },
         {
           allowance_name: "Tunjangan Kinerja",
           is_fixed: false,
-          is_taxable: true,
           default_amount: null,
         },
       ],
