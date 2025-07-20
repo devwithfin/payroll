@@ -4,7 +4,11 @@ const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class Deduction extends Model {
-    static associate(models) {}
+   static associate(models) {
+      Deduction.hasMany(models.EmployeeDeduction, {
+        foreignKey: 'deduction_id',
+      });
+    }
   }
 
   Deduction.init(
@@ -19,16 +23,16 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
       },
-      is_recurring: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-      },
     },
     {
       sequelize,
       modelName: "Deduction",
       tableName: "deductions",
       timestamps: true,
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+      paranoid: true,
+      deletedAt: "deleted_at",
     }
   );
 

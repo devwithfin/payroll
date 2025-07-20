@@ -22,10 +22,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
       },
-      is_taxable: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-      },
       is_fixed: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
@@ -40,6 +36,11 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "Allowance",
       tableName: "allowances",
       timestamps: false,
+      timestamps: true,
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+      paranoid: true,
+      deletedAt: "deleted_at",
     }
   );
 
