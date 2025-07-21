@@ -5,7 +5,7 @@ import BaseModal from "../../../common/BaseModal";
 
 export default function AddModal({ onClose, onSave }) {
   const [allowanceName, setAllowanceName] = useState("");
-  const [isFixed, setIsFixed] = useState(true); // default true
+  const [isFixed, setIsFixed] = useState(true); 
   const [defaultAmount, setDefaultAmount] = useState("");
 
   const handleSubmit = (e) => {
