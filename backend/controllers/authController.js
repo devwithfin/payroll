@@ -63,6 +63,7 @@ profile: async (req, res) => {
           model: Employee,
           as: "employee",
           attributes: [
+            "employee_id",
             "department_id",
             "position_id",
             "employee_nik",
