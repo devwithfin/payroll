@@ -5,7 +5,7 @@ const attendanceController = require("../controllers/attendanceController");
 
 router.get("/", attendanceController.getAll);
 
-router.get("/:id", attendanceController.getById);
+router.get("/employee/:employee_id", attendanceController.getByEmployeeId);
 
 // router.post("/", attendanceController.create);
 

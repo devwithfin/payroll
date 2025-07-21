@@ -42,39 +42,36 @@ const AttendanceController = {
     }
   },
 
-  getById: async (req, res) => {
-    try {
-      const attendance = await Attendance.findByPk(req.params.id, {
-        attributes: [
-          "attendance_id", "employee_id", "attendance_date", "check_in_time",
-          "check_out_time", "status", "notes", "status_processed"
-        ],
-        include: [
-          {
-            model: Employee,
-            as: "employee",
-            attributes: ["full_name"]
-          }
-        ],
-      });
+  getByEmployeeId: async (req, res) => {
+  try {
+    const { employee_id } = req.params;
 
-      if (!attendance) {
-        return res.status(404).json({ message: "Attendance not found" });
-      }
+    const attendance = await Attendance.findAll({
+      where: { employee_id },
+      attributes: [
+        "attendance_id",
+        "employee_id",
+        "attendance_date",
+        "check_in_time",
+        "check_out_time",
+        "status",
+        "notes",
+        "status_processed",
+      ],
+      order: [["attendance_date", "DESC"]],
+    });
 
-      const plain = attendance.toJSON();
-      const formatted = {
-        ...plain,
-        full_name: plain.employee?.full_name || null,
-        employee: undefined,
-      };
-
-      res.status(200).json({ message: "Attendance found", data: formatted });
-    } catch (error) {
-      console.error("getById error:", error);
-      res.status(500).json({ message: "Internal server error" });
+    if (!attendance || attendance.length === 0) {
+      return res.status(404).json({ message: "No attendance records found" });
     }
-  },
+
+    res.status(200).json({ message: "Attendance records found", data: attendance });
+  } catch (error) {
+    console.error("getByEmployeeId error:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
 
   // create: async (req, res) => {
   //   try {
