@@ -61,18 +61,6 @@ export default function AddModal({ onClose, onSave }) {
         </div>
 
         <div className="mb-3">
-          <label className="form-label">Is Fixed</label>
-          <select
-            className="form-select"
-            value={isFixed ? "1" : "0"}
-            onChange={(e) => setIsFixed(e.target.value === "1")}
-          >
-            <option value="1">Yes</option>
-            <option value="0">No</option>
-          </select>
-        </div>
-
-        <div className="mb-3">
           <label className="form-label">Default Amount</label>
           <input
             type="number"
@@ -82,6 +70,19 @@ export default function AddModal({ onClose, onSave }) {
             onChange={(e) => setDefaultAmount(e.target.value)}
           />
         </div>
+
+         <div className="mb-3">
+          <label className="form-label">Type</label>
+          <select
+            className="form-select"
+            value={isFixed ? "1" : "0"}
+            onChange={(e) => setIsFixed(e.target.value === "1")}
+          >
+            <option value="1">Fixed</option>
+            <option value="0">Not FIxed</option>
+          </select>
+        </div>
+
       </form>
     </BaseModal>
   );

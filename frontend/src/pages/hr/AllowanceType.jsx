@@ -104,13 +104,7 @@ const handleDelete = (row) => {
       name: "Allowance Name",
       selector: (row) => row.allowance_name,
       sortable: true,
-      width: "250px",
-    },
-    {
-      name: "Type", 
-      selector: (row) => (row.is_fixed ? "Fixed" : "Not Fixed"), 
-      sortable: true,
-      width: "150px",
+      width: "540px",
     },
     {
       name: "Default Amount",
@@ -119,6 +113,12 @@ const handleDelete = (row) => {
 
       sortable: true,
       width: "180px",
+    },
+    {
+      name: "Type", 
+      selector: (row) => (row.is_fixed ? "Fixed" : "Not Fixed"), 
+      sortable: true,
+      width: "150px",
     },
     {
       name: "Actions",

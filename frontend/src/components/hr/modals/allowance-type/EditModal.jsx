@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import BaseModal from "../../../common/BaseModal";
 import Swal from "sweetalert2";
-import { formatRupiah } from "../../../../utils/formatCurrency";
 
 export default function EditModal({ allowance, onClose, onSave }) {
   const [name, setName] = useState("");
@@ -13,9 +12,10 @@ export default function EditModal({ allowance, onClose, onSave }) {
     if (allowance) {
       setName(allowance.allowance_name || "");
       setDefaultAmount(allowance.default_amount?.toString() || "");
-      setIsFixed(
-        allowance.is_fixed !== undefined ? allowance.is_fixed.toString() : "1"
-      );
+   setIsFixed(
+  allowance.is_fixed === true || allowance.is_fixed === 1 ? "1" : "0"
+);
+
     }
   }, [allowance]);
 
@@ -78,20 +78,18 @@ export default function EditModal({ allowance, onClose, onSave }) {
               setDefaultAmount(e.target.value.replace(/[^0-9]/g, ""))
             }
           />
-          <small className="text-muted">
-            Rp: {formatRupiah(defaultAmount || 0)}
-          </small>
         </div>
         <div className="mb-3">
           <label className="form-label">Type</label>
-          <select
-            className="form-select"
-            value={isFixed}
-            onChange={(e) => setIsFixed(e.target.value)}
-          >
-            <option value="1">Fixed</option>
-            <option value="0">Not Fixed</option>
-          </select>
+         <select
+  className="form-select"
+  value={isFixed === true || isFixed === "1" ? "1" : "0"}
+  onChange={(e) => setIsFixed(e.target.value)}
+>
+  <option value="1">Fixed</option>
+  <option value="0">Not Fixed</option>
+</select>
+
         </div>
       </form>
     </BaseModal>
