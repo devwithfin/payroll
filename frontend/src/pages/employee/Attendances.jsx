@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import LiveClock from "../../components/employee/attendance/LiveClock";
-import AttendanceTimeline from "../../components/employee/attendance/AttendanceTimeline";
+import LiveClock from "../../components/attendance/LiveClock";
+import AttendanceTimeline from "../../components/attendance/AttendanceTimeline";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { getAttendanceByEmployeeId } from "../../services/attendanceService";
 
@@ -54,7 +54,7 @@ const AttendancePage = () => {
         setAttendanceLogs(sorted);
       } catch (err) {
         if (err.response?.status !== 401) {
-          toast.error("Gagal memuat data absensi");
+          toast.error("Failed to load attendance data");
         }
       }
     };
@@ -73,27 +73,29 @@ const AttendancePage = () => {
     const time = nowTime();
     setCheckInTime(time);
     setStatus("checkedIn");
-    toast.success(`✅ Checked in at ${time}`);
+    toast.success(`Checked in at ${time}`);
   };
 
   const handleCheckOut = () => {
     if (!isAllowedCheckOut()) {
-      toast.error("❌ Clock-out hanya bisa dilakukan setelah jam 17:00");
+      toast.error("Clock-out can only be done after 17:00");
       return;
     }
 
     const time = nowTime();
     setCheckOutTime(time);
     setStatus("done");
-    toast.success(`✅ Checked out at ${time}`);
+    toast.success(`Checked out at ${time}`);
   };
 
-  const formattedDate = new Date().toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  }); // contoh: Monday, July 21 2025
+const today = new Date();
+const day = today.toLocaleDateString("en-US", { weekday: "long" });
+const date = today.getDate();  
+const month = today.toLocaleDateString("en-US", { month: "long" });
+const year = today.getFullYear();
+
+const formattedDate = `${day}, ${date} ${month} ${year}`;
+
 
   return (
     <div className="container mt-4">
