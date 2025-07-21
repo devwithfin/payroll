@@ -1,9 +1,9 @@
-// service/position
+// service/attendance
 import API from '../libs/axiosInstance';
 
 export const getAllAttendances = () => API.get('/attendances');
 
-export const geAllAttendanceById = (id) => API.get(`/attendances/${id}`);
+export const getAttendanceByEmployeeId = (id) => API.get(`/attendances/employee/${id}`);
 
 // export const createAllAttendance = (data) =>
 //   API.post('/attendances', data);
