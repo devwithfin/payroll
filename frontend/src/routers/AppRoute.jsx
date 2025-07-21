@@ -62,6 +62,10 @@ const AppRoute = () => (
       <Route element={<ProtectedRoute allowedRoles={["Finance"]} />}>
         <Route element={<AppLayout key="finance-layout" />}>
           <Route path="/finance/dashboard" element={<FinanceDashboard />} />
+           <Route
+            path="/finance/attendances"
+            element={<EmployeeAttendances />}
+          />
           <Route
             path="/finance/payroll-periods"
             element={<FinancePayrollPeriod />}
