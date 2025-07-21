@@ -12,7 +12,6 @@ export default function AddModal({ employeeId, onClose, onSave }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validation
     if (!overtimeDate || !startTime || !endTime || !reason.trim()) {
       Swal.fire({
         icon: "error",
@@ -79,7 +78,6 @@ export default function AddModal({ employeeId, onClose, onSave }) {
         <input type="hidden" value={employeeId} />
         <input type="hidden" value={employeeId} />
 
-        {/* Overtime Date */}
         <div className="mb-3">
           <label className="form-label">
             Overtime Date <span className="text-danger">*</span>
@@ -94,7 +92,6 @@ export default function AddModal({ employeeId, onClose, onSave }) {
           />
         </div>
 
-        {/* Time Range */}
         <div className="row">
           <div className="col-md-6 mb-3">
             <label className="form-label">
@@ -122,7 +119,6 @@ export default function AddModal({ employeeId, onClose, onSave }) {
           </div>
         </div>
 
-        {/* Reason */}
         <div className="mb-3">
           <label className="form-label">
             Reason <span className="text-danger">*</span>
@@ -139,7 +135,6 @@ export default function AddModal({ employeeId, onClose, onSave }) {
           <div className="form-text">{reason.length}/500 characters</div>
         </div>
 
-        {/* Note */}
         <div className="alert alert-info">
           <small>
             <strong>Note:</strong> Your overtime request will be submitted for approval. 
