@@ -14,6 +14,7 @@ import {
   faMoneyBillWave,
   faChevronDown,
   faChevronRight,
+  faUserPlus, // tambahan ikon
 } from "@fortawesome/free-solid-svg-icons";
 
 const SidebarHR = () => {
@@ -178,7 +179,10 @@ const SidebarHR = () => {
           )}
 
           {/* Time Management */}
-          <div className="toggle-header" onClick={() => toggleSection("time")}>
+          <div
+            className="toggle-header"
+            onClick={() => toggleSection("time")}
+          >
             <span>Time Management</span>
             <FontAwesomeIcon
               icon={openSection.time ? faChevronDown : faChevronRight}
@@ -205,7 +209,7 @@ const SidebarHR = () => {
                   }`}
                 >
                   <FontAwesomeIcon icon={faClock} />
-                   Overtime Approval
+                  Overtime Approval
                 </Link>
               </li>
             </>
@@ -344,17 +348,30 @@ const SidebarHR = () => {
             />
           </div>
           {openSection.account && (
-            <li className="nav-item mb-2">
-              <Link
-                to="/hr/profile"
-                className={`nav-link fw-medium ${
-                  isActive("/hr/profile") ? "active" : ""
-                }`}
-              >
-                <FontAwesomeIcon icon={faUser} />
-                Profile
-              </Link>
-            </li>
+            <>
+              <li className="nav-item mb-2">
+                <Link
+                  to="/hr/profile"
+                  className={`nav-link fw-medium ${
+                    isActive("/hr/profile") ? "active" : ""
+                  }`}
+                >
+                  <FontAwesomeIcon icon={faUser} />
+                  Profile
+                </Link>
+              </li>
+              <li className="nav-item mb-2">
+                <Link
+                  to="/hr/account-activation"
+                  className={`nav-link fw-medium ${
+                    isActive("/hr/account-activation") ? "active" : ""
+                  }`}
+                >
+                  <FontAwesomeIcon icon={faUserPlus} />
+                  Account Activation
+                </Link>
+              </li>
+            </>
           )}
         </ul>
       </div>

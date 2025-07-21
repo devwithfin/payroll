@@ -44,6 +44,7 @@ const Navbar = () => {
     "/hr/payroll-draft": "Payroll Draft",
     "/hr/salary-slip": "Salary Slip",
     "/hr/profile": "HR Profile",
+    "/hr/account-activation": "Account Activation",
 
     "/finance/dashboard": "Finance Dashboard",
     "/finance/attendances": "Finance Attendance",
