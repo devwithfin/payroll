@@ -1,5 +1,4 @@
 // pages/hr/allowance-type
-// pages/hr/allowance-type
 import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";
@@ -16,7 +15,7 @@ import {
   getAllAllowances,
   createAllowance,
   updateAllowance,
-  deleteAllowance, // ✅ Uncomment ini
+  deleteAllowance,
 } from "../../services/allowanceService";
 
 export default function AllowanceTypePage() {
@@ -42,7 +41,7 @@ export default function AllowanceTypePage() {
 
   const handleSave = async (newAllowance) => {
     try {
-      await createAllowance(newAllowance); // ✅ MENGGANTI console.log dgn createAllowance API
+      await createAllowance(newAllowance); 
       setShowAddModal(false);
       fetchAllowances();
       toast.success("Allowance successfully saved");
@@ -54,7 +53,6 @@ export default function AllowanceTypePage() {
     }
   };
 
-  // handleUpdate cukup seperti ini:
 const handleUpdate = async (updatedData) => {
   try {
     await updateAllowance(updatedData.allowance_id, updatedData);
@@ -69,7 +67,6 @@ const handleUpdate = async (updatedData) => {
   }
 };
 
-
 const handleDelete = (row) => {
   Swal.fire({
     title: "Are you sure?",
@@ -82,8 +79,8 @@ const handleDelete = (row) => {
   }).then(async (result) => {
     if (result.isConfirmed) {
       try {
-        await deleteAllowance(row.allowance_id); // ✅ Delete beneran
-        fetchAllowances(); // Refresh data
+        await deleteAllowance(row.allowance_id); 
+        fetchAllowances(); 
         toast.success("Allowance deleted successfully");
       } catch (err) {
         const errMsg =
@@ -110,8 +107,8 @@ const handleDelete = (row) => {
       width: "250px",
     },
     {
-      name: "Type", // ✅ Ganti "Is Fixed" → "Type"
-      selector: (row) => (row.is_fixed ? "Fixed" : "Not Fixed"), // ✅ Ganti "Yes"/"No" jadi "Fixed"/"Not Fixed"
+      name: "Type", 
+      selector: (row) => (row.is_fixed ? "Fixed" : "Not Fixed"), 
       sortable: true,
       width: "150px",
     },
