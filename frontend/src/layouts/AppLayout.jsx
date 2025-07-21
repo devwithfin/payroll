@@ -1,4 +1,4 @@
-// layouts/app-layout
+// layouts/AppLayout.jsx
 import { Outlet } from "react-router-dom";
 import { useAuthContext } from "../contexts/AuthContext";
 
@@ -41,27 +41,28 @@ const AppLayout = () => {
       style={{
         display: "flex",
         minHeight: "100vh",
-        backgroundColor: "#f8f9fa",
+        backgroundColor: "#f1f3f5", 
       }}
     >
       {/* Sidebar */}
-      <div style={{ width: "220px" }}>{renderSidebar()}</div>
+      <div style={{ width: "220px", backgroundColor: "#fff", boxShadow: "1px 0 5px rgba(0,0,0,0.05)" }}>
+        {renderSidebar()}
+      </div>
 
-      {/* Main Area */}
+      {/* Main Section */}
       <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <Navbar />
 
-        {/* Outlet Section */}
+        {/* Page Content */}
         <div
           style={{
+            flex: 1,
+            margin: "1rem",
             padding: "1.5rem",
             backgroundColor: "#ffffff",
-            margin: "1rem",
             borderRadius: "0.5rem",
-            boxShadow: "0 0 10px rgba(0,0,0,0.05)",
-            overflow: "visible",
-            height: "fit-content",
-            maxHeight: "calc(100vh - 100px)",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+            overflow: "auto",
           }}
         >
           <Outlet />
