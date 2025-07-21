@@ -9,6 +9,7 @@ import {
   faCalendarAlt,
   faFileInvoice,
   faUser,
+  faClock,
 } from "@fortawesome/free-solid-svg-icons";
 
 const SidebarFinance = () => {
@@ -96,23 +97,39 @@ const SidebarFinance = () => {
         </div>
 
         <ul className="nav flex-column px-3 py-3">
-
           <div className="section-title">Main</div>
           <li className="nav-item mb-2">
             <Link
               to="/finance/dashboard"
-              className={`nav-link fw-medium ${isActive("/finance/dashboard") ? "active" : ""}`}
+              className={`nav-link fw-medium ${
+                isActive("/finance/dashboard") ? "active" : ""
+              }`}
             >
               <FontAwesomeIcon icon={faHome} />
               Dashboard
             </Link>
           </li>
 
+          <div className="section-title">Monitoring</div>
+          <li className="nav-item mb-2">
+            <Link
+              to="/finance/attendances"
+              className={`nav-link fw-medium ${
+                isActive("/finance/attendances") ? "active" : ""
+              }`}
+            >
+              <FontAwesomeIcon icon={faClock} />
+              Attendances
+            </Link>
+          </li>
+
           <div className="section-title">Payroll</div>
-            <li className="nav-item mb-2">
+          <li className="nav-item mb-2">
             <Link
               to="/finance/payroll-periods"
-              className={`nav-link fw-medium ${isActive("/finance/payroll/periods") ? "active" : ""}`}
+              className={`nav-link fw-medium ${
+                isActive("/finance/payroll/periods") ? "active" : ""
+              }`}
             >
               <FontAwesomeIcon icon={faCalendarAlt} />
               Payroll Periods
@@ -121,7 +138,9 @@ const SidebarFinance = () => {
           <li className="nav-item mb-2">
             <Link
               to="/finance/payroll-process"
-              className={`nav-link fw-medium ${isActive("/finance/payroll/process") ? "active" : ""}`}
+              className={`nav-link fw-medium ${
+                isActive("/finance/payroll/process") ? "active" : ""
+              }`}
             >
               <FontAwesomeIcon icon={faMoneyBillWave} />
               Process Payroll
@@ -130,7 +149,9 @@ const SidebarFinance = () => {
           <li className="nav-item mb-2">
             <Link
               to="/finance/salary-slip"
-              className={`nav-link fw-medium ${isActive("/finance/salary") ? "active" : ""}`}
+              className={`nav-link fw-medium ${
+                isActive("/finance/salary") ? "active" : ""
+              }`}
             >
               <FontAwesomeIcon icon={faMoneyCheckDollar} />
               Salary Slip
@@ -141,7 +162,9 @@ const SidebarFinance = () => {
           <li className="nav-item mb-2">
             <Link
               to="/finance/reports"
-              className={`nav-link fw-medium ${isActive("/finance/reports") ? "active" : ""}`}
+              className={`nav-link fw-medium ${
+                isActive("/finance/reports") ? "active" : ""
+              }`}
             >
               <FontAwesomeIcon icon={faFileInvoice} />
               Reports
@@ -152,13 +175,14 @@ const SidebarFinance = () => {
           <li className="nav-item mb-2">
             <Link
               to="/finance/profile"
-              className={`nav-link fw-medium ${isActive("/finance/profile") ? "active" : ""}`}
+              className={`nav-link fw-medium ${
+                isActive("/finance/profile") ? "active" : ""
+              }`}
             >
               <FontAwesomeIcon icon={faUser} />
               Profile
             </Link>
           </li>
-
         </ul>
       </div>
     </>
