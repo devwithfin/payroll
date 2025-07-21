@@ -205,7 +205,7 @@ const SidebarHR = () => {
                   }`}
                 >
                   <FontAwesomeIcon icon={faClock} />
-                  Approval Overtime
+                   Overtime Approval
                 </Link>
               </li>
             </>
