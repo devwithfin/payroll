@@ -1,5 +1,4 @@
 // components/modals/allowance-type/edit-modal
-// components/modals/allowance-type/EditModal.jsx
 import React, { useEffect, useState } from "react";
 import BaseModal from "../../../common/BaseModal";
 import Swal from "sweetalert2";
