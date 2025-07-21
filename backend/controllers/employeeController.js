@@ -1,5 +1,6 @@
 // controller/employee
-const { Employee, Department, Position } = require("../models");
+const { Employee, Department, Position, User } = require("../models");
+
 
 const EmployeeController = {
   getAll: async (req, res) => {
@@ -134,10 +135,18 @@ const EmployeeController = {
     }
   },
 
-  create: async (req, res) => {
+ create: async (req, res) => {
     try {
       const employeeData = req.body;
+      
       const newEmployee = await Employee.create(employeeData);
+
+      await User.create({
+        employee_id: newEmployee.employee_id,
+        email: newEmployee.email,
+        role: newEmployee.role || 'Employee', 
+        password: null,
+      });
 
       res.status(201).json({
         message: "Employee created successfully",

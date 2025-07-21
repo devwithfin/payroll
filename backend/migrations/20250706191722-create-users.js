@@ -12,10 +12,10 @@ module.exports = {
       employee_id: {
         type: Sequelize.INTEGER,
         allowNull: true,
-        unique: true,
-        references: { model: "employees", key: "employee_id" },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
+        references: {
+          model: "employees",
+          key: "employee_id",
+        },
       },
       email: {
         type: Sequelize.STRING(50),
@@ -24,11 +24,12 @@ module.exports = {
       },
       password: {
         type: Sequelize.STRING(255),
-        allowNull: false,
+        allowNull: true,
       },
       role: {
         type: Sequelize.ENUM("HR", "Finance", "Employee"),
-        allowNull: false,
+       allowNull: true,  
+  defaultValue: null
       },
       created_at: {
         type: Sequelize.DATE,
