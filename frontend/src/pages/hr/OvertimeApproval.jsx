@@ -1,4 +1,4 @@
 // pages/hr/overtime-approval
-export default function Overtime() {
+export default function OvertimApproval() {
   return <h2></h2>;
 }
