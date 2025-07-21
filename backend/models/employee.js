@@ -22,6 +22,22 @@ module.exports = (sequelize, DataTypes) => {
       Employee.hasMany(models.EmployeeAllowance, {
         foreignKey: "employee_id",
       });
+
+      Employee.hasMany(models.OvertimeRequest, {
+        foreignKey: "employee_id",
+        as: "overtimeRequestsAsEmployee",
+      });
+
+      Employee.hasMany(models.OvertimeRequest, {
+        foreignKey: "submitted_by",
+        as: "overtimeRequestsAsSubmitter",
+      });
+
+      Employee.hasMany(models.OvertimeRequest, {
+        foreignKey: "approved_by_hrd",
+        as: "overtimeRequestsAsHRDApprover",
+      });
+
     }
   }
 

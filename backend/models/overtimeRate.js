@@ -5,7 +5,6 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class OvertimeRate extends Model {
     static associate(models) {
-      // relasi di sini jika nanti dibutuhkan
     }
   }
 
