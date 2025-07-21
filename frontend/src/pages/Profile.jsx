@@ -9,14 +9,6 @@ export default function Profile() {
   const [activeTab, setActiveTab] = useState("Personal");
   const navigate = useNavigate();
 
-  useEffect(() => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    fetchProfile();
-  }
-}, [fetchProfile]);
-
-
   const fetchProfile = useCallback(async () => {
   try {
     const res = await getProfile();
@@ -30,6 +22,12 @@ export default function Profile() {
   }
 }, [navigate]);
 
+  useEffect(() => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    fetchProfile();
+  }
+}, [fetchProfile]);
 
   if (!user) return null;
 
