@@ -13,16 +13,28 @@ export default function Attendances() {
   const [showRecapModal, setShowRecapModal] = useState(false);
   const [recapData, setRecapData] = useState([]);
 
-  useEffect(() => {
-    getAllPayrollPeriods()
-      .then((res) => {
-        const sorted = res.data.data.sort(
-          (a, b) => new Date(a.start_date) - new Date(b.start_date)
-        );
-        setPeriods(sorted);
-      })
-      .catch(() => toast.error("Failed to load periods"));
-  }, []);
+ useEffect(() => {
+  getAllPayrollPeriods()
+    .then((res) => {
+      const sorted = res.data.data.sort(
+        (a, b) => new Date(a.start_date) - new Date(b.start_date)
+      );
+      setPeriods(sorted);
+
+      const today = new Date();
+      const activePeriod = sorted.find((p) => {
+        const start = new Date(p.start_date);
+        const end = new Date(p.end_date);
+        return today >= start && today <= end;
+      });
+
+      if (activePeriod) {
+        setSelectedPeriod(activePeriod);
+      }
+    })
+    .catch(() => toast.error("Failed to load periods"));
+}, []);
+
 
   const fetchAttendances = useCallback(async () => {
     try {
