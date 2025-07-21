@@ -34,7 +34,7 @@ const Navbar = () => {
     "/hr/positions": "Position Management",
     "/hr/departments": "Department Management",
     "/hr/employees": "Employee Management",
-    "/hr/attendances": "Attendance Recapitulation",
+    "/hr/attendances": "Attendance & Recapitulation",
     "/hr/allowances": "Employee Allowance",
     "/hr/deductions": "Employee Deduction",
     "/hr/allowance-type": "Allowance Type",
@@ -46,6 +46,7 @@ const Navbar = () => {
     "/hr/profile": "HR Profile",
 
     "/finance/dashboard": "Finance Dashboard",
+    "/finance/attendances": "Finance Attendance",
     "/finance/payroll-periods": "Payroll Periods",
     "/finance/payroll-process": "Payroll Process",
     "/finance/salary-slip": "Salary Slip",
