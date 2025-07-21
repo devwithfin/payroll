@@ -1,4 +1,3 @@
-// pages/employee/overtime-request
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -24,12 +23,15 @@ export default function OvertimeRequest() {
   const initializePage = async () => {
     try {
       const profileResponse = await getProfile();
-      const empId = profileResponse.data.user.employee.employee_id;
+      const empId = profileResponse.data?.user?.employee?.employee_id;
+      if (!empId) return;
+
       setEmployeeId(empId);
       await fetchOvertimeRequests(empId);
     } catch (error) {
-      console.error("Failed to initialize page:", error);
-      toast.error("Failed to load page data");
+      if (error.response?.status !== 401) {
+        toast.error("Failed to load page data");
+      }
     } finally {
       setLoading(false);
     }
@@ -38,10 +40,9 @@ export default function OvertimeRequest() {
   const fetchOvertimeRequests = async (empId) => {
     try {
       const response = await getOvertimeRequestsByEmployee(empId);
-      setOvertimeRequests(response.data.data || []);
+      setOvertimeRequests(response.data?.data || []);
     } catch (error) {
-      console.error("Failed to fetch overtime requests:", error);
-      if (error.response?.status !== 404) {
+      if (error.response?.status !== 401) {
         toast.error("Failed to fetch overtime request data");
       }
       setOvertimeRequests([]);
@@ -51,14 +52,13 @@ export default function OvertimeRequest() {
   const handleSave = async (newRequest) => {
     try {
       await createOvertimeRequest(newRequest);
-      setShowAddModal(false);
-      fetchOvertimeRequests(employeeId);
       toast.success("Overtime request successfully saved");
+      setShowAddModal(false);
+      if (employeeId) fetchOvertimeRequests(employeeId);
     } catch (err) {
-      const errorMsg =
+      const msg =
         err.response?.data?.message || "Failed to save overtime request";
-      toast.error(errorMsg);
-      console.error(err);
+      toast.error(msg);
     }
   };
 
@@ -74,12 +74,25 @@ export default function OvertimeRequest() {
   };
 
   const getStatusBadge = (status) => {
-    const statusMap = {
-      Pending: "badge bg-warning text-dark",
-      Approved: "badge bg-success",
-      Rejected: "badge bg-danger",
-    };
-    return statusMap[status] || "badge bg-secondary";
+    const lower = status?.toLowerCase();
+    let bg = "#6c757d";
+    if (lower === "approved") bg = "#28a745";
+    else if (lower === "pending") bg = "#ffc107";
+    else if (lower === "rejected") bg = "#dc3545";
+
+    return (
+      <span
+        className="badge text-white text-capitalize text-center"
+        style={{
+          backgroundColor: bg,
+          minWidth: "100px",
+          fontSize: "0.9rem",
+          padding: "0.4rem",
+        }}
+      >
+        {status || "Pending"}
+      </span>
+    );
   };
 
   const renderColumnsWithPage = (currentPage, perPage) => [
@@ -93,41 +106,33 @@ export default function OvertimeRequest() {
       name: "Request Date",
       selector: (row) => formatDate(row.request_date),
       sortable: true,
-      width: "120px",
+      width: "150px",
     },
     {
       name: "Overtime Date",
       selector: (row) => formatDate(row.overtime_date),
       sortable: true,
-      width: "120px",
+      width: "150px",
     },
     {
       name: "Start Time",
       selector: (row) => formatTime(row.start_time),
-      sortable: false,
       width: "100px",
     },
     {
       name: "End Time",
       selector: (row) => formatTime(row.end_time),
-      sortable: false,
       width: "100px",
     },
     {
       name: "Reason",
       selector: (row) => row.reason || "-",
-      sortable: false,
       width: "300px",
     },
     {
       name: "Approval Status",
-      cell: (row) => (
-        <span className={getStatusBadge(row.approval_status)}>
-          {row.approval_status || "Pending"}
-        </span>
-      ),
+      cell: (row) => getStatusBadge(row.approval_status),
       sortable: true,
-      width: "150px",
     },
   ];
 
@@ -149,7 +154,7 @@ export default function OvertimeRequest() {
   return (
     <div className="container mx-auto p-1">
       <Table
-        title="My Overtime Requests"
+        title="Overtime Requests"
         data={overtimeRequests}
         renderColumnsWithPage={renderColumnsWithPage}
         onAdd={() => setShowAddModal(true)}
