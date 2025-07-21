@@ -65,7 +65,7 @@ export default function Deduction() {
       showCancelButton: true,
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Yes",
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
@@ -89,10 +89,10 @@ export default function Deduction() {
       name: "Deduction Name",
       selector: (row) => row.deduction_name,
       sortable: true,
+      width : "850px"
     },
     {
       name: "Actions",
-      width: "120px",
       cell: (row) => (
         <div className="d-flex gap-2">
           <button
@@ -120,7 +120,7 @@ export default function Deduction() {
   return (
     <div className="container mx-auto p-2">
       <Table
-        title="Deduction List"
+        title="Deduction Type"
         data={deductions}
         renderColumnsWithPage={renderColumnsWithPage}
         onAdd={() => setShowAddModal(true)}

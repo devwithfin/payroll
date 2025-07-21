@@ -16,14 +16,18 @@ export default function AddModal({ onClose, onSave }) {
 
   return (
     <BaseModal
-      title="Add Deduction"
+      title="Add New Deduction Type"
       onClose={onClose}
       footer={
         <>
           <button className="btn btn-secondary" onClick={onClose}>
             Cancel
           </button>
-          <button className="btn btn-primary" onClick={handleSubmit}>
+           <button
+            className="btn"
+            style={{ backgroundColor: "#107189", color: "#fff" }}
+            onClick={handleSubmit}
+          >
             Save
           </button>
         </>
