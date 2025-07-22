@@ -33,31 +33,44 @@ const AttendancePage = () => {
   useEffect(() => {
     if (!user || !user.employee?.employee_id) return;
 
-    const fetchLogs = async () => {
-      try {
-        const id = user.employee.employee_id;
-        const res = await getAttendanceByEmployeeId(id);
+   const fetchLogs = async () => {
+  try {
+    const id = user.employee.employee_id;
+    const res = await getAttendanceByEmployeeId(id);
 
-        const today = new Date();
-        const sevenDaysAgo = new Date();
-        sevenDaysAgo.setDate(today.getDate() - 6);
+    if (!res || !res.data || !Array.isArray(res.data.data)) {
+      return console.warn("Invalid data structure:", res);
+    }
 
-        const filtered = res.data.data.filter((log) => {
-          const logDate = new Date(log.attendance_date);
-          return logDate >= sevenDaysAgo && logDate <= today;
-        });
+    const today = new Date();
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(today.getDate() - 6);
 
-        const sorted = filtered.sort(
-          (a, b) => new Date(b.attendance_date) - new Date(a.attendance_date)
-        );
+    const filtered = res.data.data.filter((log) => {
+      const logDate = new Date(log.attendance_date);
+      return logDate >= sevenDaysAgo && logDate <= today;
+    });
 
-        setAttendanceLogs(sorted);
-      } catch (err) {
-        if (err.response?.status !== 401) {
-          toast.error("Failed to load attendance data");
-        }
-      }
-    };
+    const sorted = filtered.sort(
+      (a, b) => new Date(b.attendance_date) - new Date(a.attendance_date)
+    );
+
+    setAttendanceLogs(sorted);  
+  } catch (err) {
+  const status = err.response?.status;
+
+  if (status === 404) {
+    setAttendanceLogs([]);
+  } else if (status && status !== 401) {
+    toast.error("Failed to load attendance data");
+  } else if (!status) {
+    console.warn("Network/server error:", err.message);
+  }
+}
+
+
+};
+
 
     fetchLogs();
   }, [user]);
