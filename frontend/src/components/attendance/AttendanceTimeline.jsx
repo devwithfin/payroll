@@ -1,8 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-const AttendanceTimeline = ({ checkInTime, checkOutTime, currentTime = "00:00" }) => {
+const AttendanceTimeline = ({ checkInTime, checkOutTime }) => {
   const startHour = 8;
   const endHour = 17;
+
+  const [currentTime, setCurrentTime] = useState("00:00");
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString("en-GB", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      setCurrentTime(timeStr);
+    };
+
+    updateTime();  
+    const interval = setInterval(updateTime, 60000);  
+
+    return () => clearInterval(interval);
+  }, []);
 
   const getProgressPercent = () => {
     if (!currentTime || !currentTime.includes(":")) return 0;
@@ -11,7 +29,7 @@ const AttendanceTimeline = ({ checkInTime, checkOutTime, currentTime = "00:00" }
     const totalMinutes = (currHour - startHour) * 60 + currMin;
     const totalWorkingMinutes = (endHour - startHour) * 60;
     const percent = Math.min((totalMinutes / totalWorkingMinutes) * 100, 100);
-    return percent;
+    return percent < 0 ? 0 : percent;
   };
 
   const progressPercent = getProgressPercent();
@@ -19,7 +37,7 @@ const AttendanceTimeline = ({ checkInTime, checkOutTime, currentTime = "00:00" }
   return (
     <div className="d-flex align-items-center gap-3 mt-4">
       <div className="text-end" style={{ width: "80px" }}>
-        <div className="small text-muted mb-1">Clock Out</div>
+        <div className="small text-muted mb-1">Clock In</div>
         <div className="fw-bold">08:00</div>
       </div>
 
