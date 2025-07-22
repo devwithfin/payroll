@@ -32,6 +32,30 @@ export default function AccountActivation() {
     toast.success("Account activated successfully");
   };
 
+  const getStatusBadge = (status) => {
+    const lower = status?.toLowerCase();
+    let bg = "#6c757d";
+
+    if (lower === "active") bg = "#198754";
+    else if (lower === "not active") bg = "#dc3545";
+
+    return (
+      <span
+        className="badge text-white text-capitalize"
+        style={{
+          backgroundColor: bg,
+          minWidth: "100px",
+          textAlign: "center",
+          padding: "0.35rem 0.75rem",
+          fontSize: "0.85rem",
+          borderRadius: "0.5rem",
+        }}
+      >
+        {status || "Unknown"}
+      </span>
+    );
+  };
+
   const renderColumnsWithPage = (currentPage, perPage) => [
     {
       name: "#",
@@ -42,18 +66,11 @@ export default function AccountActivation() {
       name: "Email",
       selector: (row) => row.email,
       sortable: true,
+      width:"500px"
     },
     {
       name: "Role",
       selector: (row) => row.role,
-      sortable: true,
-    },
-    {
-      name: "Status",
-      selector: (row) =>
-        row.password
-          ? <span className="badge bg-success">Active</span>
-          : <span className="badge bg-danger">Not Active</span>,
       sortable: true,
     },
     {
@@ -67,6 +84,11 @@ export default function AccountActivation() {
           minute: "2-digit",
           hour12: false,
         }).format(new Date(row.created_at)),
+      sortable: true,
+    },
+      {
+      name: "Status",
+      selector: (row) => getStatusBadge(row.password ? "Active" : "Not Active"),
       sortable: true,
     },
     {

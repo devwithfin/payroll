@@ -61,7 +61,6 @@ export default function OvertimeApproval() {
   };
 
   const formatDate = (dateStr) => (dateStr ? new Date(dateStr).toLocaleDateString("id-ID") : "-");
-  const formatTime = (time) => (time ? time.slice(0, 5) : "-");
 
   const getStatusBadge = (status) => {
   const lower = status?.toLowerCase();
@@ -85,7 +84,6 @@ export default function OvertimeApproval() {
   );
 };
 
-
   const renderColumnsWithPage = (currentPage, perPage) => [
     {
       name: "#",
@@ -96,35 +94,23 @@ export default function OvertimeApproval() {
       name: "Full Name",
       selector: (row) => row.employee?.full_name || "-",
       sortable: true,
+      width : "150px"
     },
     {
       name: "Request Date",
       selector: (row) => formatDate(row.request_date),
+       width : "150px"
     },
     {
       name: "Overtime Date",
       selector: (row) => formatDate(row.overtime_date),
-    },
-    {
-      name: "Start Time",
-      selector: (row) => formatTime(row.start_time),
-    },
-    {
-      name: "End Time",
-      selector: (row) => formatTime(row.end_time),
+      width : "150px"
     },
     {
       name: "Reason",
       selector: (row) => row.reason || "-",
     },
-    {
-      name: "Approval Date",
-      selector: (row) => formatDate(row.approval_date_hrd),
-    },
-    {
-      name: "Notes Approval",
-      selector: (row) => row.notes_approval || "-",
-    },
+
     {
       name: "Status",
       cell: (row) => getStatusBadge(row.approval_status),
@@ -195,11 +181,11 @@ export default function OvertimeApproval() {
       )}
 
       {showInfoModal && (
-        <InfoModal
-          data={selectedRow?.calculation || {}}
-          employeeName={selectedRow?.employee?.full_name || "-"}
-          onClose={() => setShowInfoModal(false)}
-        />
+      <InfoModal
+  data={selectedRow}
+  employeeName={selectedRow?.employee?.full_name || "-"}
+  onClose={() => setShowInfoModal(false)}
+/>
       )}
     </div>
   );

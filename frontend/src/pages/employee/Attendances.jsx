@@ -11,11 +11,11 @@ import {
 
 const Attendances = () => {
   const { user } = useAuthContext();
-  const [status, setStatus] = useState("none");
+  const [status, setStatus] = useState("none"); // 'none' | 'checkedIn' | 'done'
   const [currentTime, setCurrentTime] = useState("00:00");
   const [attendanceLogs, setAttendanceLogs] = useState([]);
 
-  // Real-time clock
+  // Update current time every second
   useEffect(() => {
     const update = () => {
       const now = new Date();
@@ -31,32 +31,37 @@ const Attendances = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Fetch attendance logs for the current employee
   const fetchLogs = async () => {
+    if (!user?.employee?.employee_id) {
+      toast.error("Your account is not linked to an employee profile.");
+      return;
+    }
+
     try {
-      const id = user.employee.employee_id;
-      const res = await getAttendanceByEmployeeId(id);
+      const res = await getAttendanceByEmployeeId(user.employee.employee_id);
       const data = res.data.data;
 
       if (!Array.isArray(data)) {
-        return console.warn("Invalid data structure:", res);
+        console.warn("Invalid attendance data format:", res);
+        return;
       }
 
       const today = new Date();
-      const sevenDaysAgo = new Date();
+      const sevenDaysAgo = new Date(today);
       sevenDaysAgo.setDate(today.getDate() - 6);
 
-      const filtered = data.filter((log) => {
+      const filteredLogs = data.filter((log) => {
         const logDate = new Date(log.attendance_date);
         return logDate >= sevenDaysAgo && logDate <= today;
       });
 
-      const sorted = filtered.sort(
+      const sortedLogs = filteredLogs.sort(
         (a, b) => new Date(b.attendance_date) - new Date(a.attendance_date)
       );
 
-      setAttendanceLogs(sorted);
+      setAttendanceLogs(sortedLogs);
 
-      // Set status based on today log
       const todayStr = today.toISOString().split("T")[0];
       const todayLog = data.find(
         (log) => log.attendance_date === todayStr
@@ -67,16 +72,19 @@ const Attendances = () => {
           setStatus("checkedIn");
         } else if (todayLog.check_in_time && todayLog.check_out_time) {
           setStatus("done");
+        } else {
+          setStatus("none");
         }
       } else {
         setStatus("none");
       }
     } catch (err) {
-      const status = err.response?.status;
-      if (status === 404) {
+      if (err.response?.status === 404) {
         setAttendanceLogs([]);
+        setStatus("none");
       } else {
-        toast.error("Failed to fetch attendance data.");
+        toast.error("Failed to fetch attendance logs.");
+        console.error("Fetch logs error:", err);
       }
     }
   };
@@ -87,7 +95,7 @@ const Attendances = () => {
     }
   }, [user]);
 
-  const isAllowedCheckOut = () => {
+  const isAllowedToCheckOut = () => {
     const [hour, minute] = currentTime.split(":").map(Number);
     return hour > 17 || (hour === 17 && minute >= 0);
   };
@@ -97,56 +105,67 @@ const Attendances = () => {
       await clockIn({ employee_id: user.employee.employee_id });
       toast.success(`Checked in at ${currentTime}`);
       setStatus("checkedIn");
-      fetchLogs();  
+      fetchLogs();
     } catch (err) {
-      toast.error("Clock-in failed.");
-      console.error("Clock-in error:", err);
+      toast.error("Failed to Clock In.");
+      console.error("Clock In error:", err);
     }
   };
 
   const handleCheckOut = async () => {
-    if (!isAllowedCheckOut()) {
-      toast.error("Clock-out is only allowed after 17:00.");
+    if (!isAllowedToCheckOut()) {
+      toast.error("You can only Clock Out after 17:00.");
       return;
     }
     try {
       await clockOut({ employee_id: user.employee.employee_id });
       toast.success(`Checked out at ${currentTime}`);
       setStatus("done");
-      fetchLogs(); // Refresh logs
+      fetchLogs();
     } catch (err) {
-      toast.error("Clock-out failed.");
-      console.error("Clock-out error:", err);
+      toast.error("Failed to Clock Out.");
+      console.error("Clock Out error:", err);
     }
   };
 
-  const today = new Date();
-  const day = today.toLocaleDateString("en-US", { weekday: "long" });
-  const date = today.getDate();
-  const month = today.toLocaleDateString("en-US", { month: "long" });
-  const year = today.getFullYear();
-  const formattedDate = `${day}, ${date} ${month} ${year}`;
+const today = new Date();
+const weekday = today.toLocaleDateString("en-US", { weekday: "long" });
+const day = today.getDate();
+const month = today.toLocaleDateString("en-US", { month: "long" });
+const year = today.getFullYear();
+const formattedDate = `${weekday}, ${day} ${month} ${year}`;
+
 
   return (
     <div className="container mt-4">
       <h2 className="fs-3 fw-bold mb-1">Live Attendance</h2>
       <p className="text-muted mb-3">📅 {formattedDate}</p>
-      <LiveClock />
 
+      <LiveClock />
       <AttendanceTimeline currentTime={currentTime} />
+
+      {!user?.employee?.employee_id && (
+        <div className="alert alert-warning mt-4">
+          This account is not linked to any employee. Attendance is not available.
+        </div>
+      )}
 
       <div className="d-flex gap-3 mt-4">
         <button
           className="btn btn-success flex-fill"
           onClick={handleCheckIn}
-          disabled={status !== "none" || isAllowedCheckOut()}
+          disabled={
+            !user?.employee?.employee_id || status !== "none"
+          }
         >
           Clock In
         </button>
         <button
           className="btn btn-primary flex-fill"
           onClick={handleCheckOut}
-          disabled={status !== "checkedIn" || !isAllowedCheckOut()}
+          disabled={
+            !user?.employee?.employee_id || status !== "checkedIn" || !isAllowedToCheckOut()
+          }
         >
           Clock Out
         </button>
@@ -155,7 +174,7 @@ const Attendances = () => {
       <div className="mt-5 pt-4 border-top">
         <h5 className="fw-semibold mb-3">Attendance Log</h5>
         {attendanceLogs.length === 0 ? (
-          <p className="text-muted">No attendance records found.</p>
+          <p className="text-muted">No attendance records available.</p>
         ) : (
           <ul className="list-group">
             {attendanceLogs.map((log) => (

@@ -25,6 +25,7 @@ export default function Attendances() {
   const [currentTime, setCurrentTime] = useState("00:00");
   const [attendanceLogs, setAttendanceLogs] = useState([]);
   const [hasClockedInToday, setHasClockedInToday] = useState(false);
+  const [hasClockedOutToday, setHasClockedOutToday] = useState(false);
 
   useEffect(() => {
     const updateTime = () => {
@@ -93,10 +94,10 @@ export default function Attendances() {
         (a, b) => new Date(b.attendance_date) - new Date(a.attendance_date)
       );
       setAttendanceLogs(sorted);
-      const todayLog = logs.find(
-        (log) => log.attendance_date === today.toISOString().split("T")[0]
-      );
-      setHasClockedInToday(!!todayLog);
+      const todayStr = today.toISOString().split("T")[0];
+      const todayLog = logs.find((log) => log.attendance_date === todayStr);
+      setHasClockedInToday(!!todayLog?.check_in_time);
+      setHasClockedOutToday(!!todayLog?.check_out_time);
     } catch (err) {
       console.error("Fetch logs error:", err);
       toast.error("Failed to fetch your attendance logs.");
@@ -171,12 +172,35 @@ export default function Attendances() {
   };
 
   const today = new Date();
-  const formattedDate = today.toLocaleDateString("en-US", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  const weekday = today.toLocaleDateString("en-US", { weekday: "long" });
+  const day = today.getDate();
+  const month = today.toLocaleDateString("en-US", { month: "long" });
+  const year = today.getFullYear();
+  const formattedDate = `${weekday}, ${day} ${month} ${year}`;
+
+  const getStatusBadge = (status) => {
+    const lower = status?.toLowerCase();
+    let bg = "#6c757d";
+
+    if (lower === "present") bg = "#28a745";
+    else if (lower === "sick") bg = "#17a2b8";
+    else if (lower === "leave") bg = "#ffc107";
+    else if (lower === "absent") bg = "#dc3545";
+
+    return (
+      <span
+        className="badge text-white text-capitalize text-center"
+        style={{
+          backgroundColor: bg,
+          minWidth: "100px",
+          fontSize: "0.9rem",
+          padding: "0.4rem",
+        }}
+      >
+        {status || "Unknown"}
+      </span>
+    );
+  };
 
   const renderColumnsWithPage = (currentPage, perPage) => [
     {
@@ -203,9 +227,7 @@ export default function Attendances() {
     },
     {
       name: "Status",
-      cell: (row) => (
-        <span className="badge bg-secondary text-capitalize">{row.status}</span>
-      ),
+      cell: (row) => getStatusBadge(row.status),
       width: "120px",
     },
   ];
@@ -307,7 +329,9 @@ export default function Attendances() {
             <button
               className="btn btn-primary flex-fill"
               onClick={handleCheckOut}
-              disabled={!hasClockedInToday || !isAllowedCheckOut()}
+              disabled={
+                !hasClockedInToday || !isAllowedCheckOut() || hasClockedOutToday
+              }
             >
               Clock Out
             </button>
