@@ -1,7 +1,7 @@
-// service/account
+// service/account.js
 import API from "../libs/axiosInstance";
 
-export const getAllAccounts = () => API.get("/accounts");
+export const getAllAccounts = () => API.get("/account-users");
 
 export const updateAccountPassword = (id_user, data) =>
-  API.put(`/accounts/${id_user}`, data);
+  API.put(`/account-users/${id_user}`, data);
