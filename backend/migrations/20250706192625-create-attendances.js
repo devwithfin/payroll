@@ -29,11 +29,12 @@ module.exports = {
       },
       check_out_time: {
         type: Sequelize.TIME,
-        allowNull: false
+        allowNull: true,
       },
       status: {
         type: Sequelize.ENUM('Present', 'Sick', 'Leave', 'Absent'),
-        allowNull: false
+        allowNull: false,
+        defaultValue: "Present"
       },
       notes: {
         type: Sequelize.TEXT
