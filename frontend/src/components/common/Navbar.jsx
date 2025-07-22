@@ -159,8 +159,10 @@ const Navbar = () => {
               >
                 <li>
                   <Link
-                    to="/profile"
-                    className="dropdown-item d-flex align-items-center gap-2"
+                    to={`/${user?.role?.toLowerCase()}/profile`}
+                    className={`dropdown-item d-flex align-items-center gap-2 ${
+                      location.pathname.includes("/profile") ? "active" : ""
+                    }`}
                   >
                     <FontAwesomeIcon icon={faUser} />
                     Profile
