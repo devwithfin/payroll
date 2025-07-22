@@ -36,14 +36,13 @@ const randomTime = (hourStart, minuteRange = 15) => {
 
 module.exports = {
   async up(queryInterface) {
-    const today = new Date();
     const attendances = [];
 
-    const period1Start = new Date("2025-05-26");
-    const period1End = new Date("2025-06-25");
-    const dates1 = getWorkdays(period1Start, period1End);
+    const periodStart = new Date("2025-05-26");
+    const periodEnd = new Date("2025-06-25");
+    const workdays = getWorkdays(periodStart, periodEnd);
 
-    dates1.forEach((date, idx) => {
+    workdays.forEach((date, idx) => {
       [1, 2, 3].forEach((employeeId) => {
         const { status, notes } = randomStatus(idx, employeeId);
         const checkIn = randomTime(8);
@@ -60,36 +59,15 @@ module.exports = {
       });
     });
 
-    const period2Start = new Date("2025-06-26");
-    const period2End = today;
-    const dates2 = getWorkdays(period2Start, period2End);
-
-    dates2.forEach((date, idx) => {
-      [1, 2, 3].forEach((employeeId) => {
-        const { status, notes } = randomStatus(idx, employeeId);
-        const checkIn = randomTime(8);
-        const checkOut = randomTime(17);
-        attendances.push({
-          employee_id: employeeId,
-          attendance_date: date.toISOString().split("T")[0],
-          check_in_time: checkIn,
-          check_out_time: checkOut,
-          status,
-          notes,
-          status_processed: "Unprocessed",
-        });
-      });
-    });
-
     await queryInterface.bulkInsert("attendances", attendances, {});
   },
 
   async down(queryInterface) {
     await queryInterface.bulkDelete("attendances", {
       attendance_date: {
-        [Op.between]: ["2025-05-26", new Date().toISOString().split("T")[0]],
+        [Op.between]: ["2025-05-26", "2025-06-25"],
       },
     });
-    await queryInterface.sequelize.query('ALTER TABLE attendances AUTO_INCREMENT = 1');
+    await queryInterface.sequelize.query("ALTER TABLE attendances AUTO_INCREMENT = 1");
   },
 };

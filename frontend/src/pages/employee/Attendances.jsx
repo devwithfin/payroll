@@ -3,16 +3,19 @@ import { toast } from "react-toastify";
 import LiveClock from "../../components/attendance/LiveClock";
 import AttendanceTimeline from "../../components/attendance/AttendanceTimeline";
 import { useAuthContext } from "../../contexts/AuthContext";
-import { getAttendanceByEmployeeId } from "../../services/attendanceService";
+import {
+  getAttendanceByEmployeeId,
+  clockIn,
+  clockOut,
+} from "../../services/attendanceService";
 
-const AttendancePage = () => {
+const Attendances = () => {
   const { user } = useAuthContext();
   const [status, setStatus] = useState("none");
-  const [checkInTime, setCheckInTime] = useState(null);
-  const [checkOutTime, setCheckOutTime] = useState(null);
   const [currentTime, setCurrentTime] = useState("00:00");
   const [attendanceLogs, setAttendanceLogs] = useState([]);
 
+  // Real-time clock
   useEffect(() => {
     const update = () => {
       const now = new Date();
@@ -23,56 +26,65 @@ const AttendancePage = () => {
       });
       setCurrentTime(time);
     };
-
     update();
     const interval = setInterval(update, 1000);
     return () => clearInterval(interval);
   }, []);
 
+  const fetchLogs = async () => {
+    try {
+      const id = user.employee.employee_id;
+      const res = await getAttendanceByEmployeeId(id);
+      const data = res.data.data;
+
+      if (!Array.isArray(data)) {
+        return console.warn("Invalid data structure:", res);
+      }
+
+      const today = new Date();
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(today.getDate() - 6);
+
+      const filtered = data.filter((log) => {
+        const logDate = new Date(log.attendance_date);
+        return logDate >= sevenDaysAgo && logDate <= today;
+      });
+
+      const sorted = filtered.sort(
+        (a, b) => new Date(b.attendance_date) - new Date(a.attendance_date)
+      );
+
+      setAttendanceLogs(sorted);
+
+      // Set status based on today log
+      const todayStr = today.toISOString().split("T")[0];
+      const todayLog = data.find(
+        (log) => log.attendance_date === todayStr
+      );
+
+      if (todayLog) {
+        if (todayLog.check_in_time && !todayLog.check_out_time) {
+          setStatus("checkedIn");
+        } else if (todayLog.check_in_time && todayLog.check_out_time) {
+          setStatus("done");
+        }
+      } else {
+        setStatus("none");
+      }
+    } catch (err) {
+      const status = err.response?.status;
+      if (status === 404) {
+        setAttendanceLogs([]);
+      } else {
+        toast.error("Failed to fetch attendance data.");
+      }
+    }
+  };
 
   useEffect(() => {
-    if (!user || !user.employee?.employee_id) return;
-
-   const fetchLogs = async () => {
-  try {
-    const id = user.employee.employee_id;
-    const res = await getAttendanceByEmployeeId(id);
-
-    if (!res || !res.data || !Array.isArray(res.data.data)) {
-      return console.warn("Invalid data structure:", res);
+    if (user?.employee?.employee_id) {
+      fetchLogs();
     }
-
-    const today = new Date();
-    const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(today.getDate() - 6);
-
-    const filtered = res.data.data.filter((log) => {
-      const logDate = new Date(log.attendance_date);
-      return logDate >= sevenDaysAgo && logDate <= today;
-    });
-
-    const sorted = filtered.sort(
-      (a, b) => new Date(b.attendance_date) - new Date(a.attendance_date)
-    );
-
-    setAttendanceLogs(sorted);  
-  } catch (err) {
-  const status = err.response?.status;
-
-  if (status === 404) {
-    setAttendanceLogs([]);
-  } else if (status && status !== 401) {
-    toast.error("Failed to load attendance data");
-  } else if (!status) {
-    console.warn("Network/server error:", err.message);
-  }
-}
-
-
-};
-
-
-    fetchLogs();
   }, [user]);
 
   const isAllowedCheckOut = () => {
@@ -80,35 +92,40 @@ const AttendancePage = () => {
     return hour > 17 || (hour === 17 && minute >= 0);
   };
 
-  const nowTime = () => currentTime;
-
-  const handleCheckIn = () => {
-    const time = nowTime();
-    setCheckInTime(time);
-    setStatus("checkedIn");
-    toast.success(`Checked in at ${time}`);
+  const handleCheckIn = async () => {
+    try {
+      await clockIn({ employee_id: user.employee.employee_id });
+      toast.success(`Checked in at ${currentTime}`);
+      setStatus("checkedIn");
+      fetchLogs();  
+    } catch (err) {
+      toast.error("Clock-in failed.");
+      console.error("Clock-in error:", err);
+    }
   };
 
-  const handleCheckOut = () => {
+  const handleCheckOut = async () => {
     if (!isAllowedCheckOut()) {
-      toast.error("Clock-out can only be done after 17:00");
+      toast.error("Clock-out is only allowed after 17:00.");
       return;
     }
-
-    const time = nowTime();
-    setCheckOutTime(time);
-    setStatus("done");
-    toast.success(`Checked out at ${time}`);
+    try {
+      await clockOut({ employee_id: user.employee.employee_id });
+      toast.success(`Checked out at ${currentTime}`);
+      setStatus("done");
+      fetchLogs(); // Refresh logs
+    } catch (err) {
+      toast.error("Clock-out failed.");
+      console.error("Clock-out error:", err);
+    }
   };
 
-const today = new Date();
-const day = today.toLocaleDateString("en-US", { weekday: "long" });
-const date = today.getDate();  
-const month = today.toLocaleDateString("en-US", { month: "long" });
-const year = today.getFullYear();
-
-const formattedDate = `${day}, ${date} ${month} ${year}`;
-
+  const today = new Date();
+  const day = today.toLocaleDateString("en-US", { weekday: "long" });
+  const date = today.getDate();
+  const month = today.toLocaleDateString("en-US", { month: "long" });
+  const year = today.getFullYear();
+  const formattedDate = `${day}, ${date} ${month} ${year}`;
 
   return (
     <div className="container mt-4">
@@ -135,9 +152,8 @@ const formattedDate = `${day}, ${date} ${month} ${year}`;
         </button>
       </div>
 
-      {/* Log Attendance Section */}
       <div className="mt-5 pt-4 border-top">
-        <h5 className="fw-semibold mb-3">Log Attendance</h5>
+        <h5 className="fw-semibold mb-3">Attendance Log</h5>
         {attendanceLogs.length === 0 ? (
           <p className="text-muted">No attendance records found.</p>
         ) : (
@@ -163,4 +179,4 @@ const formattedDate = `${day}, ${date} ${month} ${year}`;
   );
 };
 
-export default AttendancePage;
+export default Attendances;

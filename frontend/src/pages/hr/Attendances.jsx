@@ -1,10 +1,12 @@
-// pages/hr/attendances
+// pages/hr/Attendances.jsx
 import React, { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Table from "../../components/common/Table";
 import {
   getAllAttendances,
   getAttendanceByEmployeeId,
+  clockIn,
+  clockOut,
 } from "../../services/attendanceService";
 import { getAllPayrollPeriods } from "../../services/payrollPeriodService";
 import RecapModal from "../../components/hr/modals/attendance/RecapModal";
@@ -15,24 +17,17 @@ import { useAuthContext } from "../../contexts/AuthContext";
 export default function Attendances() {
   const { user } = useAuthContext();
   const [activeTab, setActiveTab] = useState("self");
-
-  // Recap
   const [attendance, setAttendances] = useState([]);
   const [periods, setPeriods] = useState([]);
   const [selectedPeriod, setSelectedPeriod] = useState(null);
   const [showRecapModal, setShowRecapModal] = useState(false);
   const [recapData, setRecapData] = useState([]);
-
-  // Self Attendance (HR)
-  const [status, setStatus] = useState("none");
-  const [checkInTime, setCheckInTime] = useState(null);
-  const [checkOutTime, setCheckOutTime] = useState(null);
   const [currentTime, setCurrentTime] = useState("00:00");
   const [attendanceLogs, setAttendanceLogs] = useState([]);
+  const [hasClockedInToday, setHasClockedInToday] = useState(false);
 
-  // ⏱️ Clock realtime
   useEffect(() => {
-    const update = () => {
+    const updateTime = () => {
       const now = new Date();
       const time = now.toLocaleTimeString("id-ID", {
         hour: "2-digit",
@@ -41,9 +36,8 @@ export default function Attendances() {
       });
       setCurrentTime(time);
     };
-
-    update();
-    const interval = setInterval(update, 1000);
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
     return () => clearInterval(interval);
   }, []);
 
@@ -54,34 +48,60 @@ export default function Attendances() {
           (a, b) => new Date(a.start_date) - new Date(b.start_date)
         );
         setPeriods(sorted);
-
         const today = new Date();
-        const activePeriod = sorted.find((p) => {
-          const start = new Date(p.start_date);
-          const end = new Date(p.end_date);
-          return today >= start && today <= end;
-        });
-
-        if (activePeriod) {
-          setSelectedPeriod(activePeriod);
-        }
+        const active = sorted.find(
+          (p) =>
+            new Date(p.start_date) <= today && new Date(p.end_date) >= today
+        );
+        if (active) setSelectedPeriod(active);
       })
-      .catch(() => toast.error("Failed to load periods"));
+      .catch(() => toast.error("Failed to load payroll periods."));
   }, []);
 
   const fetchAttendances = useCallback(async () => {
+    if (!selectedPeriod) return;
     try {
       const response = await getAllAttendances();
+      const data = Array.isArray(response.data?.data) ? response.data.data : [];
       const { start_date, end_date } = selectedPeriod;
-      const filtered = response.data.data.filter((item) => {
+      const start = new Date(start_date);
+      const end = new Date(end_date);
+      const filtered = data.filter((item) => {
         const date = new Date(item.attendance_date);
-        return date >= new Date(start_date) && date <= new Date(end_date);
+        return date >= start && date <= end;
       });
       setAttendances(filtered);
-    } catch {
-      toast.error("Failed to fetch attendance data");
+    } catch (err) {
+      console.error("fetchAttendances error:", err);
+      toast.error("Failed to fetch attendance data.");
     }
   }, [selectedPeriod]);
+
+  const fetchLogs = useCallback(async () => {
+    if (!user?.employee?.employee_id) return;
+    try {
+      const res = await getAttendanceByEmployeeId(user.employee.employee_id);
+      const logs = res.data.data || [];
+      const today = new Date();
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(today.getDate() - 6);
+      const filtered = logs.filter((log) => {
+        const date = new Date(log.attendance_date);
+        return date >= sevenDaysAgo && date <= today;
+      });
+      const sorted = filtered.sort(
+        (a, b) => new Date(b.attendance_date) - new Date(a.attendance_date)
+      );
+      setAttendanceLogs(sorted);
+      const todayLog = logs.find(
+        (log) => log.attendance_date === today.toISOString().split("T")[0]
+      );
+      setHasClockedInToday(!!todayLog);
+    } catch (err) {
+      console.error("Fetch logs error:", err);
+      toast.error("Failed to fetch your attendance logs.");
+    }
+  }, [user]);
 
   useEffect(() => {
     if (selectedPeriod) {
@@ -91,11 +111,45 @@ export default function Attendances() {
     }
   }, [selectedPeriod, fetchAttendances]);
 
+  useEffect(() => {
+    fetchLogs();
+  }, [fetchLogs]);
+
+  const isAllowedCheckOut = () => {
+    const [hour, minute] = currentTime.split(":").map(Number);
+    return hour > 17 || (hour === 17 && minute >= 0);
+  };
+
+  const handleCheckIn = async () => {
+    try {
+      await clockIn({ employee_id: user.employee.employee_id });
+      toast.success("Clock-in successful");
+      fetchLogs();
+      fetchAttendances();
+    } catch (err) {
+      console.error("Clock-in error:", err);
+      toast.error("Clock-in failed");
+    }
+  };
+
+  const handleCheckOut = async () => {
+    if (!isAllowedCheckOut()) {
+      toast.error("Clock-out is allowed after 17:00");
+      return;
+    }
+    try {
+      await clockOut({ employee_id: user.employee.employee_id });
+      toast.success("Clock-out successful");
+      fetchLogs();
+      fetchAttendances();
+    } catch {
+      toast.error("Clock-out failed");
+    }
+  };
+
   const handleShowRecap = () => {
     if (!selectedPeriod) return;
-
     const recapMap = {};
-
     attendance.forEach((item) => {
       const name = item.full_name;
       const status = item.status;
@@ -108,97 +162,21 @@ export default function Attendances() {
           Absent: 0,
         };
       }
-
       if (recapMap[name][status] !== undefined) {
         recapMap[name][status]++;
       }
     });
-
     setRecapData(Object.values(recapMap));
     setShowRecapModal(true);
   };
 
-  useEffect(() => {
-    if (!user || !user.employee?.employee_id) return;
-
-    const fetchLogs = async () => {
-      try {
-        const id = user.employee.employee_id;
-        const res = await getAttendanceByEmployeeId(id);
-
-        const today = new Date();
-        const sevenDaysAgo = new Date();
-        sevenDaysAgo.setDate(today.getDate() - 6);
-
-        const filtered = res.data.data.filter((log) => {
-          const logDate = new Date(log.attendance_date);
-          return logDate >= sevenDaysAgo && logDate <= today;
-        });
-
-        const sorted = filtered.sort(
-          (a, b) => new Date(b.attendance_date) - new Date(a.attendance_date)
-        );
-
-        setAttendanceLogs(sorted);
-      } catch (err) {
-        if (err.response?.status !== 401) {
-          toast.error("Failed to load attendance data");
-        }
-      }
-    };
-
-    fetchLogs();
-  }, [user]);
-
-  const isAllowedCheckOut = () => {
-    const [hour, minute] = currentTime.split(":").map(Number);
-    return hour > 17 || (hour === 17 && minute >= 0);
-  };
-
-  const nowTime = () => currentTime;
-
-  const handleCheckIn = () => {
-    const time = nowTime();
-    setCheckInTime(time);
-    setStatus("checkedIn");
-    toast.success(`Checked in at ${time}`);
-  };
-
-  const handleCheckOut = () => {
-    if (!isAllowedCheckOut()) {
-      toast.error("Clock-out can only be done after 17:00");
-      return;
-    }
-
-    const time = nowTime();
-    setCheckOutTime(time);
-    setStatus("done");
-    toast.success(`Checked out at ${time}`);
-  };
-
-  const renderStatusBadge = (status) => {
-    const val = status?.toLowerCase();
-    let bgColor = "#6c757d";
-
-    if (val === "present") bgColor = "#28a745";
-    else if (val === "sick") bgColor = "#f0ad4e";
-    else if (val === "leave") bgColor = "#17a2b8";
-    else if (val === "absent") bgColor = "#dc3545";
-
-    return (
-      <span
-        className="badge text-white text-capitalize text-center"
-        style={{
-          backgroundColor: bgColor,
-          minWidth: "100px",
-          fontSize: "0.9rem",
-          padding: "0.4rem",
-        }}
-      >
-        {status}
-      </span>
-    );
-  };
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString("en-US", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 
   const renderColumnsWithPage = (currentPage, perPage) => [
     {
@@ -206,64 +184,31 @@ export default function Attendances() {
       selector: (row, index) => (currentPage - 1) * perPage + index + 1,
       width: "50px",
     },
-    {
-      name: "Employee Name",
-      selector: (row) => row.full_name,
-      sortable: true,
-      width: "480px",
-    },
+    { name: "Employee Name", selector: (row) => row.full_name, sortable: true },
     {
       name: "Check In",
-      selector: (row) => row.check_in_time,
-      sortable: true,
+      selector: (row) => row.check_in_time || "--:--",
       width: "120px",
     },
     {
       name: "Check Out",
-      selector: (row) => row.check_out_time,
-      sortable: true,
+      selector: (row) => row.check_out_time || "--:--",
       width: "120px",
     },
     {
       name: "Date",
       selector: (row) => row.attendance_date,
       sortable: true,
-      width: "100px",
+      width: "120px",
     },
     {
       name: "Status",
-      cell: (row) => renderStatusBadge(row.status),
-      sortable: true,
-      width: "140px",
+      cell: (row) => (
+        <span className="badge bg-secondary text-capitalize">{row.status}</span>
+      ),
+      width: "120px",
     },
   ];
-
-  const formatRange = (startStr, endStr) => {
-    const start = new Date(startStr);
-    const end = new Date(endStr);
-
-    const startFormatted = start.toLocaleDateString("id-ID", {
-      day: "2-digit",
-      month: "short",
-    });
-
-    const endFormatted = end.toLocaleDateString("id-ID", {
-      day: "2-digit",
-      month: "short",
-    });
-
-    const year = end.getFullYear();
-
-    return `${startFormatted} – ${endFormatted} ${year}`;
-  };
-
-  const today = new Date();
-  const day = today.toLocaleDateString("en-US", { weekday: "long" });
-  const date = today.getDate();
-  const month = today.toLocaleDateString("en-US", { month: "long" });
-  const year = today.getFullYear();
-
-  const formattedDate = `${day}, ${date} ${month} ${year}`;
 
   return (
     <div className="container p-1">
@@ -298,7 +243,6 @@ export default function Attendances() {
                 {selectedPeriod && (
                   <button
                     className="btn btn-sm btn-success"
-                    style={{ minWidth: "180px" }}
                     onClick={handleShowRecap}
                   >
                     Recapitulation
@@ -306,7 +250,6 @@ export default function Attendances() {
                 )}
                 <select
                   className="form-select form-select-sm"
-                  style={{ minWidth: "250px" }}
                   value={selectedPeriod?.period_id || ""}
                   onChange={(e) => {
                     const period = periods.find(
@@ -316,11 +259,23 @@ export default function Attendances() {
                   }}
                 >
                   <option value="">Select Period</option>
-                  {periods.map((p) => (
-                    <option key={p.period_id} value={p.period_id}>
-                      {formatRange(p.start_date, p.end_date)}
-                    </option>
-                  ))}
+                  {periods.map((p) => {
+                    const start = new Date(p.start_date);
+                    const end = new Date(p.end_date);
+                    const formatted = `${start.toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                    })} - ${end.toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}`;
+                    return (
+                      <option key={p.period_id} value={p.period_id}>
+                        {formatted}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
             }
@@ -341,28 +296,27 @@ export default function Attendances() {
           <p className="text-muted mb-3">📅 {formattedDate}</p>
           <LiveClock />
           <AttendanceTimeline currentTime={currentTime} />
-
           <div className="d-flex gap-3 mt-4">
             <button
               className="btn btn-success flex-fill"
               onClick={handleCheckIn}
-              disabled={status !== "none" || isAllowedCheckOut()}
+              disabled={hasClockedInToday}
             >
               Clock In
             </button>
             <button
               className="btn btn-primary flex-fill"
               onClick={handleCheckOut}
-              disabled={status !== "checkedIn" || !isAllowedCheckOut()}
+              disabled={!hasClockedInToday || !isAllowedCheckOut()}
             >
               Clock Out
             </button>
           </div>
 
           <div className="mt-5 pt-4 border-top">
-            <h5 className="fw-semibold mb-3">Log Attendance</h5>
+            <h5 className="fw-semibold mb-3">Attendance Logs</h5>
             {attendanceLogs.length === 0 ? (
-              <p className="text-muted">No attendance records found.</p>
+              <p className="text-muted">No attendance records yet.</p>
             ) : (
               <ul className="list-group">
                 {attendanceLogs.map((log) => (
