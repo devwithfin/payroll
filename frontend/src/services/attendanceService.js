@@ -5,11 +5,7 @@ export const getAllAttendances = () => API.get('/attendances');
 
 export const getAttendanceByEmployeeId = (id) => API.get(`/attendances/employee/${id}`);
 
-// export const createAllAttendance = (data) =>
-//   API.post('/attendances', data);
+export const clockIn = (data) => API.post("/attendances/clock-in", data);
 
-// export const updateAllAttendance = (id, data) =>
-//   API.put(`/attendances/${id}`, data);
-
-// export const deleteAllAttendance = (id) =>
-//   API.delete(`/attendances/${id}`);
+export const clockOut = (data) =>
+  API.post("/attendances/clock-out", data);
