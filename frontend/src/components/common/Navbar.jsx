@@ -54,7 +54,7 @@ const Navbar = () => {
 
     "/employee/dashboard": "Employee Dashboard",
     "/employee/attendances": "Employee Attendance",
-    "/employee/overtimes": "Request Overtime",
+    "/employee/overtimes": "Overtime Request",
     "/employee/profile": "Employee Profile",
   };
 
