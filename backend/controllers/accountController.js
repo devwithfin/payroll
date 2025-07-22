@@ -6,7 +6,7 @@ module.exports = {
   getAllAccounts: async (req, res) => {
     try {
       const users = await User.findAll({
-        attributes: ["id_user", "email", "role", "created_at", "updated_at"],
+        attributes: ["id_user", "email", "password", "role", "created_at", "updated_at"],
         order: [["id_user", "DESC"]],
       });
 
