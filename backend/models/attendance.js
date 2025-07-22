@@ -29,11 +29,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       check_out_time: {
         type: DataTypes.TIME,
-        allowNull: false,
+        allowNull: true,
       },
       status: {
         type: DataTypes.ENUM("Present", "Sick", "Leave", "Absent"),
         allowNull: false,
+         defaultValue: "Present"
       },
       notes: {
         type: DataTypes.TEXT,
@@ -49,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "Attendance",
       tableName: "attendances",
-      timestamps: true,
+      timestamps: false,
     }
   );
 
