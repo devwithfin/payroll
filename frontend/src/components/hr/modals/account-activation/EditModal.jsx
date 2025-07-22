@@ -43,7 +43,11 @@ export default function EditModal({ account, onClose, onSave }) {
           <button className="btn btn-secondary" onClick={onClose}>
             Cancel
           </button>
-          <button className="btn btn-primary" onClick={handleSubmit}>
+          <button
+            className="btn text-white"
+            style={{ backgroundColor: "#1071b9" }}
+            onClick={handleSubmit}
+          >
             Activate
           </button>
         </>
