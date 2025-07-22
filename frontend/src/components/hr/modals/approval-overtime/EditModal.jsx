@@ -21,7 +21,7 @@ export default function EditModal({ data, approverId, onClose, onUpdated }) {
 
   const handleSubmit = async () => {
     if (!form.approval_status) {
-      toast.warning("Pilih status approval terlebih dahulu.");
+      toast.warning("Please select an approval status first.");
       return;
     }
 
@@ -31,32 +31,32 @@ export default function EditModal({ data, approverId, onClose, onUpdated }) {
         notes_approval: form.notes_approval,
         approver_id: approverId,
       });
-      toast.success("Status lembur berhasil diperbarui.");
+      toast.success("Overtime status successfully updated.");
       onClose();
       onUpdated();
     } catch (err) {
-      toast.error("Gagal memperbarui status lembur.");
+      toast.error("Failed to update overtime status.");
       console.error(err);
     }
   };
 
   return (
     <BaseModal
-      title="Approval Overtime"
+      title="Overtime Approval"
       onClose={onClose}
       footer={
         <>
           <button className="btn btn-secondary" onClick={onClose}>
-            Batal
+            Cancel
           </button>
           <button className="btn btn-primary" onClick={handleSubmit}>
-            Simpan
+            Save
           </button>
         </>
       }
     >
       <div className="mb-3">
-        <label className="form-label">Nama Karyawan</label>
+        <label className="form-label">Employee Name</label>
         <input
           className="form-control"
           value={data?.employee?.full_name || "-"}
@@ -65,7 +65,7 @@ export default function EditModal({ data, approverId, onClose, onUpdated }) {
       </div>
 
       <div className="mb-3">
-        <label className="form-label">Status Approval</label>
+        <label className="form-label">Approval Status</label>
         <select
           className="form-select"
           value={form.approval_status}
@@ -73,14 +73,14 @@ export default function EditModal({ data, approverId, onClose, onUpdated }) {
             setForm({ ...form, approval_status: e.target.value })
           }
         >
-          <option value="">-- Pilih Status --</option>
-          <option value="Approved">Disetujui</option>
-          <option value="Rejected">Ditolak</option>
+          <option value="">-- Select Status --</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
         </select>
       </div>
 
       <div className="mb-3">
-        <label className="form-label">Catatan</label>
+        <label className="form-label">Approval Notes</label>
         <textarea
           className="form-control"
           value={form.notes_approval}
