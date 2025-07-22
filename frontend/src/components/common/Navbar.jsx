@@ -1,4 +1,3 @@
-// components/common/navbar
 import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -60,7 +59,6 @@ const Navbar = () => {
   };
 
   const pageTitle = pageTitles[location.pathname];
-
   const fullName = user?.employee?.full_name || user?.username || "-";
   const email = user?.employee?.email || "-";
 
@@ -76,10 +74,7 @@ const Navbar = () => {
       }}
     >
       <div className="container-fluid px-4 d-flex justify-content-between align-items-center">
-        <h6
-          className="m-0 fw-semibold"
-          style={{ fontSize: "20px", color: "#212529" }}
-        >
+        <h6 className="m-0 fw-semibold" style={{ fontSize: "20px", color: "#212529" }}>
           {pageTitle}
         </h6>
 
@@ -127,9 +122,7 @@ const Navbar = () => {
                     style={{
                       fontSize: "12px",
                       marginLeft: "6px",
-                      transform: dropdownOpen
-                        ? "rotate(180deg)"
-                        : "rotate(0deg)",
+                      transform: dropdownOpen ? "rotate(180deg)" : "rotate(0deg)",
                       transition: "transform 0.3s",
                     }}
                   />
@@ -160,22 +153,26 @@ const Navbar = () => {
                 <li>
                   <Link
                     to={`/${user?.role?.toLowerCase()}/profile`}
-                    className={`dropdown-item d-flex align-items-center gap-2 ${
-                      location.pathname.includes("/profile") ? "active" : ""
-                    }`}
+                    onClick={() => setDropdownOpen(false)}
+                    className="dropdown-item d-flex align-items-center gap-2"
+                    style={{
+                      backgroundColor: location.pathname.includes("/profile") ? "#1071B9" : "transparent",
+                      color: location.pathname.includes("/profile") ? "#fff" : "#212529",
+                    }}
                   >
                     <FontAwesomeIcon icon={faUser} />
                     Profile
                   </Link>
                 </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
+
                 <li>
                   <button
                     type="button"
                     className="dropdown-item d-flex align-items-center gap-2"
-                    onClick={handleLogout}
+                    onClick={() => {
+                      setDropdownOpen(false);
+                      handleLogout();
+                    }}
                   >
                     <FontAwesomeIcon icon={faSignOutAlt} />
                     Logout
