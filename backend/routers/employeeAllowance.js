@@ -5,10 +5,10 @@ const employeeAllowanceController = require('../controllers/employeeAllowanceCon
 
 router.get('/', employeeAllowanceController.getAll);
 
-// router.post('/', employeeAllowanceController.create);
+router.post('/', employeeAllowanceController.create);
 
-// router.put('/:id', employeeAllowanceController.update);
+router.put('/:id', employeeAllowanceController.update);
 
-// router.delete('/:id', employeeAllowanceController.destroy);
+router.delete('/:id', employeeAllowanceController.destroy);
 
 module.exports = router;

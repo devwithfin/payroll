@@ -22,11 +22,10 @@ export default function EditModal({ data, onClose }) {
       .catch(() => toast.error("Failed to load employees"));
 
     getAllAllowances()
-      .then((res) => setAllowances(res.data))
-      .catch(() => toast.error("Failed to load allowances"));
+  .then((res) => setAllowances(res.data.data))  
+  .catch(() => toast.error("Failed to load allowances"));
   }, []);
 
-  // Inisialisasi form dari data awal
   useEffect(() => {
     if (data) {
       setForm({
@@ -38,7 +37,6 @@ export default function EditModal({ data, onClose }) {
     }
   }, [data]);
 
-  // Auto update amount saat allowance diganti
   useEffect(() => {
     const selectedAllowance = allowances.find(
       (a) => String(a.allowance_id) === String(form.allowance_id)
@@ -89,7 +87,7 @@ export default function EditModal({ data, onClose }) {
 
   return (
     <BaseModal
-      title="Edit Allowance"
+      title="Edit Employee Allowance"
       onClose={onClose}
       footer={
         <>

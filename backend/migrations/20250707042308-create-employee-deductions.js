@@ -37,6 +37,11 @@ module.exports = {
         type: Sequelize.DATEONLY,
         allowNull: false
       },
+        status_processed: {
+        type: Sequelize.ENUM("Unprocessed", "Processed"),
+        allowNull: false,
+        defaultValue: "Unprocessed",
+      },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,

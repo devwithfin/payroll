@@ -101,98 +101,98 @@ const EmployeeAllowanceController = {
     }
   },
 
-  // create: async (req, res) => {
-  //   const { employee_id, allowance_id, effective_date, end_date, amount } = req.body;
+  create: async (req, res) => {
+    const { employee_id, allowance_id, effective_date, end_date, amount } = req.body;
 
-  //   try {
-  //     let finalAmount = amount;
+    try {
+      let finalAmount = amount;
 
-  //     if (!finalAmount) {
-  //       const allowance = await Allowance.findByPk(allowance_id);
-  //       if (!allowance) {
-  //         return res.status(404).json({ message: "Allowance not found" });
-  //       }
+      if (!finalAmount) {
+        const allowance = await Allowance.findByPk(allowance_id);
+        if (!allowance) {
+          return res.status(404).json({ message: "Allowance not found" });
+        }
 
-  //       if (allowance.default_amount !== null) {
-  //         finalAmount = allowance.default_amount;
-  //       } else {
-  //         const employee = await Employee.findByPk(employee_id, {
-  //           include: {
-  //             model: Position,
-  //             as: "position",
-  //             attributes: ["job_allowance"],
-  //           },
-  //         });
+        if (allowance.default_amount !== null) {
+          finalAmount = allowance.default_amount;
+        } else {
+          const employee = await Employee.findByPk(employee_id, {
+            include: {
+              model: Position,
+              as: "position",
+              attributes: ["job_allowance"],
+            },
+          });
 
-  //         if (!employee || !employee.position) {
-  //           return res.status(404).json({ message: "Employee or position not found" });
-  //         }
+          if (!employee || !employee.position) {
+            return res.status(404).json({ message: "Employee or position not found" });
+          }
 
-  //         finalAmount = employee.position.job_allowance;
-  //       }
-  //     }
+          finalAmount = employee.position.job_allowance;
+        }
+      }
 
-  //     const created = await EmployeeAllowance.create({
-  //       employee_id,
-  //       allowance_id,
-  //       amount: finalAmount,
-  //       effective_date,
-  //       end_date,
-  //     });
+      const created = await EmployeeAllowance.create({
+        employee_id,
+        allowance_id,
+        amount: finalAmount,
+        effective_date,
+        end_date,
+      });
 
-  //     res.status(201).json({
-  //       message: "Employee allowance created successfully",
-  //       data: created,
-  //     });
-  //   } catch (error) {
-  //     console.error("create error:", error);
-  //     res.status(500).json({ message: "Failed to create employee allowance" });
-  //   }
-  // },
+      res.status(201).json({
+        message: "Employee allowance created successfully",
+        data: created,
+      });
+    } catch (error) {
+      console.error("create error:", error);
+      res.status(500).json({ message: "Failed to create employee allowance" });
+    }
+  },
 
-  // update: async (req, res) => {
-  //   try {
-  //     const data = await EmployeeAllowance.findByPk(req.params.id);
-  //     if (!data) {
-  //       return res.status(404).json({ message: "Employee allowance not found" });
-  //     }
+  update: async (req, res) => {
+    try {
+      const data = await EmployeeAllowance.findByPk(req.params.id);
+      if (!data) {
+        return res.status(404).json({ message: "Employee allowance not found" });
+      }
 
-  //     const { allowance_id, amount, effective_date, end_date } = req.body;
+      const { allowance_id, amount, effective_date, end_date } = req.body;
 
-  //     await data.update({
-  //       allowance_id: allowance_id ?? data.allowance_id,
-  //       amount: amount ?? data.amount,
-  //       effective_date: effective_date ?? data.effective_date,
-  //       end_date: end_date ?? data.end_date,
-  //     });
+      await data.update({
+        allowance_id: allowance_id ?? data.allowance_id,
+        amount: amount ?? data.amount,
+        effective_date: effective_date ?? data.effective_date,
+        end_date: end_date ?? data.end_date,
+      });
 
-  //     res.status(200).json({
-  //       message: "Employee allowance updated successfully",
-  //       data,
-  //     });
-  //   } catch (error) {
-  //     console.error("update error:", error);
-  //     res.status(500).json({ message: "Failed to update employee allowance" });
-  //   }
-  // },
+      res.status(200).json({
+        message: "Employee allowance updated successfully",
+        data,
+      });
+    } catch (error) {
+      console.error("update error:", error);
+      res.status(500).json({ message: "Failed to update employee allowance" });
+    }
+  },
 
-  // destroy: async (req, res) => {
-  //   try {
-  //     const data = await EmployeeAllowance.findByPk(req.params.id);
-  //     if (!data) {
-  //       return res.status(404).json({ message: "Employee allowance not found" });
-  //     }
+  destroy: async (req, res) => {
+    try {
+      const data = await EmployeeAllowance.findByPk(req.params.id);
+      if (!data) {
+        return res.status(404).json({ message: "Employee allowance not found" });
+      }
 
-  //     await data.destroy();
+      await data.destroy();
 
-  //     res.status(200).json({
-  //       message: "Employee allowance deleted successfully",
-  //     });
-  //   } catch (error) {
-  //     console.error("destroy error:", error);
-  //     res.status(500).json({ message: "Failed to delete employee allowance" });
-  //   }
-  // },
+      res.status(200).json({
+        message: "Employee allowance deleted successfully",
+      });
+    } catch (error) {
+      console.error("destroy error:", error);
+      res.status(500).json({ message: "Failed to delete employee allowance" });
+    }
+  },
 };
 
 module.exports = EmployeeAllowanceController;

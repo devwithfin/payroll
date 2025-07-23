@@ -115,7 +115,7 @@ export default function AccountActivation() {
         title="Account Activation"
         data={accounts}
         renderColumnsWithPage={renderColumnsWithPage}
-        hideAddButton={true}
+        showAddButton={false}
       />
 
       {showEditModal && selectedAccount && (
