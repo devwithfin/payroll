@@ -51,15 +51,18 @@ module.exports = {
       },
       pph21_deduction: {
         type: Sequelize.DECIMAL(15, 2),
-        allowNull: false
+        allowNull: false,
+        defaultValue: 0
       },
       bpjs_kesehatan_deduction: {
         type: Sequelize.DECIMAL(15, 2),
-        allowNull: false
+        allowNull: false,
+         defaultValue: 0
       },
       bpjs_ketenagakerjaan_deduction: {
         type: Sequelize.DECIMAL(15, 2),
-        allowNull: false
+        allowNull: false,
+        defaultValue: 0
       },
       other_deductions: {
         type: Sequelize.DECIMAL(15, 2),
@@ -74,12 +77,14 @@ module.exports = {
         allowNull: false
       },
       payroll_status: {
-        type: Sequelize.STRING(20),
-        allowNull: false
+        type: Sequelize.ENUM('Draft', 'Final'),
+        allowNull: false,
+        defaultValue: "Draft"
       },
       payment_date: {
         type: Sequelize.DATE,
-        allowNull: false
+         allowNull: true,
+         defaultValue: null,
       },
       created_at: {
         type: Sequelize.DATE,
