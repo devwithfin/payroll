@@ -9,8 +9,11 @@ router.get("/:id", payrollPeriodController.getById);
 
 router.post("/", payrollPeriodController.create);
 
-router.post("/:id/draft-payroll", payrollPeriodController.createDraftPayroll);
-router.post("/process-final/:id", payrollPeriodController.createFinalPayroll);
+router.post("/draft-payroll/:id", payrollPeriodController.createDraftPayroll);
+
+router.post("/final-payroll/:id", payrollPeriodController.createFinalPayroll);
+
+router.post("/pay/:id", payrollPeriodController.createPayrollTransfer);
 
 router.put("/:id", payrollPeriodController.update);
 
