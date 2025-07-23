@@ -1,16 +1,19 @@
 // routes/payrollPeriodRoute.js
 const express = require("express");
 const router = express.Router();
-const PayrollPeriodController = require("../controllers/payrollPeriodController");
+const payrollPeriodController = require("../controllers/payrollPeriodController");
 
-router.get("/", PayrollPeriodController.getAll);
+router.get("/", payrollPeriodController.getAll);
 
-router.get("/:id", PayrollPeriodController.getById);
+router.get("/:id", payrollPeriodController.getById);
 
-router.post("/", PayrollPeriodController.create);
+router.post("/", payrollPeriodController.create);
 
-router.put("/:id", PayrollPeriodController.update);
+router.post("/:id/draft-payroll", payrollPeriodController.createDraftPayroll);
+router.post("/process-final/:id", payrollPeriodController.createFinalPayroll);
 
-router.delete("/:id", PayrollPeriodController.destroy);
+router.put("/:id", payrollPeriodController.update);
+
+router.delete("/:id", payrollPeriodController.destroy);
 
 module.exports = router;
