@@ -20,11 +20,6 @@ module.exports = {
           is_fixed: true,
           default_amount: null,
         },
-        {
-          allowance_name: "Tunjangan Kinerja",
-          is_fixed: false,
-          default_amount: null,
-        },
       ],
       {}
     );

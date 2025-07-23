@@ -5,8 +5,8 @@ module.exports = {
     await queryInterface.bulkInsert("employees", [
       {
         employee_id: 1,
-        position_id: 1,
-        department_id: 1,
+        position_id: 8,
+        department_id: 5,
         role: "HR",
         employee_nik: "1234567890",
         full_name: "Bayu Anggara",
@@ -27,7 +27,7 @@ module.exports = {
       },
       {
         employee_id: 2,
-        position_id: 9,
+        position_id: 10,
         department_id: 6,
         role: "Finance",
         employee_nik: "2234567890",
@@ -49,8 +49,8 @@ module.exports = {
       },
       {
         employee_id: 3,
-        position_id: 2,
-        department_id: 2,
+        position_id: 1,
+        department_id: 1,
         role: "Employee",
         employee_nik: "3302020991",
         full_name: "Alfiansyah Wicaksono",

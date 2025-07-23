@@ -12,7 +12,7 @@ module.exports = {
         updated_at: new Date(),
       },
       {
-        email: "dewipustis@gmail.com",
+        email: "puspitadewi@gmail.com",
         password: "$2b$10$bKgw9Q4RG.HaPk5Aj.XlPuFBbPT8/prBGDX6W7siH80SSO06xz4yW",
         role: "Finance",
         employee_id: 2,

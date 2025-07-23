@@ -38,8 +38,11 @@ module.exports = {
   async up(queryInterface) {
     const attendances = [];
 
-    const periodStart = new Date("2025-05-26");
-    const periodEnd = new Date("2025-06-25");
+    const periodStart = new Date("2025-06-26");
+    const today = new Date();
+    const periodEnd = new Date(today);
+    periodEnd.setDate(today.getDate() - 1);
+
     const workdays = getWorkdays(periodStart, periodEnd);
 
     workdays.forEach((date, idx) => {
@@ -62,9 +65,15 @@ module.exports = {
   },
 
   async down(queryInterface) {
+    const startDate = "2025-06-26";
+    const today = new Date();
+    const endDate = new Date(today);
+    endDate.setDate(today.getDate() - 1);
+    const endDateString = endDate.toISOString().split("T")[0];
+
     await queryInterface.bulkDelete("attendances", {
       attendance_date: {
-        [Op.between]: ["2025-05-26", "2025-06-25"],
+        [Op.between]: [startDate, endDateString],
       },
     });
     await queryInterface.sequelize.query("ALTER TABLE attendances AUTO_INCREMENT = 1");
