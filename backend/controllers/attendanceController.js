@@ -7,7 +7,7 @@ const AttendanceController = {
       const attendances = await Attendance.findAll({
         attributes: [
           "attendance_id", "employee_id", "attendance_date", "check_in_time",
-          "check_out_time", "status", "notes", "status_processed"
+          "check_out_time", "status", "notes"
         ],
         include: [
           {
@@ -55,8 +55,7 @@ getByEmployeeId: async (req, res) => {
         "check_in_time",
         "check_out_time",
         "status",
-        "notes",
-        "status_processed",
+        "notes"
       ],
       order: [["attendance_date", "DESC"]],
     });
@@ -96,8 +95,7 @@ clockIn: async (req, res) => {
       attendance_date: today,
       check_in_time: now,
       check_out_time: null,
-      status: "Present",
-      status_processed: "Unprocessed",
+      status: "Present"    
     });
 
     res.status(201).json({
