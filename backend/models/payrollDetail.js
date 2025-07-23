@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       PayrollDetail.belongsTo(models.PayrollPeriod, {
         foreignKey: "period_id",
+        as : "period"
       });
     }
   }
@@ -55,6 +56,11 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.ENUM('Draft', 'Final'),
            allowNull: false,
           defaultValue: "Draft"
+        },
+         is_paid: {
+          type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
         },
       payment_date: {
         type: DataTypes.DATE,
