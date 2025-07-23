@@ -30,7 +30,6 @@ module.exports = {
           amount,
           effective_date,
           end_date,
-          status_processed: 'Processed',  
           created_at: new Date(),
           updated_at: new Date(),
         });

@@ -39,7 +39,19 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete("payroll_periods", null, {});
+   await queryInterface.bulkDelete("users", null, {});
+  await queryInterface.bulkDelete("employee_deductions", null, {});
+  await queryInterface.bulkDelete("employee_allowances", null, {});
+  await queryInterface.bulkDelete("calculated_overtimes", null, {});
+  await queryInterface.bulkDelete("overtime_requests", null, {});
+  await queryInterface.bulkDelete("attendances", null, {});
+  await queryInterface.bulkDelete("payroll_details", null, {});
+
+  await queryInterface.bulkDelete("employees", null, {});
+  await queryInterface.bulkDelete("positions", null, {});
+  await queryInterface.bulkDelete("departments", null, {});
+  await queryInterface.bulkDelete("payroll_periods", null, {});
     await queryInterface.sequelize.query('ALTER TABLE payroll_periods AUTO_INCREMENT = 1');
+    
   },
 };

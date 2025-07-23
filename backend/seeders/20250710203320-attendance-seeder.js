@@ -54,7 +54,6 @@ module.exports = {
           check_out_time: checkOut,
           status,
           notes,
-          status_processed: "Processed",
         });
       });
     });
