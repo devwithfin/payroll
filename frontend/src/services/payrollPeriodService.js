@@ -11,3 +11,11 @@ export const updatePayrollPeriod = (id, payload) => API.put(`/payroll-periods/${
 
 export const deletePayrollPeriod = (id) => API.delete(`/payroll-periods/${id}`);
 
+export const draftPayroll = (id) => API.post(`/draft-payroll/${id}`);
+
+export const finalPayroll = (id) => API.post(`/final-payroll/${id}`);
+
+export const payTransfer = (id) => API.post(`/pay/${id}`);
+
+
+
