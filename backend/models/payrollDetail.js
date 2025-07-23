@@ -21,22 +21,46 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      period_id: DataTypes.INTEGER,
-      employee_id: DataTypes.INTEGER,
+      period_id: {
+        type: DataTypes.INTEGER,
+      },
+      employee_id: {
+        type: DataTypes.INTEGER,
+      },
       total_working_days: DataTypes.INTEGER,
       total_attendance_days: DataTypes.INTEGER,
       base_salary: DataTypes.DECIMAL(15, 2),
       total_allowances: DataTypes.DECIMAL(15, 2),
       total_overtime_pay: DataTypes.DECIMAL(15, 2),
       gross_salary: DataTypes.DECIMAL(15, 2),
-      pph21_deduction: DataTypes.DECIMAL(15, 2),
-      bpjs_kesehatan_deduction: DataTypes.DECIMAL(15, 2),
-      bpjs_ketenagakerjaan_deduction: DataTypes.DECIMAL(15, 2),
+      pph21_deduction: {
+        type: DataTypes.DECIMAL(15, 2),
+        allowNull: false,
+        defaultValue: 0
+      },
+      bpjs_kesehatan_deduction:{
+        type: DataTypes.DECIMAL(15, 2),
+        allowNull: false,
+        defaultValue: 0
+      },
+      bpjs_ketenagakerjaan_deduction: {
+        type: DataTypes.DECIMAL(15, 2),
+        allowNull: false,
+        defaultValue: 0
+      },
       other_deductions: DataTypes.DECIMAL(15, 2),
       total_deductions: DataTypes.DECIMAL(15, 2),
       net_salary: DataTypes.DECIMAL(15, 2),
-      payroll_status: DataTypes.STRING(20),
-      payment_date: DataTypes.DATE,
+      payroll_status: {
+          type: DataTypes.ENUM('Draft', 'Final'),
+           allowNull: false,
+          defaultValue: "Draft"
+        },
+      payment_date: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: null,
+      },
     },
     {
       sequelize,

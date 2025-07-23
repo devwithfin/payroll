@@ -40,11 +40,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: true,
       },
-      status_processed: {
-        type: DataTypes.ENUM("Unprocessed", "Processed"),
-        allowNull: false,
-        defaultValue: "Unprocessed",
-      },
+      // status_processed: {
+      //   type: DataTypes.ENUM("Unprocessed", "Processed"),
+      //   allowNull: false,
+      //   defaultValue: "Unprocessed",
+      // },
     },
     {
       sequelize,

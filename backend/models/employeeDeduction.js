@@ -40,11 +40,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DATEONLY,
       allowNull: false
     },
-    status_processed: {
-        type: DataTypes.ENUM("Unprocessed", "Processed"),
-        allowNull: false,
-        defaultValue: "Unprocessed",
-      },
   }, {
     sequelize,
     modelName: 'EmployeeDeduction',
