@@ -81,6 +81,11 @@ module.exports = {
         allowNull: false,
         defaultValue: "Draft"
       },
+       is_paid: {
+          type: Sequelize.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+        },
       payment_date: {
         type: Sequelize.DATE,
          allowNull: true,
@@ -107,4 +112,4 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('payroll_details');
   }
-};
+};  
