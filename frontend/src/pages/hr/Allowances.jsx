@@ -47,19 +47,29 @@ export default function Allowances() {
     .catch(() => toast.error("Failed to load payroll periods"));
 }, []);
 
-  const fetchData = useCallback(async () => {
-    try {
-      const res = await getAllEmployeeAllowances();
-      const { start_date, end_date } = selectedPeriod;
-      const filtered = res.data.data.filter((item) => {
-        const date = new Date(item.effective_date);
-        return date >= new Date(start_date) && date <= new Date(end_date);
-      });
-      setData(filtered);
-    } catch {
-      toast.error("Failed to fetch employee allowances");
+const fetchData = useCallback(async () => {
+  try {
+    const res = await getAllEmployeeAllowances();
+    const allData = res.data?.data || [];
+
+    if (!Array.isArray(allData)) {
+      throw new Error("Invalid data format");
     }
-  }, [selectedPeriod]);
+
+    const { start_date, end_date } = selectedPeriod;
+    const filtered = allData.filter((item) => {
+      const date = new Date(item.effective_date);
+      return date >= new Date(start_date) && date <= new Date(end_date);
+    });
+
+    setData(filtered);
+  } catch (err) {
+    console.error("Fetch error:", err);
+    toast.error("Failed to fetch employee allowances");
+    setData([]);  
+  }
+}, [selectedPeriod]);
+
 
   useEffect(() => {
     if (selectedPeriod) fetchData();
