@@ -15,14 +15,12 @@ const getWorkdays = (startDate, endDate) => {
   return dates;
 };
 
-const randomStatus = (dayIndex, employeeId) => {
-  if ((employeeId === 1 && dayIndex === 5) || (employeeId === 2 && dayIndex === 10)) {
-    return { status: "Sick", notes: "Flu" };
-  }
-  if (employeeId === 3 && dayIndex === 15) {
-    return { status: "Leave", notes: "Urusan keluarga" };
-  }
-  return { status: "Present", notes: null };
+const randomStatus = () => {
+  const rand = Math.random();
+  if (rand < 0.75) return { status: "Present", notes: null };
+  if (rand < 0.85) return { status: "Sick", notes: "Sakit kepala" };
+  if (rand < 0.95) return { status: "Leave", notes: "Izin pribadi" };
+  return { status: "Absent", notes: "Tanpa keterangan" };
 };
 
 const randomTime = (hourStart, minuteRange = 15) => {
@@ -45,9 +43,9 @@ module.exports = {
 
     const workdays = getWorkdays(periodStart, periodEnd);
 
-    workdays.forEach((date, idx) => {
-      [1, 2, 3].forEach((employeeId) => {
-        const { status, notes } = randomStatus(idx, employeeId);
+    workdays.forEach((date) => {
+      for (let employeeId = 1; employeeId <= 15; employeeId++) {
+        const { status, notes } = randomStatus();
         const checkIn = randomTime(8);
         const checkOut = randomTime(17);
         attendances.push({
@@ -58,7 +56,7 @@ module.exports = {
           status,
           notes,
         });
-      });
+      }
     });
 
     await queryInterface.bulkInsert("attendances", attendances, {});
