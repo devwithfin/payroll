@@ -1,21 +1,30 @@
-const { EmployeeAllowance, Employee, Allowance, Position } = require("../models");
+const {
+  EmployeeAllowance,
+  Employee,
+  Allowance,
+  Position,
+} = require("../models");
 
 const EmployeeAllowanceController = {
-  getAll: async (req, res) => {
+ getAll: async (req, res) => {
     try {
       const allowances = await EmployeeAllowance.findAll({
         include: [
           {
             model: Employee,
+            as: "employee",
             attributes: ["employee_id", "full_name"],
-            include: {
-              model: Position,
-              as: "position",
-              attributes: ["position_name", "job_allowance"],
-            },
+            include: [
+              {
+                model: Position,
+                as: "position",
+                attributes: ["position_name", "job_allowance"],
+              },
+            ],
           },
           {
             model: Allowance,
+            as: "allowance",
             attributes: ["allowance_id", "allowance_name"],
           },
         ],
@@ -30,18 +39,12 @@ const EmployeeAllowanceController = {
           amount: plain.amount,
           effective_date: plain.effective_date,
           end_date: plain.end_date,
-          full_name: plain.Employee?.full_name || undefined,
-          allowance_name: plain.Allowance?.allowance_name || undefined,
-          position_name: plain.Employee?.position?.position_name || undefined,
-          job_allowance: plain.Employee?.position?.job_allowance || 0,
+          full_name: plain.employee?.full_name || "Unknown",
+          allowance_name: plain.allowance?.allowance_name || "Unknown",
+          position_name: plain.employee?.position?.position_name || "-",
+          job_allowance: plain.employee?.position?.job_allowance || 0,
         };
       });
-
-      if (!formatted.length) {
-        return res
-          .status(204)
-          .json({ message: "No employee allowance data found", data: [] });
-      }
 
       res.status(200).json({
         message: "Employee allowances fetched successfully",
@@ -74,7 +77,9 @@ const EmployeeAllowanceController = {
       });
 
       if (!data) {
-        return res.status(404).json({ message: "Employee allowance not found" });
+        return res
+          .status(404)
+          .json({ message: "Employee allowance not found" });
       }
 
       const plain = data.toJSON();
@@ -102,7 +107,8 @@ const EmployeeAllowanceController = {
   },
 
   create: async (req, res) => {
-    const { employee_id, allowance_id, effective_date, end_date, amount } = req.body;
+    const { employee_id, allowance_id, effective_date, end_date, amount } =
+      req.body;
 
     try {
       let finalAmount = amount;
@@ -125,7 +131,9 @@ const EmployeeAllowanceController = {
           });
 
           if (!employee || !employee.position) {
-            return res.status(404).json({ message: "Employee or position not found" });
+            return res
+              .status(404)
+              .json({ message: "Employee or position not found" });
           }
 
           finalAmount = employee.position.job_allowance;
@@ -154,7 +162,9 @@ const EmployeeAllowanceController = {
     try {
       const data = await EmployeeAllowance.findByPk(req.params.id);
       if (!data) {
-        return res.status(404).json({ message: "Employee allowance not found" });
+        return res
+          .status(404)
+          .json({ message: "Employee allowance not found" });
       }
 
       const { allowance_id, amount, effective_date, end_date } = req.body;
@@ -180,7 +190,9 @@ const EmployeeAllowanceController = {
     try {
       const data = await EmployeeAllowance.findByPk(req.params.id);
       if (!data) {
-        return res.status(404).json({ message: "Employee allowance not found" });
+        return res
+          .status(404)
+          .json({ message: "Employee allowance not found" });
       }
 
       await data.destroy();

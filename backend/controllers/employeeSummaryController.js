@@ -10,8 +10,6 @@ module.exports = {
   getSummaryData: async (req, res) => {
     try {
       const employeeId = req.params.id;
-
-      // Ambil periode payroll yang terakhir closed, kalau tidak ada, ambil terbaru
       let period = await PayrollPeriod.findOne({
         where: { status: "Closed" },
         order: [["end_date", "DESC"]],
@@ -23,7 +21,6 @@ module.exports = {
         });
       }
 
-      // Jika tidak ada period sama sekali
       if (!period) {
         const endDate = new Date();
         const startDate = new Date();
@@ -54,7 +51,6 @@ module.exports = {
 
       const { start_date, end_date, period_name } = period;
 
-      // Ambil semua data kehadiran
       const attendanceRaw = await Attendance.findAll({
         where: {
           employee_id: employeeId,
@@ -64,7 +60,6 @@ module.exports = {
         order: [["attendance_date", "ASC"]],
       });
 
-      // Untuk chart per tanggal dan summary per status
       const attendanceChart = attendanceRaw.map((a) => ({
         date: a.attendance_date,
         status: a.status,
@@ -85,7 +80,6 @@ module.exports = {
 
       const totalAttendance = attendanceSummary["Present"] || 0;
 
-      // Ambil data lembur
       const overtimeRecords = await OvertimeRequest.findAll({
   where: {
     employee_id: employeeId,
@@ -110,7 +104,6 @@ const overtimeChart = overtimeRecords.map((ot) => {
         0
       );
 
-      // Ambil gaji terakhir
       const lastSalary = await PayrollDetail.findOne({
         where: {
           employee_id: employeeId,
@@ -119,7 +112,6 @@ const overtimeChart = overtimeRecords.map((ot) => {
         order: [["payment_date", "DESC"]],
       });
 
-      // Ambil data gaji 3 periode terakhir
       const salaryHistory = await PayrollDetail.findAll({
         where: {
           employee_id: employeeId,
