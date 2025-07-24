@@ -1,19 +1,51 @@
-// components/modals/attendance/recap-modal
-import React from "react";
+import React, { useState } from "react";
 import BaseModal from "../../../common/BaseModal";
 
 export default function ModalRecap({ recap, onClose }) {
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
+
+  const totalPages = Math.ceil(recap.length / itemsPerPage);
+  const startIdx = (currentPage - 1) * itemsPerPage;
+  const paginatedRecap = recap.slice(startIdx, startIdx + itemsPerPage);
+
+  const handlePrev = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
   return (
     <BaseModal
       title="Attendance Recapitulation"
       onClose={onClose}
       footer={
-        <button className="btn btn-secondary" onClick={onClose}>
-          Close
-        </button>
+        <div className="d-flex justify-content-between w-100 align-items-center">
+          <div>Page {currentPage} of {totalPages}</div>
+          <div>
+            <button
+              className="btn me-2"
+              style={{ backgroundColor: "#1071b9", color: "white" }}
+              onClick={handlePrev}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <button
+              className="btn"
+              style={{ backgroundColor: "#1071b9", color: "white" }}
+              onClick={handleNext}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
+        </div>
       }
     >
-      <table className="table table-bordered table-striped">
+      <table className="table table-bordered table-striped mb-3">
         <thead>
           <tr>
             <th>#</th>
@@ -25,9 +57,9 @@ export default function ModalRecap({ recap, onClose }) {
           </tr>
         </thead>
         <tbody>
-          {recap.map((item, index) => (
+          {paginatedRecap.map((item, index) => (
             <tr key={item.full_name}>
-              <td>{index + 1}</td>
+              <td>{startIdx + index + 1}</td>
               <td>{item.full_name}</td>
               <td>{item.Present || 0}</td>
               <td>{item.Sick || 0}</td>
