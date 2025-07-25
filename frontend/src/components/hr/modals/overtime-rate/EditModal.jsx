@@ -49,7 +49,7 @@ export default function EditModal({ overtimeRate, onClose, onSave }) {
           </button>
           <button
             className="btn"
-            style={{ backgroundColor: "#107189", color: "#fff" }}
+            style={{ backgroundColor: "#1071B9", color: "#fff" }}
             onClick={handleSubmit}
           >
             Update

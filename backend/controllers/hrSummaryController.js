@@ -12,39 +12,67 @@ const { Op } = require("sequelize");
 module.exports = {
   getSummaryData: async (req, res) => {
     try {
-
-      let period = await PayrollPeriod.findOne({
-        where: { status: "Closed" },
-        order: [["end_date", "DESC"]],
+      const periods = await PayrollPeriod.findAll({
+        order: [["start_date", "DESC"]],
+        limit: 3,
       });
 
-      if (!period) {
-        period = await PayrollPeriod.findOne({
-          order: [["end_date", "DESC"]],
+      const attendanceBarChart = [];
+
+      for (const period of periods) {
+        const { period_name, start_date, end_date } = period;
+
+        const records = await Attendance.findAll({
+          where: {
+            attendance_date: {
+              [Op.between]: [start_date, end_date],
+            },
+          },
+          attributes: ["status"],
+          raw: true,
         });
+
+        const counts = {
+          period: period_name,
+          Present: 0,
+          Sick: 0,
+          Leave: 0,
+          Absent: 0,
+        };
+
+        for (const rec of records) {
+          const s = rec.status;
+          if (counts[s] !== undefined) counts[s]++;
+        }
+
+        attendanceBarChart.push(counts);
       }
 
-      let startDate, endDate;
-      if (period) {
-        startDate = period.start_date;
-        endDate = period.end_date;
-      } else {
-        const now = new Date();
-        endDate = now;
-        startDate = new Date();
-        startDate.setMonth(now.getMonth() - 1);
-      }
+      // Dapatkan periode terakhir untuk chart harian dan data lainnya
+      let currentPeriod = periods[0];
+      const startDate = currentPeriod?.start_date;
+      const endDate = currentPeriod?.end_date;
 
+      const [
+        totalEmployees,
+        totalDepartments,
+        totalPositions,
+        totalPendingOvertime,
+      ] = await Promise.all([
+        Employee.count(),
+        Department.count(),
+        Position.count(),
+        OvertimeRequest.count({ where: { approval_status: "Pending" } }),
+      ]);
 
-      const [totalEmployees, totalDepartments, totalPositions, totalPendingOvertime] =
-        await Promise.all([
-          Employee.count(),
-          Department.count(),
-          Position.count(),
-          OvertimeRequest.count({ where: { approval_status: "Pending" } }),
-        ]);
-
-      const employmentStatuses = ["Permanent", "Contract", "Intern"];
+      const employmentStatuses = [
+        "Permanent",
+        "Contract",
+        "Intern",
+        "Probation",
+        "Outsourced",
+        "Resigned",
+      ];
       const statusCounts = {};
       for (const status of employmentStatuses) {
         const count = await Employee.count({
@@ -59,7 +87,12 @@ module.exports = {
             [Op.between]: [startDate, endDate],
           },
         },
-        attributes: ["attendance_date", "status", "check_in_time", "check_out_time"],
+        attributes: [
+          "attendance_date",
+          "status",
+          "check_in_time",
+          "check_out_time",
+        ],
         order: [["attendance_date", "ASC"]],
       });
 
@@ -100,7 +133,11 @@ module.exports = {
 
       const employeeList = await Employee.findAll({
         include: [
-          { model: Department, as: "department", attributes: ["department_name"] },
+          {
+            model: Department,
+            as: "department",
+            attributes: ["department_name"],
+          },
           { model: Position, as: "position", attributes: ["position_name"] },
         ],
         attributes: ["full_name", "email", "join_date"],
@@ -118,7 +155,7 @@ module.exports = {
 
       return res.status(200).json({
         period: {
-          name: period?.period_name || "Periode Sementara",
+          name: currentPeriod?.period_name || "Periode Sementara",
           start_date: startDate,
           end_date: endDate,
         },
@@ -130,6 +167,7 @@ module.exports = {
         },
         employment_status_chart: statusCounts,
         attendance_summary: attendanceSummary,
+        attendance_bar_chart: attendanceBarChart, // ✅ hasil yang kamu butuhkan
         attendance_chart: attendanceChart,
         overtime_table: overtimeTable,
         employee_table: employeeTable,

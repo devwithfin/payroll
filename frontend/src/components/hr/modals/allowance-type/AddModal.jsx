@@ -5,7 +5,7 @@ import BaseModal from "../../../common/BaseModal";
 
 export default function AddModal({ onClose, onSave }) {
   const [allowanceName, setAllowanceName] = useState("");
-  const [isFixed, setIsFixed] = useState(true); 
+  const [isFixed, setIsFixed] = useState(true);
   const [defaultAmount, setDefaultAmount] = useState("");
 
   const handleSubmit = (e) => {
@@ -26,7 +26,7 @@ export default function AddModal({ onClose, onSave }) {
       default_amount: defaultAmount === "" ? null : parseFloat(defaultAmount),
     };
 
-    onSave(newData); 
+    onSave(newData);
   };
 
   return (
@@ -40,10 +40,10 @@ export default function AddModal({ onClose, onSave }) {
           </button>
           <button
             className="btn"
-            style={{ backgroundColor: "#107189", color: "#fff" }}
+            style={{ backgroundColor: "#1071B9", color: "#fff" }}
             onClick={handleSubmit}
           >
-            Save
+            Submit
           </button>
         </>
       }
@@ -71,7 +71,7 @@ export default function AddModal({ onClose, onSave }) {
           />
         </div>
 
-         <div className="mb-3">
+        <div className="mb-3">
           <label className="form-label">Type</label>
           <select
             className="form-select"
@@ -82,7 +82,6 @@ export default function AddModal({ onClose, onSave }) {
             <option value="0">Not FIxed</option>
           </select>
         </div>
-
       </form>
     </BaseModal>
   );

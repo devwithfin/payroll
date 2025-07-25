@@ -10,6 +10,7 @@ module.exports = {
   getSummaryData: async (req, res) => {
     try {
       const employeeId = req.params.id;
+
       let period = await PayrollPeriod.findOne({
         where: { status: "Closed" },
         order: [["end_date", "DESC"]],
@@ -79,30 +80,37 @@ module.exports = {
       }
 
       const totalAttendance = attendanceSummary["Present"] || 0;
-
       const overtimeRecords = await OvertimeRequest.findAll({
-  where: {
-    employee_id: employeeId,
-    approval_status: "Approved",
-    start_time: { [Op.between]: [start_date, end_date] },
-  },
-});
+        where: {
+          employee_id: employeeId,
+          approval_status: "Approved",
+          overtime_date: { [Op.between]: [start_date, end_date] },
+        },
+      });
 
-const overtimeChart = overtimeRecords.map((ot) => {
-  const start = new Date(ot.start_time);
-  const end = new Date(ot.end_time);
-  const hours = (end - start) / (1000 * 60 * 60);
-  return {
-    date: ot.overtime_date,
-    hours: parseFloat(hours.toFixed(2)),
-  };
-});
+      const parseTimeToMinutes = (timeStr) => {
+        if (!timeStr) return 0;
+        const [hh, mm, ss] = timeStr.split(":").map(Number);
+        return hh * 60 + mm + (ss || 0) / 60;
+      };
 
+      const overtimeChart = overtimeRecords.map((ot) => {
+        const startMins = parseTimeToMinutes(ot.start_time);
+        const endMins = parseTimeToMinutes(ot.end_time);
+        const durationMins = endMins - startMins;
+        const hours = durationMins > 0 ? parseFloat((durationMins / 60).toFixed(2)) : 0;
+
+        return {
+          date: ot.overtime_date,
+          hours,
+        };
+      });
 
       const totalOvertimeHours = overtimeChart.reduce(
-        (sum, o) => sum + o.hours,
+        (sum, o) => sum + (o.hours || 0),
         0
       );
+
 
       const lastSalary = await PayrollDetail.findOne({
         where: {
@@ -111,7 +119,6 @@ const overtimeChart = overtimeRecords.map((ot) => {
         },
         order: [["payment_date", "DESC"]],
       });
-
       const salaryHistory = await PayrollDetail.findAll({
         where: {
           employee_id: employeeId,
@@ -151,7 +158,7 @@ const overtimeChart = overtimeRecords.map((ot) => {
         salary_chart: salaryChart,
       });
     } catch (error) {
-      console.error("Error fetching dashboard:", error);
+      console.error("Error fetching dashboard summary:", error);
       res.status(500).json({ message: "Internal server error" });
     }
   },

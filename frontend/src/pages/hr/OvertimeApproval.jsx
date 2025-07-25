@@ -9,7 +9,10 @@ import Table from "../../components/common/Table";
 import EditModal from "../../components/hr/modals/approval-overtime/EditModal";
 import InfoModal from "../../components/hr/modals/approval-overtime/InfoModal";
 
-import { getAllOvertimeRequests, deleteOvertimeRequest } from "../../services/overtimeRequest";
+import {
+  getAllOvertimeRequests,
+  deleteOvertimeRequest,
+} from "../../services/overtimeRequest";
 import { getProfile } from "../../services/authService";
 
 export default function OvertimeApproval() {
@@ -20,23 +23,38 @@ export default function OvertimeApproval() {
   const [showInfoModal, setShowInfoModal] = useState(false);
   const [hrId, setHrId] = useState(null);
 
-  useEffect(() => {
-    initializePage();
-  }, []);
-
   const initializePage = async () => {
     try {
       const profileRes = await getProfile();
-      const id = profileRes?.data?.user?.employee?.employee_id;
-      setHrId(id);
+
+      const employee = profileRes?.data?.user?.employee;
+      if (!employee || !employee.employee_id) {
+        throw new Error("Invalid user or missing employee data.");
+      }
+
+      setHrId(employee.employee_id);
       await fetchRequests();
     } catch (err) {
-      toast.error("Gagal mengambil data");
-      console.error(err);
+      console.error("Error during page initialization:", err);
+      if (
+        err.response?.status === 401 ||
+        err.message.includes("Invalid user")
+      ) {
+        toast.error("Your session has expired. Please log in again.");
+        localStorage.clear();
+        window.location.href = "/login";
+        return;
+      }
+
+      toast.error("Failed to fetch HR profile data.");
     } finally {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    initializePage();
+  }, []);
 
   const fetchRequests = async () => {
     try {
@@ -60,29 +78,30 @@ export default function OvertimeApproval() {
     }
   };
 
-  const formatDate = (dateStr) => (dateStr ? new Date(dateStr).toLocaleDateString("id-ID") : "-");
+  const formatDate = (dateStr) =>
+    dateStr ? new Date(dateStr).toLocaleDateString("id-ID") : "-";
 
   const getStatusBadge = (status) => {
-  const lower = status?.toLowerCase();
-  let bg = "#6c757d";
-  if (lower === "approved") bg = "#28a745";
-  else if (lower === "pending") bg = "#ffc107";
-  else if (lower === "rejected") bg = "#dc3545";
+    const lower = status?.toLowerCase();
+    let bg = "#6c757d";
+    if (lower === "approved") bg = "#28a745";
+    else if (lower === "pending") bg = "#ffc107";
+    else if (lower === "rejected") bg = "#dc3545";
 
-  return (
-    <span
-      className="badge text-white text-capitalize text-center"
-      style={{
-        backgroundColor: bg,
-        minWidth: "100px",
-        fontSize: "0.9rem",
-        padding: "0.4rem",
-      }}
-    >
-      {status || "Pending"}
-    </span>
-  );
-};
+    return (
+      <span
+        className="badge text-white text-capitalize text-center"
+        style={{
+          backgroundColor: bg,
+          minWidth: "100px",
+          fontSize: "0.9rem",
+          padding: "0.4rem",
+        }}
+      >
+        {status || "Pending"}
+      </span>
+    );
+  };
 
   const renderColumnsWithPage = (currentPage, perPage) => [
     {
@@ -94,17 +113,17 @@ export default function OvertimeApproval() {
       name: "Full Name",
       selector: (row) => row.employee?.full_name || "-",
       sortable: true,
-      width : "150px"
+      width: "150px",
     },
     {
       name: "Request Date",
       selector: (row) => formatDate(row.request_date),
-       width : "150px"
+      width: "150px",
     },
     {
       name: "Overtime Date",
       selector: (row) => formatDate(row.overtime_date),
-      width : "150px"
+      width: "150px",
     },
     {
       name: "Reason",
@@ -154,7 +173,10 @@ export default function OvertimeApproval() {
 
   if (loading) {
     return (
-      <div className="d-flex justify-content-center align-items-center" style={{ height: "300px" }}>
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "300px" }}
+      >
         <div className="spinner-border text-primary" role="status">
           <span className="visually-hidden">Loading...</span>
         </div>
@@ -181,13 +203,12 @@ export default function OvertimeApproval() {
       )}
 
       {showInfoModal && (
-      <InfoModal
-  data={selectedRow}
-  employeeName={selectedRow?.employee?.full_name || "-"}
-  onClose={() => setShowInfoModal(false)}
-/>
+        <InfoModal
+          data={selectedRow}
+          employeeName={selectedRow?.employee?.full_name || "-"}
+          onClose={() => setShowInfoModal(false)}
+        />
       )}
     </div>
   );
 }
-

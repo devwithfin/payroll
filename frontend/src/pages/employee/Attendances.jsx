@@ -11,11 +11,10 @@ import {
 
 const Attendances = () => {
   const { user } = useAuthContext();
-  const [status, setStatus] = useState("none"); // 'none' | 'checkedIn' | 'done'
+  const [status, setStatus] = useState("none");  
   const [currentTime, setCurrentTime] = useState("00:00");
   const [attendanceLogs, setAttendanceLogs] = useState([]);
 
-  // Update current time every second
   useEffect(() => {
     const update = () => {
       const now = new Date();
@@ -31,7 +30,6 @@ const Attendances = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Fetch attendance logs for the current employee
   const fetchLogs = async () => {
     if (!user?.employee?.employee_id) {
       toast.error("Your account is not linked to an employee profile.");
@@ -103,28 +101,28 @@ const Attendances = () => {
   const handleCheckIn = async () => {
     try {
       await clockIn({ employee_id: user.employee.employee_id });
-      toast.success(`Checked in at ${currentTime}`);
+      toast.success(`Clock-in at ${currentTime}`);
       setStatus("checkedIn");
       fetchLogs();
     } catch (err) {
       toast.error("Failed to Clock In.");
-      console.error("Clock In error:", err);
+      console.error("Clock-in error:", err);
     }
   };
 
   const handleCheckOut = async () => {
     if (!isAllowedToCheckOut()) {
-      toast.error("You can only Clock Out after 17:00.");
+      toast.error("You can only Clock-out after 17:00.");
       return;
     }
     try {
       await clockOut({ employee_id: user.employee.employee_id });
-      toast.success(`Checked out at ${currentTime}`);
+      toast.success(`Clock-out at ${currentTime}`);
       setStatus("done");
       fetchLogs();
     } catch (err) {
       toast.error("Failed to Clock Out.");
-      console.error("Clock Out error:", err);
+      console.error("Clock-out error:", err);
     }
   };
 
@@ -139,7 +137,7 @@ const formattedDate = `${weekday}, ${day} ${month} ${year}`;
   return (
     <div className="container mt-4">
       <h2 className="fs-3 fw-bold mb-1">Live Attendance</h2>
-      <p className="text-muted mb-3">📅 {formattedDate}</p>
+      <p className="text-muted mb-3">{formattedDate}</p>
 
       <LiveClock />
       <AttendanceTimeline currentTime={currentTime} />

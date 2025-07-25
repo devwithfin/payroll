@@ -88,7 +88,7 @@ export default function AddModal({ onClose, onSave }) {
       ...formData,
       department_id: Number(formData.department_id),
       position_id: Number(formData.position_id),
-      pt_kp, 
+      pt_kp,
     };
 
     delete finalData.marital_status;
@@ -141,8 +141,12 @@ export default function AddModal({ onClose, onSave }) {
           <button className="btn btn-secondary" onClick={onClose}>
             Cancel
           </button>
-          <button className="btn btn-primary" onClick={handleSubmit}>
-            Save
+          <button
+            className="btn text-white"
+            style={{ backgroundColor: "#1071B9", border: "none" }}
+            onClick={handleSubmit}
+          >
+            Submit
           </button>
         </>
       }
@@ -172,20 +176,72 @@ export default function AddModal({ onClose, onSave }) {
         >
           {activeTab === "personal" && (
             <>
-              <Input label="Full Name" field="full_name" value={formData.full_name} onChange={handleChange} />
-              <Input label="NIK" field="employee_nik" value={formData.employee_nik} onChange={handleChange} />
-              <Input label="Birth Date" type="date" field="dob" value={formData.dob} onChange={handleChange} />
-              <Select label="Gender" field="gender" value={formData.gender} onChange={handleChange} options={genderOptions} useLabel />
-              <Input label="Address" field="address" value={formData.address} onChange={handleChange} />
-              <Select label="Marital Status" field="marital_status" value={formData.marital_status} onChange={handleChange} options={maritalStatusOptions} useLabel />
-              <Select label="Number of Dependents" field="number_of_dependents" value={formData.number_of_dependents} onChange={handleChange} options={dependentsOptions} useLabel />
+              <Input
+                label="Full Name"
+                field="full_name"
+                value={formData.full_name}
+                onChange={handleChange}
+              />
+              <Input
+                label="NIK"
+                field="employee_nik"
+                value={formData.employee_nik}
+                onChange={handleChange}
+              />
+              <Input
+                label="Birth Date"
+                type="date"
+                field="dob"
+                value={formData.dob}
+                onChange={handleChange}
+              />
+              <Select
+                label="Gender"
+                field="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                options={genderOptions}
+                useLabel
+              />
+              <Input
+                label="Address"
+                field="address"
+                value={formData.address}
+                onChange={handleChange}
+              />
+              <Select
+                label="Marital Status"
+                field="marital_status"
+                value={formData.marital_status}
+                onChange={handleChange}
+                options={maritalStatusOptions}
+                useLabel
+              />
+              <Select
+                label="Number of Dependents"
+                field="number_of_dependents"
+                value={formData.number_of_dependents}
+                onChange={handleChange}
+                options={dependentsOptions}
+                useLabel
+              />
             </>
           )}
 
           {activeTab === "contact" && (
             <>
-              <Input label="Phone Number" field="phone_number" value={formData.phone_number} onChange={handleChange} />
-              <Input label="Email" field="email" value={formData.email} onChange={handleChange} />
+              <Input
+                label="Phone Number"
+                field="phone_number"
+                value={formData.phone_number}
+                onChange={handleChange}
+              />
+              <Input
+                label="Email"
+                field="email"
+                value={formData.email}
+                onChange={handleChange}
+              />
             </>
           )}
 
@@ -213,10 +269,35 @@ export default function AddModal({ onClose, onSave }) {
                 }))}
                 useLabel
               />
-              <Select label="Employment Status" field="employment_status" value={formData.employment_status} onChange={handleChange} options={employmentOptions.map(e => ({ value: e, label: e }))} useLabel />
-              <Input label="Join Date" type="date" field="join_date" value={formData.join_date} onChange={handleChange} />
-              <Input label="NPWP Number" field="npwp_number" value={formData.npwp_number} onChange={handleChange} />
-              <Select label="Role" field="role" value={formData.role} onChange={handleChange} options={roleOptions.map(r => ({ value: r, label: r }))} useLabel />
+              <Select
+                label="Employment Status"
+                field="employment_status"
+                value={formData.employment_status}
+                onChange={handleChange}
+                options={employmentOptions.map((e) => ({ value: e, label: e }))}
+                useLabel
+              />
+              <Input
+                label="Join Date"
+                type="date"
+                field="join_date"
+                value={formData.join_date}
+                onChange={handleChange}
+              />
+              <Input
+                label="NPWP Number"
+                field="npwp_number"
+                value={formData.npwp_number}
+                onChange={handleChange}
+              />
+              <Select
+                label="Role"
+                field="role"
+                value={formData.role}
+                onChange={handleChange}
+                options={roleOptions.map((r) => ({ value: r, label: r }))}
+                useLabel
+              />
             </>
           )}
 
@@ -230,7 +311,12 @@ export default function AddModal({ onClose, onSave }) {
                 options={bankOptions}
                 useLabel
               />
-              <Input label="Bank Account Number" field="bank_account_number" value={formData.bank_account_number} onChange={handleChange} />
+              <Input
+                label="Bank Account Number"
+                field="bank_account_number"
+                value={formData.bank_account_number}
+                onChange={handleChange}
+              />
             </>
           )}
         </div>

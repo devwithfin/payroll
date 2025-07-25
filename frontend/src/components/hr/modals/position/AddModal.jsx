@@ -7,7 +7,7 @@ import { getAllDepartments } from "../../../../services/departmentService";
 export default function AddModal({ onClose, onSave }) {
   const [positionName, setPositionName] = useState("");
   const [baseSalary, setBaseSalary] = useState("");
-  const [jobAllowance, setJobAllowance] = useState(""); 
+  const [jobAllowance, setJobAllowance] = useState("");
   const [departmentId, setDepartmentId] = useState("");
 
   const [departments, setDepartments] = useState([]);
@@ -39,7 +39,7 @@ export default function AddModal({ onClose, onSave }) {
     onSave({
       position_name: positionName.trim(),
       base_salary: Number(baseSalary),
-      job_allowance: Number(jobAllowance), 
+      job_allowance: Number(jobAllowance),
       department_id: Number(departmentId),
     });
   };
@@ -53,8 +53,12 @@ export default function AddModal({ onClose, onSave }) {
           <button className="btn btn-secondary" onClick={onClose}>
             Cancel
           </button>
-          <button className="btn btn-primary" onClick={handleSubmit}>
-            Save
+          <button
+            className="btn text-white"
+            style={{ backgroundColor: "#1071B9", border: "none" }}
+            onClick={handleSubmit}
+          >
+            Submit
           </button>
         </>
       }
@@ -116,4 +120,3 @@ export default function AddModal({ onClose, onSave }) {
     </BaseModal>
   );
 }
-  

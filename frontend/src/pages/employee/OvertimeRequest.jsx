@@ -43,7 +43,7 @@ export default function OvertimeRequest() {
       setOvertimeRequests(response.data?.data || []);
     } catch (error) {
       if (error.response?.status !== 401) {
-        toast.error("Failed to fetch overtime request data");
+        toast.error("Failed to fetch overtime request");
       }
       setOvertimeRequests([]);
     }
@@ -52,7 +52,7 @@ export default function OvertimeRequest() {
   const handleSave = async (newRequest) => {
     try {
       await createOvertimeRequest(newRequest);
-      toast.success("Overtime request successfully saved");
+      toast.success("Overtime request successfully");
       setShowAddModal(false);
       if (employeeId) fetchOvertimeRequests(employeeId);
     } catch (err) {

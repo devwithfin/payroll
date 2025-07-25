@@ -73,7 +73,7 @@ export default function Attendances() {
       });
       setAttendances(filtered);
     } catch (err) {
-      console.error("fetchAttendances error:", err);
+      console.error("fetch attendances error:", err);
       toast.error("Failed to fetch attendance data.");
     }
   }, [selectedPeriod]);
@@ -124,7 +124,7 @@ export default function Attendances() {
   const handleCheckIn = async () => {
     try {
       await clockIn({ employee_id: user.employee.employee_id });
-      toast.success("Clock-in successful");
+      toast.success(`Clock-in at ${currentTime}`);
       fetchLogs();
       fetchAttendances();
     } catch (err) {
@@ -140,7 +140,7 @@ export default function Attendances() {
     }
     try {
       await clockOut({ employee_id: user.employee.employee_id });
-      toast.success("Clock-out successful");
+      toast.success(`Clock-out at ${currentTime}`);
       fetchLogs();
       fetchAttendances();
     } catch {

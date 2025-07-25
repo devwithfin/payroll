@@ -96,12 +96,12 @@ export default function Employees() {
       name: "Full Name",
       selector: (row) => row.full_name,
       sortable: true,
-      width: "300px",
+      width: "320px",
     },
     {
       name: "Position",
       selector: (row) => row.position_name || "-",
-      width: "325px",
+      width: "300px",
     },
     {
       name: "Join Date",
@@ -115,8 +115,7 @@ export default function Employees() {
     },
     {
       name: "Actions",
-      width: "150px",
-      cell: (row) => (
+     cell: (row) => (
         <div className="d-flex gap-2">
           <button
             className="btn btn-sm btn-info text-white"

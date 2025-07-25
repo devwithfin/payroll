@@ -65,11 +65,11 @@ export default function AddModal({ employeeId, onClose, onSave }) {
             Cancel
           </button>
           <button
-            className="btn"
-            style={{ backgroundColor: "#107189", color: "#fff" }}
+            className="btn text-white"
+            style={{ backgroundColor: "#1071B9", border: "none" }}
             onClick={handleSubmit}
           >
-            Submit Request
+            Save
           </button>
         </>
       }
@@ -137,8 +137,8 @@ export default function AddModal({ employeeId, onClose, onSave }) {
 
         <div className="alert alert-info">
           <small>
-            <strong>Note:</strong> Your overtime request will be submitted for approval. 
-            You will be notified once it's reviewed by HR.
+            <strong>Note:</strong> Your overtime request will be submitted for
+            approval. You will be notified once it's reviewed by HR.
           </small>
         </div>
       </form>

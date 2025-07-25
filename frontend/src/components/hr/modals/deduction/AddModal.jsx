@@ -84,7 +84,11 @@ export default function AddModal({ onClose }) {
           <button className="btn btn-secondary" onClick={onClose}>
             Cancel
           </button>
-          <button className="btn btn-primary" onClick={handleSubmit}>
+            <button
+            className="btn"
+            style={{ backgroundColor: "#1071B9", color: "#fff" }}
+            onClick={handleSubmit}
+          >
             Submit
           </button>
         </>

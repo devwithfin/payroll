@@ -1,13 +1,38 @@
 import { useEffect, useState } from "react";
-import { getSummaryEmployee } from "../../services/summaryEmployee";
+import { getProfile } from "../../services/authService";
+import { getEmployeeSummary } from "../../services/summaryEmployee";
 import SummaryCard from "../../components/employee/SummaryCard";
-import PieChart from "../../components/employee/chart/PieChart";
+import AttendancePieChart from "../../components/employee/chart/AttendancePieChart";
+import SimpleTable from "../../components/common/SimpleTable";
 
-export default function DashboardEmployee() {
+export default function Dashboard() {
   const [summary, setSummary] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [fullName, setFullName] = useState("");
 
   useEffect(() => {
-    getSummaryEmployee().then((res) => setSummary(res.data));
+    const fetchSummary = async () => {
+      try {
+        const profileRes = await getProfile();
+        const employee = profileRes.data?.user?.employee;
+        const employeeId = employee?.employee_id;
+        const name = employee?.full_name;
+
+        if (!employeeId || !name) throw new Error("Invalid employee profile.");
+        setFullName(name);
+
+        const summaryRes = await getEmployeeSummary(employeeId);
+        setSummary(summaryRes.data);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to fetch employee summary.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSummary();
   }, []);
 
   const getGreeting = () => {
@@ -18,91 +43,86 @@ export default function DashboardEmployee() {
     return "Good Night";
   };
 
-  if (!summary) return <p>Loading...</p>;
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p className="text-danger">{error}</p>;
+  if (!summary) return <p>No summary data found.</p>;
+
+  const {
+    summary: summaryData,
+    attendance_summary,
+    attendance_chart = [],
+  } = summary;
+
+  // Ambil 5 data terakhir dari attendance_chart
+  const limitedAttendance = [...attendance_chart]
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 5);
+
+  const columns = [
+    { name: "Date", selector: (row) => row.date, sortable: true },
+    { name: "Status", selector: (row) => row.status, sortable: true },
+    { name: "Check In", selector: (row) => row.check_in_time || "-" },
+    { name: "Check Out", selector: (row) => row.check_out_time || "-" },
+  ];
 
   return (
-    <div className="p-4 space-y-4">
-      <h5 className="fw-semibold">{getGreeting()}, welcome back!</h5>
+    <div className="p-4">
+      {/* Greeting */}
+      <h4 className="fw-semibold mb-4">
+        {getGreeting()}, <span style={{ color: "#1071B9" }}>{fullName}!</span>
+      </h4>
 
       {/* Summary Cards */}
-      <div className="row g-3">
+      <div className="row g-3 mb-4">
         <div className="col-md-4">
           <SummaryCard
             title="Total Attendance"
             value={
-              summary.summary.total_attendance !== undefined
-                ? summary.summary.total_attendance.toLocaleString()
+              summaryData?.total_attendance !== undefined
+                ? summaryData.total_attendance.toLocaleString()
                 : "-"
             }
-            change={+1}
-            changeText="this week"
           />
         </div>
         <div className="col-md-4">
           <SummaryCard
             title="Overtime Hour"
             value={
-              summary.summary.overtime_hour !== undefined
-                ? summary.summary.overtime_hour + "h"
+              summaryData?.total_overtime_hours !== undefined
+                ? summaryData.total_overtime_hours + "h"
                 : "-"
             }
-            change={+2}
-            changeText="this week"
           />
         </div>
         <div className="col-md-4">
           <SummaryCard
             title="Last Salary"
             value={
-              summary.summary.last_salary !== undefined
+              summaryData?.last_salary_received !== undefined
                 ? "Rp " +
-                  Number(summary.summary.last_salary).toLocaleString("id-ID")
+                  Number(summaryData.last_salary_received).toLocaleString("id-ID")
                 : "-"
             }
-            change={0}
-            changeText="last month"
           />
         </div>
       </div>
 
-      {/* Pie Chart */}
-      <div className="row mt-4">
-        <div className="col-md-6">
-          <h6 className="fw-semibold mb-3">Attendance Status</h6>
-          <PieChart data={summary.attendance_status_chart || []} />
+      {/* Attendance Table & Pie Chart */}
+      <div className="row align-items-stretch">
+        <div className="col-md-7 mb-3 mb-md-0">
+          <div
+            className="card shadow-sm rounded-4 p-4 h-100"
+            style={{ minHeight: "320px" }}
+          >
+            <h6 className="fw-semibold mb-3" style={{ fontSize: "0.95rem" }}>
+              Recent Attendance
+            </h6>
+            <hr className="mt-0 mb-4" />
+            <SimpleTable data={limitedAttendance} columns={columns} />
+          </div>
         </div>
-      </div>
-
-      {/* Attendance Table */}
-      <div className="mt-5">
-        <h6 className="fw-semibold mb-3">Recent Attendance</h6>
-        <div className="table-responsive">
-          <table className="table table-bordered table-sm">
-            <thead className="table-light">
-              <tr>
-                <th>Date</th>
-                <th>Start Time</th>
-                <th>End Time</th>
-              </tr>
-            </thead>
-            <tbody>
-              {summary.attendance_table?.length > 0 ? (
-                summary.attendance_table.map((item, index) => (
-                  <tr key={index}>
-                    <td>{item.date}</td>
-                    <td>{item.start_time}</td>
-                    <td>{item.end_time}</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="3" className="text-center">
-                    No attendance data available.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+        <div className="col-md-5">
+          <AttendancePieChart data={attendance_summary || {}} height={320} />
         </div>
       </div>
     </div>

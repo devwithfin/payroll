@@ -29,7 +29,8 @@ export default function EditModal({ data, approverId, onClose, onUpdated }) {
       await approveOvertimeRequest(data.request_id, {
         approval_status: form.approval_status,
         notes_approval: form.notes_approval,
-        approver_id: approverId,
+        approved_by_hrd: approverId,
+
       });
       toast.success("Overtime status successfully updated.");
       onClose();
@@ -49,8 +50,12 @@ export default function EditModal({ data, approverId, onClose, onUpdated }) {
           <button className="btn btn-secondary" onClick={onClose}>
             Cancel
           </button>
-          <button className="btn btn-primary" onClick={handleSubmit}>
-            Save
+           <button
+            className="btn"
+            style={{ backgroundColor: "#1071B9", color: "#fff" }}
+            onClick={handleSubmit}
+          >
+            Submit
           </button>
         </>
       }

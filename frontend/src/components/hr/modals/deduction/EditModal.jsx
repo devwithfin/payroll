@@ -58,8 +58,12 @@ export default function EditModal({ data, onClose }) {
           <button className="btn btn-secondary" onClick={onClose}>
             Cancel
           </button>
-          <button className="btn btn-primary" onClick={handleSubmit}>
-            Save Changes
+             <button
+            className="btn"
+            style={{ backgroundColor: "#1071B9", color: "#fff" }}
+            onClick={handleSubmit}
+          >
+            Update
           </button>
         </>
       }
