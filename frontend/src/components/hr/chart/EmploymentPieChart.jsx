@@ -1,3 +1,4 @@
+// components/hr/chart/employment-pie
 import React from "react";
 import {
   PieChart,

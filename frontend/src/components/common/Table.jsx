@@ -70,7 +70,7 @@ export default function Table({
   renderColumnsWithPage,
   onAdd,
   showAddButton = true,
-  customControls = null
+  customControls = null,
 }) {
   const [filterText, setFilterText] = useState("");
   const [perPage, setPerPage] = useState(5);
@@ -102,7 +102,7 @@ export default function Table({
     <div className="card border-0" style={{ width: "100%" }}>
       <div className="card-header py-0" style={{ backgroundColor: "#fff" }}>
         <div className="d-flex mb-2 justify-content-between align-items-center">
-          <h6 className="mb-0" style={{ color: "#446AD7" }}>
+          <h6 className="mb-0" style={{ color: "#1071B9" }}>
             {title}
           </h6>
           {showAddButton && (
@@ -123,31 +123,30 @@ export default function Table({
       </div>
 
       <div className="card-body px-3 py-2">
-       
-<ControlsWrapper>
-  <div>
-    <Select value={perPage} onChange={handlePerPageChange}>
-      {[5, 10, 15, 20].map((size) => (
-        <option key={size} value={size}>
-          {size}
-        </option>
-      ))}
-    </Select>
-    <label className="mx-2">entries per page</label>
-  </div>
-  <div className="d-flex gap-2 align-items-center">
-    {customControls}
-    <SearchInput
-      type="text"
-      placeholder="Search..."
-      value={filterText}
-      onChange={(e) => {
-        setFilterText(e.target.value);
-        setCurrentPage(1);
-      }}
-    />
-  </div>
-</ControlsWrapper>
+        <ControlsWrapper>
+          <div>
+            <Select value={perPage} onChange={handlePerPageChange}>
+              {[5, 10, 15, 20].map((size) => (
+                <option key={size} value={size}>
+                  {size}
+                </option>
+              ))}
+            </Select>
+            <label className="mx-2">entries per page</label>
+          </div>
+          <div className="d-flex gap-2 align-items-center">
+            {customControls}
+            <SearchInput
+              type="text"
+              placeholder="Search..."
+              value={filterText}
+              onChange={(e) => {
+                setFilterText(e.target.value);
+                setCurrentPage(1);
+              }}
+            />
+          </div>
+        </ControlsWrapper>
 
         <DataTable
           className="mt-3"

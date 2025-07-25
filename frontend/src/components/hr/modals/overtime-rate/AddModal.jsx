@@ -1,4 +1,4 @@
-// components/modals/overtime-rates/add-modal
+// components/hr/modals/overtime-rates/add-modal
 import React, { useState } from "react";
 import BaseModal from "../../../common/BaseModal";
 import Swal from "sweetalert2";

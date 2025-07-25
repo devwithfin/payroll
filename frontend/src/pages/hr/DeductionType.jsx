@@ -1,4 +1,4 @@
-// pages/hr/Deduction.jsx
+// pages/hr/deduction-type
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen, faTrash } from "@fortawesome/free-solid-svg-icons";

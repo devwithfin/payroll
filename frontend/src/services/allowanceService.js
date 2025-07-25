@@ -1,4 +1,4 @@
-// service/allowance-service
+// service/allowanc
 import API from '../libs/axiosInstance';
 
 export const getAllAllowances = () => API.get('/allowances');

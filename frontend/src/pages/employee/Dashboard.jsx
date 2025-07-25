@@ -1,3 +1,4 @@
+// pages/hr/dashboard
 import { useEffect, useState } from "react";
 import { getProfile } from "../../services/authService";
 import { getEmployeeSummary } from "../../services/summaryEmployee";

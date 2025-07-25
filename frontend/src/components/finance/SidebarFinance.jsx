@@ -1,13 +1,11 @@
-// components/common/sidebar-finance
+// components/sidebar-finance
 import { useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome,
-  faMoneyCheckDollar,
   faMoneyBillWave,
   faCalendarAlt,
-  faFileInvoice,
   faUser,
   faClock,
 } from "@fortawesome/free-solid-svg-icons";
@@ -143,34 +141,9 @@ const SidebarFinance = () => {
               }`}
             >
               <FontAwesomeIcon icon={faMoneyBillWave} />
-              Process Payroll
+               FInal Payroll
             </Link>
           </li>
-          <li className="nav-item mb-2">
-            <Link
-              to="/finance/salary-slip"
-              className={`nav-link fw-medium ${
-                isActive("/finance/salary") ? "active" : ""
-              }`}
-            >
-              <FontAwesomeIcon icon={faMoneyCheckDollar} />
-              Salary Slip
-            </Link>
-          </li>
-
-          <div className="section-title">Reports</div>
-          <li className="nav-item mb-2">
-            <Link
-              to="/finance/reports"
-              className={`nav-link fw-medium ${
-                isActive("/finance/reports") ? "active" : ""
-              }`}
-            >
-              <FontAwesomeIcon icon={faFileInvoice} />
-              Reports
-            </Link>
-          </li>
-
           <div className="section-title">Account</div>
           <li className="nav-item mb-2">
             <Link

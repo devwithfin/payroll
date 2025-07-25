@@ -1,10 +1,10 @@
-// pages/hr/payroll-draft
+// pages/finance/payroll-final
 import React, { useState, useEffect, useCallback } from "react";
 import Table from "../../components/common/Table";
 import {
   getAllPayrollPeriods,
   getPayrollDetailsByPeriod,
-  draftPayroll,
+  finalizePayroll,
 } from "../../services/payrollPeriodService";
 import { toast } from "react-toastify";
 
@@ -30,7 +30,7 @@ const getStatusBadge = (status) => {
   );
 };
 
-export default function DraftPayroll() {
+export default function PayrollFinal() {
   const [data, setData] = useState([]);
   const [periods, setPeriods] = useState([]);
   const [selectedPeriod, setSelectedPeriod] = useState(null);
@@ -69,19 +69,17 @@ export default function DraftPayroll() {
     fetchData();
   }, [fetchData]);
 
-  const handleProcessDraft = async () => {
+  const handleFinalizePayroll = async () => {
     if (!selectedPeriod) return;
     setLoading(true);
     try {
-      await draftPayroll(selectedPeriod.period_id);
+      await finalizePayroll(selectedPeriod.period_id);
       await fetchData();
-      toast.success("Draft payroll processed successfully");
+      toast.success("Payroll finalized successfully");
     } catch (err) {
-      console.error("Failed to process draft payroll", err);
+      console.error("Failed to finalize payroll", err);
       const msg =
-        err.response?.data?.message ||
-        err.message ||
-        "Failed to process payroll";
+        err.response?.data?.message || err.message || "Failed to finalize payroll";
       toast.error(msg);
     } finally {
       setLoading(false);
@@ -157,7 +155,7 @@ export default function DraftPayroll() {
   return (
     <div className="container mx-auto p-1">
       <Table
-        title="Draft Payroll"
+        title="Final Payroll"
         data={data}
         renderColumnsWithPage={renderColumnsWithPage}
         showAddButton={false}
@@ -172,9 +170,9 @@ export default function DraftPayroll() {
                 border: "none",
               }}
               disabled={isButtonDisabled}
-              onClick={handleProcessDraft}
+              onClick={handleFinalizePayroll}
             >
-              {loading ? "Processing..." : "Draft Payroll"}
+              {loading ? "Processing..." : "Finalize Payroll"}
             </button>
 
             <select

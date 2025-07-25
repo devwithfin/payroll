@@ -4,12 +4,11 @@ const Footer = () => {
     <footer className="py-3 bg-light">
       <div className="d-flex justify-content-center w-100">
         <span className="small text-muted">
-          Copyright © Payroll App {new Date().getFullYear()}
+          © 2025 HRIS & Payroll. All rights reserved.
         </span>
       </div>
     </footer>
   );
 };
-
 
 export default Footer;

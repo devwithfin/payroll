@@ -1,3 +1,4 @@
+// pages/hr/attendance
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import LiveClock from "../../components/attendance/LiveClock";

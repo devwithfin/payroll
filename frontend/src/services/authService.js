@@ -1,5 +1,5 @@
 
-// servic/auth
+// service/auth
 import API from '../libs/axiosInstance';
 
 export const get = () => API.get('/');

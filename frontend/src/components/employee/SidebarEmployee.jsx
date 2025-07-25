@@ -1,4 +1,4 @@
-// components/commion/sidebar-employee
+// components/sidebar-employee
 import { useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,7 +6,6 @@ import {
   faHome,
   faCalendarCheck,
   faClock,
-  faMoneyCheckDollar,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -92,7 +91,6 @@ const SidebarEmployee = () => {
             <span className="logo-title">HRIS</span>
           </Link>
         </div>
-
         <ul className="nav flex-column px-3 py-3">
           <div className="section-title">Main</div>
           <li className="nav-item mb-2">
@@ -119,6 +117,8 @@ const SidebarEmployee = () => {
               Attendances
             </Link>
           </li>
+
+          <div className="section-title">Work Time</div>
           <li className="nav-item mb-2">
             <Link
               to="/employee/overtimes"
@@ -127,20 +127,7 @@ const SidebarEmployee = () => {
               }`}
             >
               <FontAwesomeIcon icon={faClock} />
-              Overtime
-            </Link>
-          </li>
-
-          <div className="section-title">Payroll</div>
-          <li className="nav-item mb-2">
-            <Link
-              to="/employee/salary"
-              className={`nav-link fw-medium ${
-                isActive("/employee/salary") ? "active" : ""
-              }`}
-            >
-              <FontAwesomeIcon icon={faMoneyCheckDollar} />
-              Salary Slip
+              Overtime Request
             </Link>
           </li>
 

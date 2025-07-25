@@ -1,5 +1,4 @@
-
-// service/deduction-service
+// service/deduction
 import API from '../libs/axiosInstance';
 
 export const getAllDeductions = () => API.get('/deductions');

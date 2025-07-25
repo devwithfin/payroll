@@ -1,4 +1,4 @@
-// components/modals/allowance-type/edit-modal
+// components/hr/modals/allowance-type/edit-modal
 import React, { useEffect, useState } from "react";
 import BaseModal from "../../../common/BaseModal";
 import Swal from "sweetalert2";
@@ -12,10 +12,9 @@ export default function EditModal({ allowance, onClose, onSave }) {
     if (allowance) {
       setName(allowance.allowance_name || "");
       setDefaultAmount(allowance.default_amount?.toString() || "");
-   setIsFixed(
-  allowance.is_fixed === true || allowance.is_fixed === 1 ? "1" : "0"
-);
-
+      setIsFixed(
+        allowance.is_fixed === true || allowance.is_fixed === 1 ? "1" : "0"
+      );
     }
   }, [allowance]);
 
@@ -47,7 +46,9 @@ export default function EditModal({ allowance, onClose, onSave }) {
       onClose={onClose}
       footer={
         <>
-          <button className="btn btn-secondary" onClick={onClose}>Cancel</button>
+          <button className="btn btn-secondary" onClick={onClose}>
+            Cancel
+          </button>
           <button
             className="btn"
             style={{ backgroundColor: "#1071B9", color: "#fff" }}
@@ -81,15 +82,14 @@ export default function EditModal({ allowance, onClose, onSave }) {
         </div>
         <div className="mb-3">
           <label className="form-label">Type</label>
-         <select
-  className="form-select"
-  value={isFixed === true || isFixed === "1" ? "1" : "0"}
-  onChange={(e) => setIsFixed(e.target.value)}
->
-  <option value="1">Fixed</option>
-  <option value="0">Not Fixed</option>
-</select>
-
+          <select
+            className="form-select"
+            value={isFixed === true || isFixed === "1" ? "1" : "0"}
+            onChange={(e) => setIsFixed(e.target.value)}
+          >
+            <option value="1">Fixed</option>
+            <option value="0">Not Fixed</option>
+          </select>
         </div>
       </form>
     </BaseModal>

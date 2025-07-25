@@ -1,4 +1,4 @@
-// pages/hr/profile.js
+// pages/profile
 import React, { useCallback, useEffect, useState } from "react";
 import { getProfile } from "../services/authService";
 import { toast } from "react-toastify";

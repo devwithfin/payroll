@@ -1,4 +1,4 @@
-// app
+// entry point
 import AppRoute from "./routers/AppRoute";
 
 const App = () => <AppRoute />;

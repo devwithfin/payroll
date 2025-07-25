@@ -1,4 +1,4 @@
-// components/modals/allowance/edit-modal
+// components/hr/modals/allowance/edit-modal
 import React, { useEffect, useState } from "react";
 import BaseModal from "../../../common/BaseModal";
 import { updateEmployeeAllowance } from "../../../../services/employeeAllowanceService";

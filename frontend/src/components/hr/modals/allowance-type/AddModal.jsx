@@ -1,4 +1,4 @@
-// components/modals/allowance-type/add-modal
+// components/hr/modals/allowance-type/add-modal
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import BaseModal from "../../../common/BaseModal";

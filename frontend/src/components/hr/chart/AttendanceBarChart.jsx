@@ -1,3 +1,4 @@
+// components/hr/chart/attendance-bar
 import React from "react";
 import {
   BarChart,

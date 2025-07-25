@@ -1,3 +1,4 @@
+// components/hr/modals/allowance/recap-modal
 import React, { useState } from "react";
 import BaseModal from "../../../common/BaseModal";
 

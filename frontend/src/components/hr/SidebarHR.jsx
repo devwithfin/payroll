@@ -1,3 +1,4 @@
+// components/hr/sidebar-hr
 import { useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -6,7 +7,6 @@ import {
   faHome,
   faUserTie,
   faUser,
-  faMoneyCheckDollar,
   faMoneyBill,
   faFileInvoiceDollar,
   faCalendarCheck,
@@ -321,17 +321,6 @@ const SidebarHR = () => {
                 >
                   <FontAwesomeIcon icon={faMoneyBillWave} />
                   Draft Payroll
-                </Link>
-              </li>
-              <li className="nav-item mb-2">
-                <Link
-                  to="/hr/salary-slip"
-                  className={`nav-link fw-medium ${
-                    isActive("/hr/salary-slip") ? "active" : ""
-                  }`}
-                >
-                  <FontAwesomeIcon icon={faMoneyCheckDollar} />
-                  Salary Slip
                 </Link>
               </li>
             </>

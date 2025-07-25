@@ -30,7 +30,6 @@ export default function EditModal({ data, approverId, onClose, onUpdated }) {
         approval_status: form.approval_status,
         notes_approval: form.notes_approval,
         approved_by_hrd: approverId,
-
       });
       toast.success("Overtime status successfully updated.");
       onClose();
@@ -50,7 +49,7 @@ export default function EditModal({ data, approverId, onClose, onUpdated }) {
           <button className="btn btn-secondary" onClick={onClose}>
             Cancel
           </button>
-           <button
+          <button
             className="btn"
             style={{ backgroundColor: "#1071B9", color: "#fff" }}
             onClick={handleSubmit}
@@ -89,9 +88,7 @@ export default function EditModal({ data, approverId, onClose, onUpdated }) {
         <textarea
           className="form-control"
           value={form.notes_approval}
-          onChange={(e) =>
-            setForm({ ...form, notes_approval: e.target.value })
-          }
+          onChange={(e) => setForm({ ...form, notes_approval: e.target.value })}
         />
       </div>
     </BaseModal>

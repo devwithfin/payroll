@@ -1,4 +1,4 @@
-// components/modals/employee/info-modal
+// components/hr/modals/employee/info-modal
 import React, { useState } from "react";
 import BaseModal from "../../../common/BaseModal";
 

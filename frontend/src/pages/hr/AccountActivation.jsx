@@ -1,4 +1,4 @@
-// pages/hr/accountActivation.jsx
+// pages/hr/account-activation
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";

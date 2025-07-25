@@ -1,3 +1,4 @@
+// pages/login
 import React, { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 
@@ -105,7 +106,7 @@ const LoginPage = () => {
 
         <div className="text-center mt-4">
           <small className="text-muted">
-            © 2025 HRIS. All rights reserved.
+            © 2025 HRIS & Payroll. All rights reserved.
           </small>
         </div>
       </div>

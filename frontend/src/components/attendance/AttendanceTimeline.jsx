@@ -1,6 +1,7 @@
+// components/attendance/attendance-timeline
 import React, { useEffect, useState } from "react";
 
-const AttendanceTimeline = ({ checkInTime, checkOutTime }) => {
+const AttendanceTimeline = () => {
   const startHour = 8;
   const endHour = 17;
 
@@ -16,8 +17,8 @@ const AttendanceTimeline = ({ checkInTime, checkOutTime }) => {
       setCurrentTime(timeStr);
     };
 
-    updateTime();  
-    const interval = setInterval(updateTime, 60000);  
+    updateTime();
+    const interval = setInterval(updateTime, 60000);
 
     return () => clearInterval(interval);
   }, []);

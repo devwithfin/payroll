@@ -1,4 +1,4 @@
-// pages/hr/Attendances.jsx
+// pages/hr/attendance
 import React, { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Table from "../../components/common/Table";

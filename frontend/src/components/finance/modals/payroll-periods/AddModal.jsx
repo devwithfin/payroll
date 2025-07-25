@@ -1,3 +1,4 @@
+// components/finance/modals/payroll-periods/add-modal
 import React, { useState } from "react";
 import BaseModal from "../../../common/BaseModal";
 import Swal from "sweetalert2";
@@ -33,8 +34,12 @@ export default function AddModal({ onClose, onSave }) {
           <button className="btn btn-secondary" onClick={onClose}>
             Cancel
           </button>
-          <button className="btn btn-primary" onClick={handleSubmit}>
-            Save
+          <button
+            className="btn"
+            style={{ backgroundColor: "#1071B9", color: "#fff" }}
+            onClick={handleSubmit}
+          >
+            Submit
           </button>
         </>
       }

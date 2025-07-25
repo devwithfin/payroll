@@ -1,4 +1,4 @@
-// components/modals/employee/edit-modal
+// components/hr/modals/employee/edit-modal
 import React, { useState, useEffect } from "react";
 import BaseModal from "../../../common/BaseModal";
 import Swal from "sweetalert2";

@@ -1,4 +1,4 @@
-// layouts/AppLayout.jsx
+// layouts/app-layout
 import { Outlet } from "react-router-dom";
 import { useAuthContext } from "../contexts/AuthContext";
 

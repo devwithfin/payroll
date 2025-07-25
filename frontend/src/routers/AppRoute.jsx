@@ -19,7 +19,6 @@ import HRAllowanceType from "../pages/hr/AllowanceType";
 import HRDeductionType from "../pages/hr/DeductionType";
 import HROvertimeApproval from "../pages/hr/OvertimeApproval";
 import HRPayrollDraft from "../pages/hr/PayrollDraft";
-import HRSalarySlip from "../pages/hr/SalarySlip";
 import HRAllowances from "../pages/hr/Allowances";
 import HRDeductions from "../pages/hr/Deductions";
 import HROvertimeRates from "../pages/hr/OvertimeRates";
@@ -28,8 +27,7 @@ import HRAccountActivation from "../pages/hr/AccountActivation";
 // Finance pages
 import FinanceDashboard from "../pages/finance/Dashboard";
 import FinancePayrollPeriod from "../pages/finance/PayrollPeriods";
-import FinancePayrollProcess from "../pages/finance/PayrollProcess";
-import FinanceSalarySlip from "../pages/finance/SalarySlip";
+import FinancePayrollFinal from "../pages/finance/PayrollFinal";
 
 // Employee pages
 import EmployeeDashboard from "../pages/employee/Dashboard";
@@ -52,7 +50,6 @@ const AppRoute = () => (
           <Route path="/hr/deduction-type" element={<HRDeductionType />} />
           <Route path="/hr/overtimes" element={<HROvertimeApproval />} />
           <Route path="/hr/payroll-draft" element={<HRPayrollDraft />} />
-          <Route path="/hr/salary-slip" element={<HRSalarySlip />} />
           <Route path="/hr/allowances" element={<HRAllowances />} />
           <Route path="/hr/deductions" element={<HRDeductions />} />
           <Route path="/hr/overtime-rates" element={<HROvertimeRates />} />
@@ -74,9 +71,8 @@ const AppRoute = () => (
           />
           <Route
             path="/finance/payroll-process"
-            element={<FinancePayrollProcess />}
+            element={<FinancePayrollFinal />}
           />
-          <Route path="/finance/salary-slip" element={<FinanceSalarySlip />} />
           <Route path="/finance/profile" element={<ProfilePage />} />
         </Route>
       </Route>

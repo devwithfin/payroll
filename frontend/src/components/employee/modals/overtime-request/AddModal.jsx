@@ -1,4 +1,4 @@
-// components/modals/deduction-type/add-modal
+// components/employee/modals/overtime-request/add-modal
 import React, { useState } from "react";
 import BaseModal from "../../../common/BaseModal";
 import Swal from "sweetalert2";
@@ -69,7 +69,7 @@ export default function AddModal({ employeeId, onClose, onSave }) {
             style={{ backgroundColor: "#1071B9", border: "none" }}
             onClick={handleSubmit}
           >
-            Save
+            Submit
           </button>
         </>
       }

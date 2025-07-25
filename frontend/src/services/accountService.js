@@ -1,4 +1,4 @@
-// service/account.js
+// service/account
 import API from "../libs/axiosInstance";
 
 export const getAllAccounts = () => API.get("/account-users");

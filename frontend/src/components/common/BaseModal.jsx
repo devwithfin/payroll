@@ -37,7 +37,7 @@ export default function BaseModal({ title, children, footer, onClose }) {
       >
         <div
           style={{
-            backgroundColor: "#107189",
+            backgroundColor: "#1071B9",
             color: "white",
             padding: "12px 20px",
             display: "flex",

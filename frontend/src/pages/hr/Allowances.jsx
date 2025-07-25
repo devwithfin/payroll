@@ -26,50 +26,50 @@ export default function Allowances() {
   const [showRecapModal, setShowRecapModal] = useState(false);
   const [recapData, setRecapData] = useState([]);
 
- useEffect(() => {
-  getAllPayrollPeriods()
-    .then((res) => {
-      const sorted = res.data.data.sort(
-        (a, b) => new Date(a.start_date) - new Date(b.start_date)
-      );
-      setPeriods(sorted);
-      const today = new Date();
-      const active = sorted.find((p) => {
-        const start = new Date(p.start_date);
-        const end = new Date(p.end_date);
-        return today >= start && today <= end;
-      });
+  useEffect(() => {
+    getAllPayrollPeriods()
+      .then((res) => {
+        const sorted = res.data.data.sort(
+          (a, b) => new Date(a.start_date) - new Date(b.start_date)
+        );
+        setPeriods(sorted);
+        const today = new Date();
+        const active = sorted.find((p) => {
+          const start = new Date(p.start_date);
+          const end = new Date(p.end_date);
+          return today >= start && today <= end;
+        });
+        if (active) {
+          setSelectedPeriod(active);
+        }
+      })
+      .catch(() => toast.error("Failed to load payroll periods"));
+  }, []);
 
-      if (active) {
-        setSelectedPeriod(active);
+  const fetchData = useCallback(async () => {
+    try {
+      const res = await getAllEmployeeAllowances();
+      const allData = res.data?.data || [];
+
+      if (!Array.isArray(allData)) {
+        throw new Error("Invalid data format");
       }
-    })
-    .catch(() => toast.error("Failed to load payroll periods"));
-}, []);
 
-const fetchData = useCallback(async () => {
-  try {
-    const res = await getAllEmployeeAllowances();
-    const allData = res.data?.data || [];
+      const { start_date, end_date } = selectedPeriod || {};
+      const filtered = selectedPeriod
+        ? allData.filter((item) => {
+            const date = new Date(item.effective_date);
+            return date >= new Date(start_date) && date <= new Date(end_date);
+          })
+        : [];
 
-    if (!Array.isArray(allData)) {
-      throw new Error("Invalid data format");
+      setData(filtered);
+    } catch (err) {
+      console.error("Fetch error:", err);
+      toast.error("Failed to fetch employee allowances");
+      setData([]);
     }
-
-    const { start_date, end_date } = selectedPeriod;
-    const filtered = allData.filter((item) => {
-      const date = new Date(item.effective_date);
-      return date >= new Date(start_date) && date <= new Date(end_date);
-    });
-
-    setData(filtered);
-  } catch (err) {
-    console.error("Fetch error:", err);
-    toast.error("Failed to fetch employee allowances");
-    setData([]);  
-  }
-}, [selectedPeriod]);
-
+  }, [selectedPeriod]);
 
   useEffect(() => {
     if (selectedPeriod) fetchData();
@@ -78,8 +78,6 @@ const fetchData = useCallback(async () => {
 
   const handleDelete = (row) => {
     const id = row.emp_allowance_id;
-    console.log("Deleting ID:", id);
-
     if (!id) {
       toast.error("ID not found for selected record");
       return;
@@ -114,7 +112,7 @@ const fetchData = useCallback(async () => {
   };
 
   const handleShowRecap = () => {
-    if (!selectedPeriod) return;
+  
     const recapMap = {};
     data.forEach((item) => {
       const name = item.full_name || item.Employee?.full_name || "Unknown";
@@ -124,6 +122,7 @@ const fetchData = useCallback(async () => {
       }
       recapMap[name].total_amount += amount;
     });
+
     setRecapData(Object.values(recapMap));
     setShowRecapModal(true);
   };
@@ -144,7 +143,8 @@ const fetchData = useCallback(async () => {
     },
     {
       name: "Amount",
-      selector: (row) => `Rp ${parseFloat(row.amount).toLocaleString("id-ID")}`,
+      selector: (row) =>
+        `Rp ${parseFloat(row.amount).toLocaleString("id-ID")}`,
     },
     {
       name: "Effective Date",
@@ -200,15 +200,13 @@ const fetchData = useCallback(async () => {
         onAdd={() => setShowAddModal(true)}
         customControls={
           <div className="d-flex align-items-center gap-3">
-            {selectedPeriod && (
-              <button
-                className="btn btn-sm btn-success"
-                style={{ minWidth: "180px" }}
-                onClick={handleShowRecap}
-              >
-                Recapitulation
-              </button>
-            )}
+            <button
+              className="btn btn-sm btn-success"
+              style={{ minWidth: "180px" }}
+              onClick={handleShowRecap}
+            >
+              Recapitulation
+            </button>
             <select
               className="form-select form-select-sm"
               style={{ minWidth: "250px" }}

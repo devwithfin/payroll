@@ -1,3 +1,4 @@
+// components/attendance/live-clock
 import React, { useState, useEffect } from "react";
 
 const LiveClock = ({ className = "", style = {} }) => {

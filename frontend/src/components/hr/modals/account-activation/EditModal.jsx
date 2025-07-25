@@ -1,4 +1,4 @@
-//components/modals/account-activation/edit-modal
+//components/hr/modals/account-activation/edit-modal
 import React, { useState, useEffect } from "react";
 import BaseModal from "../../../common/BaseModal";
 import Swal from "sweetalert2";
@@ -26,7 +26,7 @@ export default function EditModal({ account, onClose, onSave }) {
 
     try {
       await updateAccountPassword(account.id_user, { password });
-      onSave(); // fetch ulang dan tutup modal
+      onSave();  
     } catch (err) {
       console.error("Activation failed:", err);
       const errMsg = err.response?.data?.message || "Activation failed";

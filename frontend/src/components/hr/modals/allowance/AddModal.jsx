@@ -1,4 +1,4 @@
-// components/modals/allowance/add-modal
+// components/hr/modals/allowance/add-modal
 import React, { useEffect, useState } from "react";
 import BaseModal from "../../../common/BaseModal";
 import { createEmployeeAllowance } from "../../../../services/employeeAllowanceService";

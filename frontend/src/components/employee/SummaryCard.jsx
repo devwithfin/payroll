@@ -1,3 +1,4 @@
+// components/employee/summary-card
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -7,18 +8,17 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function SummaryCard({ title, value }) {
-  // Tentukan ikon & warna berdasarkan judul
   const getIcon = () => {
     if (title.includes("Attendance")) {
-      return { icon: faCalendarCheck, color: "#4caf50" }; // Green
+      return { icon: faCalendarCheck, color: "#4caf50" };
     }
     if (title.includes("Overtime")) {
-      return { icon: faClock, color: "#ff9800" }; // Orange
+      return { icon: faClock, color: "#ff9800" };
     }
     if (title.includes("Salary")) {
-      return { icon: faMoneyBillWave, color: "#2196f3" }; // Blue
+      return { icon: faMoneyBillWave, color: "#2196f3" };
     }
-    return { icon: faCalendarCheck, color: "#9e9e9e" }; // Default gray
+    return { icon: faCalendarCheck, color: "#9e9e9e" };
   };
 
   const { icon, color } = getIcon();
@@ -30,7 +30,10 @@ export default function SummaryCard({ title, value }) {
     >
       <div className="card-body d-flex justify-content-between align-items-center">
         <div>
-          <p className="text-muted fw-semibold mb-1" style={{ fontSize: "0.85rem" }}>
+          <p
+            className="text-muted fw-semibold mb-1"
+            style={{ fontSize: "0.85rem" }}
+          >
             {title}
           </p>
           <h3 className="fw-bold mb-0">{value}</h3>

@@ -1,4 +1,4 @@
-//components/modals/approval-overtime/info-modal
+//components/hr/modals/approval-overtime/info-modal
 import React, { useState } from "react";
 import BaseModal from "../../../common/BaseModal";
 

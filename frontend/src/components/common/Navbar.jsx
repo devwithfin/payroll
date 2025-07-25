@@ -1,3 +1,4 @@
+// components/common/navbar
 import React, { useState, useRef, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -32,30 +33,28 @@ const Navbar = () => {
     "/hr/dashboard": "HR Dashboard",
     "/hr/positions": "Position Management",
     "/hr/departments": "Department Management",
-    "/hr/employees": "Employee Management",
-    "/hr/attendances": "Attendance & Recapitulation",
-    "/hr/allowances": "Employee Allowance",
-    "/hr/deductions": "Employee Deduction",
-    "/hr/allowance-type": "Allowance Type",
-    "/hr/deduction-type": "Deduction Type",
-    "/hr/overtimes": "Overtime Approval",
-    "/hr/overtime-rates": "Overtime Rates",
-    "/hr/payroll-draft": "Payroll Draft",
-    "/hr/salary-slip": "Salary Slip",
+    "/hr/employees": "Employee Directory",
+    "/hr/attendances": "Attendance Recap",
+    "/hr/allowances": "Employee Allowances",
+    "/hr/deductions": "Employee Deductions",
+    "/hr/allowance-type": "Allowance Types",
+    "/hr/deduction-type": "Deduction Types",
+    "/hr/overtimes": "Overtime Approvals",
+    "/hr/overtime-rates": "Overtime Rate Settings",
+    "/hr/payroll-draft": "Payroll Drafting",
     "/hr/profile": "HR Profile",
-    "/hr/account-activation": "Account Activation",
+    "/hr/account-activation": "User Account Activation",
 
     "/finance/dashboard": "Finance Dashboard",
-    "/finance/attendances": "Finance Attendance",
-    "/finance/payroll-periods": "Payroll Periods",
-    "/finance/payroll-process": "Payroll Process",
-    "/finance/salary-slip": "Salary Slip",
+    "/finance/attendances": "Attendance Overview",
+    "/finance/payroll-periods": "Payroll Period Management",
+    "/finance/payroll-process": "Payroll Finalize",
     "/finance/profile": "Finance Profile",
 
     "/employee/dashboard": "Employee Dashboard",
-    "/employee/attendances": "Employee Attendance",
-    "/employee/overtimes": "Overtime Request",
-    "/employee/profile": "Employee Profile",
+    "/employee/attendances": "My Attendance",
+    "/employee/overtimes": "Overtime Requests",
+    "/employee/profile": "My Profile",
   };
 
   const pageTitle = pageTitles[location.pathname];

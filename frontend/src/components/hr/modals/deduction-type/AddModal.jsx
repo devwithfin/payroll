@@ -1,4 +1,4 @@
-// components/hr/modals/deduction-type/AddModal.jsx
+// components/hr/modals/deduction-type/add-modal
 import React, { useState } from "react";
 import BaseModal from "../../../common/BaseModal";
 import Swal from "sweetalert2";

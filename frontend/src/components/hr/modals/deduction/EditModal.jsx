@@ -1,4 +1,4 @@
-// components/modals/deduction/EditModal.jsx
+// components/hr/modals/deduction/edit-modal
 import React, { useEffect, useState } from "react";
 import BaseModal from "../../../common/BaseModal";
 import { updateEmployeeDeduction } from "../../../../services/employeeDeductionService";

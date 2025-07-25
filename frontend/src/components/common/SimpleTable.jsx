@@ -1,3 +1,4 @@
+// components/common/simple-table
 import React from "react";
 import DataTable from "react-data-table-component";
 import styled from "styled-components";
