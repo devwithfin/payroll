@@ -1,14 +1,19 @@
 // router/employee-allowance
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const employeeAllowanceController = require('../controllers/employeeAllowanceController');
+const employeeAllowanceController = require("../controllers/employeeAllowanceController");
 
-router.get('/', employeeAllowanceController.getAll);
+const verifyToken = require("../middlewares/verifyToken");
+const allowedRole = require("../middlewares/roleMiddleware");
 
-router.post('/', employeeAllowanceController.create);
+router.use(verifyToken);
 
-router.put('/:id', employeeAllowanceController.update);
+router.get("/", allowedRole("HR", "Finance"), employeeAllowanceController.getAll);
 
-router.delete('/:id', employeeAllowanceController.destroy);
+router.post("/", allowedRole("HR", "Finance"), employeeAllowanceController.create);
+
+router.put("/:id", allowedRole("HR", "Finance"), employeeAllowanceController.update);
+
+router.delete("/:id", allowedRole("HR", "Finance"), employeeAllowanceController.destroy);
 
 module.exports = router;

@@ -4,8 +4,7 @@ const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class OvertimeRate extends Model {
-    static associate(models) {
-    }
+    static associate(models) {}
   }
 
   OvertimeRate.init(

@@ -1,3 +1,4 @@
+// controller/employee-deduction
 const { EmployeeDeduction, Employee, Deduction } = require("../models");
 
 const EmployeeDeductionController = {
@@ -58,7 +59,9 @@ const EmployeeDeductionController = {
       });
 
       if (!data) {
-        return res.status(404).json({ message: "Employee deduction not found" });
+        return res
+          .status(404)
+          .json({ message: "Employee deduction not found" });
       }
 
       const plain = data.toJSON();
@@ -84,7 +87,8 @@ const EmployeeDeductionController = {
   },
 
   create: async (req, res) => {
-    const { employee_id, deduction_id, amount, effective_date, end_date } = req.body;
+    const { employee_id, deduction_id, amount, effective_date, end_date } =
+      req.body;
 
     try {
       const created = await EmployeeDeduction.create({
@@ -109,7 +113,9 @@ const EmployeeDeductionController = {
     try {
       const data = await EmployeeDeduction.findByPk(req.params.id);
       if (!data) {
-        return res.status(404).json({ message: "Employee deduction not found" });
+        return res
+          .status(404)
+          .json({ message: "Employee deduction not found" });
       }
 
       const { deduction_id, amount, effective_date, end_date } = req.body;
@@ -135,7 +141,9 @@ const EmployeeDeductionController = {
     try {
       const data = await EmployeeDeduction.findByPk(req.params.id);
       if (!data) {
-        return res.status(404).json({ message: "Employee deduction not found" });
+        return res
+          .status(404)
+          .json({ message: "Employee deduction not found" });
       }
 
       await data.destroy();

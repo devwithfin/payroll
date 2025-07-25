@@ -3,14 +3,20 @@ const express = require("express");
 const router = express.Router();
 const positionController = require("../controllers/positionController");
 
-router.get("/", positionController.getAll);
+const verifyToken = require("../middlewares/verifyToken");
+const allowedRole = require("../middlewares/roleMiddleware");
 
-router.get("/:id", positionController.getById);
+router.use(verifyToken);
 
-router.post("/", positionController.create);
 
-router.put("/:id", positionController.update);
+router.get("/", allowedRole("HR", "Finance", "Employee"), positionController.getAll);
 
-router.delete("/:id", positionController.destroy);
+router.get("/:id", allowedRole("HR", "Finance", "Employee"), positionController.getById);
+
+router.post("/", allowedRole("HR"), positionController.create);
+
+router.put("/:id", allowedRole("HR"), positionController.update);
+
+router.delete("/:id", allowedRole("HR"), positionController.destroy);
 
 module.exports = router;

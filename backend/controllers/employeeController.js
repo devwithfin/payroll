@@ -1,7 +1,6 @@
 // controller/employee
 const { Employee, Department, Position, User } = require("../models");
 
-
 const EmployeeController = {
   getAll: async (req, res) => {
     try {
@@ -39,7 +38,7 @@ const EmployeeController = {
           {
             model: Position,
             as: "position",
-            attributes: ["position_name", "job_allowance"], 
+            attributes: ["position_name", "job_allowance"],
           },
         ],
         order: [["employee_id", "DESC"]],
@@ -135,16 +134,16 @@ const EmployeeController = {
     }
   },
 
- create: async (req, res) => {
+  create: async (req, res) => {
     try {
       const employeeData = req.body;
-      
+
       const newEmployee = await Employee.create(employeeData);
 
       await User.create({
         employee_id: newEmployee.employee_id,
         email: newEmployee.email,
-        role: newEmployee.role || 'Employee', 
+        role: newEmployee.role || "Employee",
         password: null,
       });
 

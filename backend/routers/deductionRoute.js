@@ -3,10 +3,18 @@ const express = require("express");
 const router = express.Router();
 const deductionController = require("../controllers/deductionController");
 
-router.get("/", deductionController.getAll);
-router.get("/:id", deductionController.getById);
-router.post("/", deductionController.create);
-router.put("/:id", deductionController.update);
-router.delete("/:id", deductionController.destroy);
+const verifyToken = require("../middlewares/verifyToken");
+const allowedRole = require("../middlewares/roleMiddleware");
+router.use(verifyToken);
+
+router.get("/", allowedRole("HR", "Finance"), deductionController.getAll);
+
+router.get("/:id", allowedRole("HR", "Finance"), deductionController.getById);
+
+router.post("/", allowedRole("HR", "Finance"), deductionController.create);
+
+router.put("/:id", allowedRole("HR", "Finance"), deductionController.update);
+
+router.delete("/:id", allowedRole("HR", "Finance"), deductionController.destroy);
 
 module.exports = router;

@@ -12,9 +12,8 @@ module.exports = (sequelize, DataTypes) => {
 
       EmployeeAllowance.belongsTo(models.Allowance, {
         foreignKey: "allowance_id",
-         as: "allowance"
+        as: "allowance",
       });
-      
     }
   }
 

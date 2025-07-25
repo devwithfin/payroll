@@ -1,4 +1,4 @@
-// controller/overtime-rates
+// controller/overtime-rate
 const { OvertimeRate } = require("../models");
 
 const overtimeRateController = {

@@ -1,3 +1,4 @@
+// controller/employee-summary
 const {
   Attendance,
   OvertimeRequest,
@@ -57,7 +58,12 @@ module.exports = {
           employee_id: employeeId,
           attendance_date: { [Op.between]: [start_date, end_date] },
         },
-        attributes: ["attendance_date", "status", "check_in_time", "check_out_time"],
+        attributes: [
+          "attendance_date",
+          "status",
+          "check_in_time",
+          "check_out_time",
+        ],
         order: [["attendance_date", "ASC"]],
       });
 
@@ -98,7 +104,8 @@ module.exports = {
         const startMins = parseTimeToMinutes(ot.start_time);
         const endMins = parseTimeToMinutes(ot.end_time);
         const durationMins = endMins - startMins;
-        const hours = durationMins > 0 ? parseFloat((durationMins / 60).toFixed(2)) : 0;
+        const hours =
+          durationMins > 0 ? parseFloat((durationMins / 60).toFixed(2)) : 0;
 
         return {
           date: ot.overtime_date,
@@ -110,7 +117,6 @@ module.exports = {
         (sum, o) => sum + (o.hours || 0),
         0
       );
-
 
       const lastSalary = await PayrollDetail.findOne({
         where: {

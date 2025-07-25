@@ -2,16 +2,22 @@
 const { Deduction } = require("../models");
 
 const deductionController = {
-
   getAll: async (req, res) => {
     try {
       const deductions = await Deduction.findAll({
-        attributes: ["deduction_id", "deduction_name", "created_at", "updated_at"],
+        attributes: [
+          "deduction_id",
+          "deduction_name",
+          "created_at",
+          "updated_at",
+        ],
         order: [["deduction_id", "DESC"]],
       });
 
       if (!deductions.length) {
-        return res.status(204).json({ message: "No deduction data found", data: [] });
+        return res
+          .status(204)
+          .json({ message: "No deduction data found", data: [] });
       }
 
       res.status(200).json({
@@ -23,7 +29,6 @@ const deductionController = {
       res.status(500).json({ message: "Internal server error" });
     }
   },
-
 
   getById: async (req, res) => {
     try {
@@ -76,7 +81,6 @@ const deductionController = {
     }
   },
 
-
   destroy: async (req, res) => {
     try {
       const deduction = await Deduction.findByPk(req.params.id);
@@ -84,7 +88,7 @@ const deductionController = {
         return res.status(404).json({ message: "Deduction not found" });
       }
 
-      await deduction.destroy(); 
+      await deduction.destroy();
       res.status(200).json({ message: "Deduction deleted successfully" });
     } catch (error) {
       console.error("destroy error:", error);

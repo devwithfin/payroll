@@ -1,3 +1,4 @@
+// model/employee
 "use strict";
 const { Model } = require("sequelize");
 
@@ -37,7 +38,6 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "approved_by_hrd",
         as: "overtimeRequestsAsHRDApprover",
       });
-
     }
   }
 

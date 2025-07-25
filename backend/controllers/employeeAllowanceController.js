@@ -1,3 +1,4 @@
+// controller/employee-allowance
 const {
   EmployeeAllowance,
   Employee,
@@ -6,7 +7,7 @@ const {
 } = require("../models");
 
 const EmployeeAllowanceController = {
- getAll: async (req, res) => {
+  getAll: async (req, res) => {
     try {
       const allowances = await EmployeeAllowance.findAll({
         include: [

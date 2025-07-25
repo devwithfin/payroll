@@ -1,4 +1,4 @@
-// config database
+// config/sequelize
 require('dotenv').config();
 
 module.exports = {

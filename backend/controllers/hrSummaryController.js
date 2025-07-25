@@ -1,3 +1,4 @@
+// controller/hr-summary
 const {
   Employee,
   Department,
@@ -48,7 +49,6 @@ module.exports = {
         attendanceBarChart.push(counts);
       }
 
-      // Dapatkan periode terakhir untuk chart harian dan data lainnya
       let currentPeriod = periods[0];
       const startDate = currentPeriod?.start_date;
       const endDate = currentPeriod?.end_date;
@@ -167,7 +167,7 @@ module.exports = {
         },
         employment_status_chart: statusCounts,
         attendance_summary: attendanceSummary,
-        attendance_bar_chart: attendanceBarChart, // ✅ hasil yang kamu butuhkan
+        attendance_bar_chart: attendanceBarChart, 
         attendance_chart: attendanceChart,
         overtime_table: overtimeTable,
         employee_table: employeeTable,

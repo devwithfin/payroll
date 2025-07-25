@@ -1,4 +1,4 @@
-// model/payroll-details
+// model/payroll-detail
 "use strict";
 const { Model } = require("sequelize");
 
@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       PayrollDetail.belongsTo(models.PayrollPeriod, {
         foreignKey: "period_id",
-        as : "period"
+        as: "period",
       });
     }
   }
@@ -37,31 +37,31 @@ module.exports = (sequelize, DataTypes) => {
       pph21_deduction: {
         type: DataTypes.DECIMAL(15, 2),
         allowNull: false,
-        defaultValue: 0
+        defaultValue: 0,
       },
-      bpjs_kesehatan_deduction:{
+      bpjs_kesehatan_deduction: {
         type: DataTypes.DECIMAL(15, 2),
         allowNull: false,
-        defaultValue: 0
+        defaultValue: 0,
       },
       bpjs_ketenagakerjaan_deduction: {
         type: DataTypes.DECIMAL(15, 2),
         allowNull: false,
-        defaultValue: 0
+        defaultValue: 0,
       },
       other_deductions: DataTypes.DECIMAL(15, 2),
       total_deductions: DataTypes.DECIMAL(15, 2),
       net_salary: DataTypes.DECIMAL(15, 2),
       payroll_status: {
-          type: DataTypes.ENUM('Draft', 'Final'),
-           allowNull: false,
-          defaultValue: "Draft"
-        },
-         is_paid: {
-          type: DataTypes.BOOLEAN,
-      allowNull: false,
-      defaultValue: false,
-        },
+        type: DataTypes.ENUM("Draft", "Final"),
+        allowNull: false,
+        defaultValue: "Draft",
+      },
+      is_paid: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
       payment_date: {
         type: DataTypes.DATE,
         allowNull: true,

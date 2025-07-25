@@ -17,7 +17,9 @@ const allowanceController = {
       });
 
       if (!allowances.length) {
-        return res.status(204).json({ message: "No allowance data found", data: [] });
+        return res
+          .status(204)
+          .json({ message: "No allowance data found", data: [] });
       }
 
       res.status(200).json({
@@ -96,7 +98,7 @@ const allowanceController = {
         return res.status(404).json({ message: "Allowance not found" });
       }
 
-      await allowance.destroy(); // soft delete
+      await allowance.destroy();
       res.status(200).json({ message: "Allowance deleted successfully" });
     } catch (error) {
       console.error("destroy error:", error);

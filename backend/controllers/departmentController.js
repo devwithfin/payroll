@@ -5,7 +5,13 @@ const DepartmentController = {
   getAll: async (req, res) => {
     try {
       const departements = await Department.findAll({
-        attributes: ["department_id", "department_name", "created_at", "updated_at", "deleted_at"],
+        attributes: [
+          "department_id",
+          "department_name",
+          "created_at",
+          "updated_at",
+          "deleted_at",
+        ],
         order: [["department_id", "DESC"]],
       });
 
@@ -29,7 +35,13 @@ const DepartmentController = {
   getById: async (req, res) => {
     try {
       const departement = await Department.findByPk(req.params.id, {
-        attributes: ["department_id", "department_name", "created_at", "updated_at", "deleted_at"],
+        attributes: [
+          "department_id",
+          "department_name",
+          "created_at",
+          "updated_at",
+          "deleted_at",
+        ],
       });
 
       if (!departement) {
@@ -62,7 +74,7 @@ const DepartmentController = {
   },
 
   update: async (req, res) => {
-    try { 
+    try {
       const { department_name } = req.body;
       const department = await Department.findByPk(req.params.id);
 

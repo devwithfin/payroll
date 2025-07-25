@@ -2,11 +2,12 @@
 
 const { Op } = require("sequelize");
 
+// Ambil hari kerja antara dua tanggal (Senin–Jumat)
 const getWorkdays = (startDate, endDate) => {
   const dates = [];
   const current = new Date(startDate);
   while (current <= endDate) {
-    const day = current.getDay();
+    const day = current.getDay(); // 0 = Minggu, 6 = Sabtu
     if (day !== 0 && day !== 6) {
       dates.push(new Date(current));
     }
@@ -15,6 +16,7 @@ const getWorkdays = (startDate, endDate) => {
   return dates;
 };
 
+// Status acak kehadiran
 const randomStatus = () => {
   const rand = Math.random();
   if (rand < 0.75) return { status: "Present", notes: null };
@@ -23,6 +25,7 @@ const randomStatus = () => {
   return { status: "Absent", notes: "Tanpa keterangan" };
 };
 
+// Waktu acak check in/out
 const randomTime = (hourStart, minuteRange = 15) => {
   const hour = hourStart;
   const minute = Math.floor(Math.random() * (minuteRange + 1));
@@ -39,15 +42,16 @@ module.exports = {
     const periodStart = new Date("2025-06-26");
     const today = new Date();
     const periodEnd = new Date(today);
-    periodEnd.setDate(today.getDate() - 1);
+    periodEnd.setDate(today.getDate() - 1); // 1 hari sebelum seeder dijalankan
 
     const workdays = getWorkdays(periodStart, periodEnd);
 
     workdays.forEach((date) => {
       for (let employeeId = 1; employeeId <= 15; employeeId++) {
         const { status, notes } = randomStatus();
-        const checkIn = randomTime(8);
-        const checkOut = randomTime(17);
+        const checkIn = status === "Present" ? randomTime(8) : null;
+        const checkOut = status === "Present" ? randomTime(17) : null;
+
         attendances.push({
           employee_id: employeeId,
           attendance_date: date.toISOString().split("T")[0],
@@ -74,6 +78,7 @@ module.exports = {
         [Op.between]: [startDate, endDateString],
       },
     });
+
     await queryInterface.sequelize.query("ALTER TABLE attendances AUTO_INCREMENT = 1");
   },
 };

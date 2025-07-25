@@ -1,14 +1,16 @@
-'use strict';
-const { Model } = require('sequelize');
+// model/calculated-overtime
+"use strict";
+const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class CalculatedOvertime extends Model {
     static associate(models) {
       CalculatedOvertime.belongsTo(models.Employee, {
-        foreignKey: 'employee_id',
+        foreignKey: "employee_id",
       });
       CalculatedOvertime.belongsTo(models.OvertimeRequest, {
-        foreignKey: 'request_id',
+        foreignKey: "request_id",
+        as: "request",
       });
     }
   }
@@ -55,13 +57,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'CalculatedOvertime',
-      tableName: 'calculated_overtimes',
+      modelName: "CalculatedOvertime",
+      tableName: "calculated_overtimes",
       timestamps: true,
-      createdAt: 'created_at',
-      updatedAt: 'updated_at',
+      createdAt: "created_at",
+      updatedAt: "updated_at",
       paranoid: true,
-      deletedAt: 'deleted_at',
+      deletedAt: "deleted_at",
     }
   );
 

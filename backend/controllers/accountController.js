@@ -6,12 +6,21 @@ module.exports = {
   getAllAccounts: async (req, res) => {
     try {
       const users = await User.findAll({
-        attributes: ["id_user", "email", "password", "role", "created_at", "updated_at"],
+        attributes: [
+          "id_user",
+          "email",
+          "password",
+          "role",
+          "created_at",
+          "updated_at",
+        ],
         order: [["id_user", "DESC"]],
       });
 
       if (!users.length) {
-        return res.status(204).json({ message: "No account data found", data: [] });
+        return res
+          .status(204)
+          .json({ message: "No account data found", data: [] });
       }
 
       res.status(200).json({

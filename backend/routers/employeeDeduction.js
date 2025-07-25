@@ -1,15 +1,21 @@
+// router/employee-deduction
 const express = require("express");
 const router = express.Router();
 const employeeDeductionController = require("../controllers/EmployeeDeductionController");
 
-router.get("/", employeeDeductionController.getAll);
+const verifyToken = require("../middlewares/verifyToken");
+const allowedRole = require("../middlewares/roleMiddleware");
 
-router.get("/:id", employeeDeductionController.getById);
+router.use(verifyToken);
 
-router.post("/", employeeDeductionController.create);
+router.get("/", allowedRole("HR", "Finance"), employeeDeductionController.getAll);
 
-router.put("/:id", employeeDeductionController.update);
+router.get("/:id", allowedRole("HR", "Finance"), employeeDeductionController.getById);
 
-router.delete("/:id", employeeDeductionController.destroy);
+router.post("/", allowedRole("HR", "Finance"), employeeDeductionController.create);
+
+router.put("/:id", allowedRole("HR", "Finance"), employeeDeductionController.update);
+
+router.delete("/:id", allowedRole("HR", "Finance"), employeeDeductionController.destroy);
 
 module.exports = router;

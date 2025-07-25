@@ -1,3 +1,4 @@
+// model/position
 "use strict";
 
 module.exports = (sequelize, DataTypes) => {

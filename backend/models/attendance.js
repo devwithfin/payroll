@@ -34,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
       status: {
         type: DataTypes.ENUM("Present", "Sick", "Leave", "Absent"),
         allowNull: false,
-         defaultValue: "Present"
+        defaultValue: "Present",
       },
       notes: {
         type: DataTypes.TEXT,

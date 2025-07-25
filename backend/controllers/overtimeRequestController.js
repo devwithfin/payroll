@@ -1,4 +1,10 @@
-const { OvertimeRequest, Employee, Position, CalculatedOvertime } = require('../models');
+// controller/overtime-requests
+const {
+  OvertimeRequest,
+  Employee,
+  Position,
+  CalculatedOvertime,
+} = require("../models");
 
 const overtimeRequestController = {
   create: async (req, res) => {
@@ -94,36 +100,30 @@ const overtimeRequestController = {
   },
 
   updateApproval: async (req, res) => {
-  try {
-    const { request_id } = req.params;
-    const {
-      approval_status,
-      approved_by_hrd,
-      notes_approval,
-    } = req.body;
+    try {
+      const { request_id } = req.params;
+      const { approval_status, approved_by_hrd, notes_approval } = req.body;
 
-    const request = await OvertimeRequest.findByPk(request_id);
-    if (!request) {
-      return res.status(404).json({ message: "Request not found" });
+      const request = await OvertimeRequest.findByPk(request_id);
+      if (!request) {
+        return res.status(404).json({ message: "Request not found" });
+      }
+
+      const approval_date_hrd = new Date();
+
+      await request.update({
+        approval_status,
+        approved_by_hrd,
+        notes_approval,
+        approval_date_hrd,
+      });
+
+      res.status(200).json({ message: "Request approved", data: request });
+    } catch (error) {
+      console.error("updateApproval error:", error);
+      res.status(500).json({ message: "Failed to approve request" });
     }
-
-    const approval_date_hrd = new Date();
-
-    await request.update({
-      approval_status,
-      approved_by_hrd,
-      notes_approval,
-      approval_date_hrd,
-    });
-
-    res.status(200).json({ message: "Request approved", data: request });
-
-  } catch (error) {
-    console.error("updateApproval error:", error);
-    res.status(500).json({ message: "Failed to approve request" });
-  }
-},
-
+  },
 
   destroy: async (req, res) => {
     try {

@@ -1,27 +1,28 @@
-'use strict';
-const { Model } = require('sequelize');
+// model/overtime-request
+"use strict";
+const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class OvertimeRequest extends Model {
     static associate(models) {
       OvertimeRequest.belongsTo(models.Employee, {
-        foreignKey: 'employee_id',
-        as: 'employee',
+        foreignKey: "employee_id",
+        as: "employee",
       });
 
       OvertimeRequest.belongsTo(models.Employee, {
-        foreignKey: 'submitted_by',
-        as: 'Submitter',
+        foreignKey: "submitted_by",
+        as: "Submitter",
       });
 
       OvertimeRequest.belongsTo(models.Employee, {
-        foreignKey: 'approved_by_hrd',
-        as: 'HRDApprover',
+        foreignKey: "approved_by_hrd",
+        as: "HRDApprover",
       });
 
       OvertimeRequest.hasOne(models.CalculatedOvertime, {
-        foreignKey: 'request_id',
-        as: 'calculation',
+        foreignKey: "request_id",
+        as: "calculation",
       });
     }
   }
@@ -41,8 +42,8 @@ module.exports = (sequelize, DataTypes) => {
       reason: DataTypes.TEXT,
       submitted_by: DataTypes.INTEGER,
       approval_status: {
-        type: DataTypes.ENUM('Pending', 'Approved', 'Rejected'),
-        defaultValue: 'Pending',
+        type: DataTypes.ENUM("Pending", "Approved", "Rejected"),
+        defaultValue: "Pending",
       },
       approved_by_hrd: DataTypes.INTEGER,
       approval_date_hrd: DataTypes.DATE,
@@ -50,13 +51,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: 'OvertimeRequest',
-      tableName: 'overtime_requests',
+      modelName: "OvertimeRequest",
+      tableName: "overtime_requests",
       timestamps: true,
       paranoid: true,
-      createdAt: 'created_at',
-      updatedAt: 'updated_at',
-      deletedAt: 'deleted_at',
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+      deletedAt: "deleted_at",
     }
   );
 

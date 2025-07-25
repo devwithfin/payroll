@@ -1,22 +1,46 @@
-// routes/payrollPeriodRoute.js
+// routes/payroll-period
 const express = require("express");
 const router = express.Router();
 const payrollPeriodController = require("../controllers/payrollPeriodController");
+const payrollDetailController = require("../controllers/payrollDetailController");
 
-router.get("/", payrollPeriodController.getAll);
+const verifyToken = require("../middlewares/verifyToken");
+const allowedRole = require("../middlewares/roleMiddleware");
 
-router.get("/:id", payrollPeriodController.getById);
+router.use(verifyToken);
 
-router.post("/", payrollPeriodController.create);
+router.get(
+  "/payroll-details/by-period/:id",
+  allowedRole("HR", "Finance"),
+  payrollDetailController.getByPeriod
+);
 
-router.post("/draft-payroll/:id", payrollPeriodController.createDraftPayroll);
+router.post(
+  "/draft-payroll/:id",
+  allowedRole("HR","Finance"),
+  payrollPeriodController.createDraftPayroll
+);
 
-router.post("/final-payroll/:id", payrollPeriodController.createFinalPayroll);
+router.post(
+  "/final-payroll/:id",
+  allowedRole("HR","Finance"),
+  payrollPeriodController.createFinalPayroll
+);
 
-router.post("/pay/:id", payrollPeriodController.createPayrollTransfer);
+router.post(
+  "/pay/:id",
+  allowedRole("Finance"),
+  payrollPeriodController.createPayrollTransfer
+);
 
-router.put("/:id", payrollPeriodController.update);
+router.get("/", allowedRole("HR","Finance"), payrollPeriodController.getAll);
 
-router.delete("/:id", payrollPeriodController.destroy);
+router.post("/", allowedRole("HR","Finance"), payrollPeriodController.create);
+
+router.put("/:id", allowedRole("HR","Finance"), payrollPeriodController.update);
+
+router.delete("/:id", allowedRole("HR","Finance"), payrollPeriodController.destroy);
+
+router.get("/:id", allowedRole("HR","Finance"), payrollPeriodController.getById);
 
 module.exports = router;
