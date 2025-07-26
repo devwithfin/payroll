@@ -1,7 +1,7 @@
 //components/modals/approval-overtime/edit-modal
 import React, { useState, useEffect } from "react";
 import BaseModal from "../../../common/BaseModal";
-import { approveOvertimeRequest } from "../../../../services/overtimeRequest";
+import { approveOvertimeRequest } from "../../../../services/overtimeRequestService";
 import { toast } from "react-toastify";
 
 export default function EditModal({ data, approverId, onClose, onUpdated }) {

@@ -1,10 +1,5 @@
 // controller/overtime-requests
-const {
-  OvertimeRequest,
-  Employee,
-  Position,
-  CalculatedOvertime,
-} = require("../models");
+const { OvertimeRequest, Employee, CalculatedOvertime } = require("../models");
 
 const overtimeRequestController = {
   create: async (req, res) => {

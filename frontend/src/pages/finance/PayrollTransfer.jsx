@@ -1,10 +1,10 @@
-// pages/finance/payroll-final
-import React, { useState, useEffect, useCallback } from "react";
+// pages/finance/payroll-transfer
+import React, { useEffect, useState, useCallback } from "react";
 import Table from "../../components/common/Table";
 import {
   getAllPayrollPeriods,
   getPayrollDetailsByPeriod,
-  finalizePayroll,
+  transferPayroll,
 } from "../../services/payrollPeriodService";
 import { toast } from "react-toastify";
 
@@ -30,7 +30,26 @@ const getStatusBadge = (status) => {
   );
 };
 
-export default function PayrollFinal() {
+const getPaidBadge = (isPaid) => {
+  const bg = isPaid ? "#28a745" : "#ffc107";
+  const label = isPaid ? "Paid" : "Unpaid";
+
+  return (
+    <span
+      className="badge text-white text-center"
+      style={{
+        backgroundColor: bg,
+        minWidth: "80px",
+        fontSize: "0.85rem",
+        padding: "0.4rem",
+      }}
+    >
+      {label}
+    </span>
+  );
+};
+
+export default function PayrollTransfer() {
   const [data, setData] = useState([]);
   const [periods, setPeriods] = useState([]);
   const [selectedPeriod, setSelectedPeriod] = useState(null);
@@ -39,18 +58,15 @@ export default function PayrollFinal() {
   useEffect(() => {
     getAllPayrollPeriods()
       .then((res) => {
-        const filtered = res.data.data.filter((p) => {
-          return p.start_date === "2025-06-26" && p.end_date === "2025-07-25";
-        });
-
-        setPeriods(filtered);
-
-        if (filtered.length > 0) {
-          setSelectedPeriod(filtered[0]);
+        const list = res.data?.data || [];
+        setPeriods(list);
+        if (list.length > 0) {
+          setSelectedPeriod(list[0]);
         }
       })
       .catch((err) => {
-        console.error("Failed to fetch payroll periods", err);
+        toast.error("Failed to load periods");
+        console.error(err);
       });
   }, []);
 
@@ -58,10 +74,10 @@ export default function PayrollFinal() {
     if (!selectedPeriod) return;
     try {
       const res = await getPayrollDetailsByPeriod(selectedPeriod.period_id);
-      setData(res.data.data || []);
+      setData(res.data?.data || []);
     } catch (err) {
-      console.error("Failed to fetch payroll details", err);
-      setData([]);
+      toast.error("Failed to load payroll data");
+      console.error(err);
     }
   }, [selectedPeriod]);
 
@@ -69,18 +85,21 @@ export default function PayrollFinal() {
     fetchData();
   }, [fetchData]);
 
-  const handleFinalizePayroll = async () => {
+  const handleTransfer = async () => {
     if (!selectedPeriod) return;
     setLoading(true);
     try {
-      await finalizePayroll(selectedPeriod.period_id);
+      await transferPayroll(selectedPeriod.period_id);
       await fetchData();
-      toast.success("Payroll finalized successfully");
+      toast.success("Payroll marked as paid successfully");
     } catch (err) {
-      console.error("Failed to finalize payroll", err);
-      const msg =
-        err.response?.data?.message || err.message || "Failed to finalize payroll";
-      toast.error(msg);
+      const failedList = err.response?.data?.data || [];
+      if (failedList.length > 0) {
+        const names = failedList.map((e) => `• ${e.full_name}`).join("\n");
+        toast.error(`Failed: Employees missing bank info:\n${names}`);
+      } else {
+        toast.error("Failed to transfer payroll");
+      }
     } finally {
       setLoading(false);
     }
@@ -94,32 +113,7 @@ export default function PayrollFinal() {
     },
     {
       name: "Employee",
-      selector: (row) => row.full_name || "-",
-    },
-    {
-      name: "Base Salary",
-      selector: (row) =>
-        `Rp ${parseFloat(row.base_salary || 0).toLocaleString("id-ID")}`,
-    },
-    {
-      name: "Allowances",
-      selector: (row) =>
-        `Rp ${parseFloat(row.total_allowances || 0).toLocaleString("id-ID")}`,
-    },
-    {
-      name: "Overtime",
-      selector: (row) =>
-        `Rp ${parseFloat(row.total_overtime_pay || 0).toLocaleString("id-ID")}`,
-    },
-    {
-      name: "Gross Salary",
-      selector: (row) =>
-        `Rp ${parseFloat(row.gross_salary || 0).toLocaleString("id-ID")}`,
-    },
-    {
-      name: "Deductions",
-      selector: (row) =>
-        `Rp ${parseFloat(row.total_deductions || 0).toLocaleString("id-ID")}`,
+      selector: (row) => row.employee?.full_name || "-",
     },
     {
       name: "Net Salary",
@@ -127,8 +121,27 @@ export default function PayrollFinal() {
         `Rp ${parseFloat(row.net_salary || 0).toLocaleString("id-ID")}`,
     },
     {
+      name: "Bank",
+      selector: (row) => row.employee?.bank_name || "-",
+    },
+    {
+      name: "Account No.",
+      selector: (row) => row.employee?.bank_account_number || "-",
+    },
+    {
       name: "Status",
       selector: (row) => getStatusBadge(row.payroll_status),
+    },
+    {
+      name: "Paid",
+      selector: (row) => getPaidBadge(row.is_paid),
+    },
+    {
+      name: "Payment Date",
+      selector: (row) =>
+        row.payment_date
+          ? new Date(row.payment_date).toLocaleDateString("id-ID")
+          : "-",
     },
   ];
 
@@ -147,15 +160,18 @@ export default function PayrollFinal() {
     return `${startFormatted} – ${endFormatted} ${year}`;
   };
 
-  const isButtonDisabled =
-    !selectedPeriod ||
-    loading ||
-    (data.length > 0 && data[0].payroll_status?.toLowerCase() === "final");
+  const canTransfer =
+    data.length > 0 &&
+    data.every((p) => p.payroll_status === "Final") &&
+    data.some((p) => !p.is_paid) &&
+    data.every(
+      (p) => p.employee?.bank_name && p.employee?.bank_account_number
+    );
 
   return (
     <div className="container mx-auto p-1">
       <Table
-        title="Payroll Final"
+        title="Payroll Transfer"
         data={data}
         renderColumnsWithPage={renderColumnsWithPage}
         showAddButton={false}
@@ -169,10 +185,10 @@ export default function PayrollFinal() {
                 color: "#fff",
                 border: "none",
               }}
-              disabled={isButtonDisabled}
-              onClick={handleFinalizePayroll}
+              disabled={!canTransfer || loading}
+              onClick={handleTransfer}
             >
-              {loading ? "Processing..." : "Finalize Process"}
+              {loading ? "Processing..." : "Mark All as Paid"}
             </button>
 
             <select

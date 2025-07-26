@@ -79,7 +79,6 @@ const SidebarFinance = () => {
           overflowX: "hidden",
         }}
       >
-        {/* Logo */}
         <div className="text-center logo-container">
           <Link
             to="/finance/dashboard"
@@ -126,7 +125,7 @@ const SidebarFinance = () => {
             <Link
               to="/finance/payroll-periods"
               className={`nav-link fw-medium ${
-                isActive("/finance/payroll/periods") ? "active" : ""
+                isActive("/finance/payroll-periods") ? "active" : ""
               }`}
             >
               <FontAwesomeIcon icon={faCalendarAlt} />
@@ -135,13 +134,24 @@ const SidebarFinance = () => {
           </li>
           <li className="nav-item mb-2">
             <Link
-              to="/finance/payroll-process"
+              to="/finance/payroll-final"
               className={`nav-link fw-medium ${
-                isActive("/finance/payroll/process") ? "active" : ""
+                isActive("/finance/payroll-final") ? "active" : ""
               }`}
             >
               <FontAwesomeIcon icon={faMoneyBillWave} />
-               FInal Payroll
+              Payroll Final
+            </Link>
+          </li>
+          <li className="nav-item mb-2">
+            <Link
+              to="/finance/payroll-transfer"
+              className={`nav-link fw-medium ${
+                isActive("/finance/payroll-transfer") ? "active" : ""
+              }`}
+            >
+              <FontAwesomeIcon icon={faMoneyBillWave} />
+              Payroll Transfer
             </Link>
           </li>
           <div className="section-title">Account</div>

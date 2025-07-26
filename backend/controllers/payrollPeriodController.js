@@ -10,6 +10,7 @@ const {
   Position,
   TaxBpjsConfig,
   OvertimeRequest,
+  Allowance,
 } = require("../models");
 
 const { Op } = require("sequelize");
@@ -133,21 +134,17 @@ const PayrollPeriodController = {
 
   createDraftPayroll: async (req, res) => {
     const periodId = req.params.id;
-
     try {
       const period = await PayrollPeriod.findByPk(periodId);
-      if (!period) {
-        return res.status(404).json({ message: "Period not found" });
-      }
-
-      if (period.status !== "Open") {
-        return res.status(400).json({
-          message: "Cannot process draft payroll. Period is not open.",
-        });
-      }
+      if (!period) return res.status(404).json({ message: "Period not found" });
+      if (period.status !== "Open")
+        return res
+          .status(400)
+          .json({
+            message: "Cannot process draft payroll. Period is not open.",
+          });
 
       const { start_date, end_date } = period;
-
       const employees = await Employee.findAll({
         where: { resignation_date: null },
         include: [
@@ -156,14 +153,10 @@ const PayrollPeriodController = {
       });
 
       await PayrollDetail.destroy({
-        where: {
-          period_id: periodId,
-          payroll_status: "Draft",
-        },
+        where: { period_id: periodId, payroll_status: "Draft" },
       });
 
       const allDrafts = [];
-
       for (const emp of employees) {
         const employeeId = emp.employee_id;
         const baseSalaryFull = parseFloat(emp.position?.base_salary || 0);
@@ -232,7 +225,6 @@ const PayrollPeriodController = {
           (sum, d) => sum + parseFloat(d.amount || 0),
           0
         );
-
         const grossSalary = baseSalary + totalAllowances + totalOvertimePay;
         const netSalary = grossSalary - totalDeductions;
 
@@ -255,7 +247,6 @@ const PayrollPeriodController = {
       }
 
       await PayrollDetail.bulkCreate(allDrafts);
-
       res.status(200).json({ message: "Draft payroll processed successfully" });
     } catch (error) {
       console.error("Error processing draft payroll:", error);
@@ -265,13 +256,11 @@ const PayrollPeriodController = {
 
   createFinalPayroll: async (req, res) => {
     const periodId = req.params.id;
-
     try {
       const period = await PayrollPeriod.findByPk(periodId);
       if (!period) return res.status(404).json({ message: "Period not found" });
 
       const { start_date, end_date } = period;
-
       const config = await TaxBpjsConfig.findOne({
         where: {
           effective_start_date: { [Op.lte]: end_date },
@@ -282,35 +271,37 @@ const PayrollPeriodController = {
         },
       });
 
-      if (!config || !config.pph21_rules) {
+      if (!config || !config.pph21_rules)
         return res
           .status(400)
           .json({ message: "Tax/BPJS config or rules not found" });
-      }
 
       const rules =
         typeof config.pph21_rules === "string"
           ? JSON.parse(config.pph21_rules)
           : config.pph21_rules;
-
       const ptkpTable = rules.PTKP || {};
       const brackets = rules.PKP || [];
 
       const payrolls = await PayrollDetail.findAll({
-        where: { period_id: periodId, payroll_status: "Draft" },
-        include: [Employee],
+        where: { period_id: id },
+        include: [
+          {
+            model: Employee,
+            as: "employee",
+          },
+        ],
       });
 
       for (const item of payrolls) {
-        const emp = item.Employee;
-
+        const emp = item.employee;
         const position = await Position.findByPk(emp.position_id);
         const fullBaseSalary = parseFloat(position?.base_salary || 0);
-
-        const totalDays = item.total_working_days || 0;
-        const attendance = item.total_attendance_days || 0;
         const baseSalaryActual =
-          totalDays > 0 ? (fullBaseSalary / totalDays) * attendance : 0;
+          item.total_working_days > 0
+            ? (fullBaseSalary / item.total_working_days) *
+              item.total_attendance_days
+            : 0;
 
         const fixedAllowances = await EmployeeAllowance.findAll({
           where: {
@@ -321,7 +312,7 @@ const PayrollPeriodController = {
               { end_date: { [Op.gte]: start_date } },
             ],
           },
-          include: ["allowance"],
+          include: [{ model: Allowance, as: "allowance" }],
         });
 
         const totalFixedAllowances = fixedAllowances
@@ -329,7 +320,6 @@ const PayrollPeriodController = {
           .reduce((sum, a) => sum + parseFloat(a.amount || 0), 0);
 
         const bpjsBase = baseSalaryActual + totalFixedAllowances;
-
         const ptkp = ptkpTable[emp.pt_kp] || 0;
         const pph21 = calculatePph21(bpjsBase * 12, ptkp, brackets) / 12;
 
@@ -344,7 +334,6 @@ const PayrollPeriodController = {
 
         const totalBPJS = bpjs_kesehatan + bpjs_jht + bpjs_jp + bpjs_jkm;
         const otherDeductions = parseFloat(item.other_deductions || 0);
-
         const totalDeductions = otherDeductions + totalBPJS + pph21;
         const netSalary = parseFloat(item.gross_salary || 0) - totalDeductions;
 
@@ -368,26 +357,54 @@ const PayrollPeriodController = {
 
   createPayrollTransfer: async (req, res) => {
     const periodId = req.params.id;
-
     try {
       const period = await PayrollPeriod.findByPk(periodId);
-      if (!period) return res.status(404).json({ message: "Period not found" });
+      if (!period)
+        return res.status(404).json({ message: "Payroll period not found" });
 
       const payrolls = await PayrollDetail.findAll({
         where: { period_id: periodId, payroll_status: "Final", is_paid: false },
+        include: [
+          {
+            model: Employee,
+            as: "employee",
+            attributes: ["full_name", "bank_name", "bank_account_number"],
+          },
+        ],
       });
 
-      for (const item of payrolls) {
-        await item.update({
-          is_paid: true,
-          payment_date: new Date(),
+      if (payrolls.length === 0)
+        return res
+          .status(400)
+          .json({ message: "No unpaid final payrolls found" });
+
+      const incompleteBank = payrolls.filter(
+        (p) =>
+          !p.employee?.bank_name ||
+          !p.employee?.bank_account_number ||
+          p.employee.bank_name.trim() === "" ||
+          p.employee.bank_account_number.trim() === ""
+      );
+
+      if (incompleteBank.length > 0) {
+        return res.status(400).json({
+          message: "Some employees have incomplete bank info",
+          data: incompleteBank.map((p) => ({
+            full_name: p.employee?.full_name || "Unknown",
+            bank_name: p.employee?.bank_name || "-",
+            bank_account_number: p.employee?.bank_account_number || "-",
+          })),
         });
       }
 
-      res.status(200).json({ message: "Payroll marked as paid" });
+      for (const item of payrolls) {
+        await item.update({ is_paid: true, payment_date: new Date() });
+      }
+
+      return res.status(200).json({ message: "All payrolls marked as paid" });
     } catch (error) {
       console.error("Error processing payroll transfer:", error);
-      res.status(500).json({ message: "Internal server error" });
+      return res.status(500).json({ message: "Internal server error" });
     }
   },
 };

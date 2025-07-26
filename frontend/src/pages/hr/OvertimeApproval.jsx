@@ -12,7 +12,7 @@ import InfoModal from "../../components/hr/modals/approval-overtime/InfoModal";
 import {
   getAllOvertimeRequests,
   deleteOvertimeRequest,
-} from "../../services/overtimeRequest";
+} from "../../services/overtimeRequestService";
 import { getProfile } from "../../services/authService";
 
 export default function OvertimeApproval() {

@@ -320,7 +320,7 @@ const SidebarHR = () => {
                   }`}
                 >
                   <FontAwesomeIcon icon={faMoneyBillWave} />
-                  Draft Payroll
+                  Payroll Draft
                 </Link>
               </li>
             </>

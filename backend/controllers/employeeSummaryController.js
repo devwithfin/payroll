@@ -11,9 +11,13 @@ module.exports = {
   getSummaryData: async (req, res) => {
     try {
       const employeeId = req.params.id;
+      const today = new Date();
 
       let period = await PayrollPeriod.findOne({
-        where: { status: "Closed" },
+        where: {
+          start_date: { [Op.lte]: today },
+          end_date: { [Op.gte]: today },
+        },
         order: [["end_date", "DESC"]],
       });
 
@@ -30,7 +34,7 @@ module.exports = {
 
         return res.status(200).json({
           period: {
-            name: "Periode Sementara",
+            name: "Temporary Period",
             start_date: startDate.toISOString().split("T")[0],
             end_date: endDate.toISOString().split("T")[0],
           },
@@ -86,6 +90,7 @@ module.exports = {
       }
 
       const totalAttendance = attendanceSummary["Present"] || 0;
+
       const overtimeRecords = await OvertimeRequest.findAll({
         where: {
           employee_id: employeeId,
@@ -125,6 +130,7 @@ module.exports = {
         },
         order: [["payment_date", "DESC"]],
       });
+
       const salaryHistory = await PayrollDetail.findAll({
         where: {
           employee_id: employeeId,

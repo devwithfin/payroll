@@ -28,6 +28,7 @@ import HRAccountActivation from "../pages/hr/AccountActivation";
 import FinanceDashboard from "../pages/finance/Dashboard";
 import FinancePayrollPeriod from "../pages/finance/PayrollPeriods";
 import FinancePayrollFinal from "../pages/finance/PayrollFinal";
+import FinancePayrollTransfer from "../pages/finance/PayrollTransfer";
 
 // Employee pages
 import EmployeeDashboard from "../pages/employee/Dashboard";
@@ -54,14 +55,17 @@ const AppRoute = () => (
           <Route path="/hr/deductions" element={<HRDeductions />} />
           <Route path="/hr/overtime-rates" element={<HROvertimeRates />} />
           <Route path="/hr/profile" element={<ProfilePage />} />
-          <Route path="/hr/account-activation" element={<HRAccountActivation />} />
+          <Route
+            path="/hr/account-activation"
+            element={<HRAccountActivation />}
+          />
         </Route>
       </Route>
 
       <Route element={<ProtectedRoute allowedRoles={["Finance"]} />}>
         <Route element={<AppLayout key="finance-layout" />}>
           <Route path="/finance/dashboard" element={<FinanceDashboard />} />
-           <Route
+          <Route
             path="/finance/attendances"
             element={<EmployeeAttendances />}
           />
@@ -70,8 +74,12 @@ const AppRoute = () => (
             element={<FinancePayrollPeriod />}
           />
           <Route
-            path="/finance/payroll-process"
+            path="/finance/payroll-final"
             element={<FinancePayrollFinal />}
+          />
+          <Route
+            path="/finance/payroll-transfer"
+            element={<FinancePayrollTransfer />}
           />
           <Route path="/finance/profile" element={<ProfilePage />} />
         </Route>

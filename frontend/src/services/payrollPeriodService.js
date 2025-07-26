@@ -23,4 +23,4 @@ export const finalizePayroll = (id) =>
   API.post(`/payroll-periods/final-payroll/${id}`);
 
 export const transferPayroll = (id) =>
-  API.post(`/pay/${id}`);
+  API.post(`/payroll-periods/payroll-transfer/${id}`);

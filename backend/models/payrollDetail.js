@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       PayrollDetail.belongsTo(models.Employee, {
         foreignKey: "employee_id",
+        as: "employee",
       });
       PayrollDetail.belongsTo(models.PayrollPeriod, {
         foreignKey: "period_id",

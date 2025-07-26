@@ -17,30 +17,42 @@ router.get(
 
 router.post(
   "/draft-payroll/:id",
-  allowedRole("HR","Finance"),
+  allowedRole("HR", "Finance"),
   payrollPeriodController.createDraftPayroll
 );
 
 router.post(
   "/final-payroll/:id",
-  allowedRole("HR","Finance"),
+  allowedRole("HR", "Finance"),
   payrollPeriodController.createFinalPayroll
 );
 
 router.post(
-  "/pay/:id",
+  "/payroll-transfer/:id",
   allowedRole("Finance"),
   payrollPeriodController.createPayrollTransfer
 );
 
-router.get("/", allowedRole("HR","Finance"), payrollPeriodController.getAll);
+router.get("/", allowedRole("HR", "Finance"), payrollPeriodController.getAll);
 
-router.post("/", allowedRole("HR","Finance"), payrollPeriodController.create);
+router.post("/", allowedRole("HR", "Finance"), payrollPeriodController.create);
 
-router.put("/:id", allowedRole("HR","Finance"), payrollPeriodController.update);
+router.put(
+  "/:id",
+  allowedRole("HR", "Finance"),
+  payrollPeriodController.update
+);
 
-router.delete("/:id", allowedRole("HR","Finance"), payrollPeriodController.destroy);
+router.delete(
+  "/:id",
+  allowedRole("HR", "Finance"),
+  payrollPeriodController.destroy
+);
 
-router.get("/:id", allowedRole("HR","Finance"), payrollPeriodController.getById);
+router.get(
+  "/:id",
+  allowedRole("HR", "Finance"),
+  payrollPeriodController.getById
+);
 
 module.exports = router;

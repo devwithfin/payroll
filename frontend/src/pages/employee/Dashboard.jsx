@@ -1,7 +1,7 @@
-// pages/hr/dashboard
+// pages/employee/dashboard
 import { useEffect, useState } from "react";
 import { getProfile } from "../../services/authService";
-import { getEmployeeSummary } from "../../services/summaryEmployee";
+import { getEmployeeSummary } from "../../services/summaryEmployeeService";
 import SummaryCard from "../../components/employee/SummaryCard";
 import AttendancePieChart from "../../components/employee/chart/AttendancePieChart";
 import SimpleTable from "../../components/common/SimpleTable";
@@ -54,7 +54,6 @@ export default function Dashboard() {
     attendance_chart = [],
   } = summary;
 
-  // Ambil 5 data terakhir dari attendance_chart
   const limitedAttendance = [...attendance_chart]
     .sort((a, b) => new Date(b.date) - new Date(a.date))
     .slice(0, 5);
@@ -68,12 +67,10 @@ export default function Dashboard() {
 
   return (
     <div className="p-4">
-      {/* Greeting */}
       <h4 className="fw-semibold mb-4">
         {getGreeting()}, <span style={{ color: "#1071B9" }}>{fullName}!</span>
       </h4>
 
-      {/* Summary Cards */}
       <div className="row g-3 mb-4">
         <div className="col-md-4">
           <SummaryCard
@@ -107,8 +104,6 @@ export default function Dashboard() {
           />
         </div>
       </div>
-
-      {/* Attendance Table & Pie Chart */}
       <div className="row align-items-stretch">
         <div className="col-md-7 mb-3 mb-md-0">
           <div

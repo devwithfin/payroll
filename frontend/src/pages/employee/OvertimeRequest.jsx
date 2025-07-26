@@ -8,7 +8,7 @@ import AddModal from "../../components/employee/modals/overtime-request/AddModal
 import {
   getOvertimeRequestsByEmployee,
   createOvertimeRequest,
-} from "../../services/overtimeRequest";
+} from "../../services/overtimeRequestService";
 import { getProfile } from "../../services/authService";
 
 export default function OvertimeRequest() {

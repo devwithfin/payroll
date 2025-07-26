@@ -1,7 +1,7 @@
 // pages/hr/dashboard
 import { useEffect, useState } from "react";
 import { getProfile } from "../../services/authService";
-import { getHRSummary } from "../../services/summaryHR";
+import { getHRSummary } from "../../services/summaryHRService";
 import SummaryCard from "../../components/hr/SummaryCard";
 import EmploymentPieChart from "../../components/hr/chart/EmploymentPieChart";
 import AttendanceBarChart from "../../components/hr/chart/AttendanceBarChart";

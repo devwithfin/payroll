@@ -157,7 +157,7 @@ export default function DraftPayroll() {
   return (
     <div className="container mx-auto p-1">
       <Table
-        title="Draft Payroll"
+        title="Payroll Draft"
         data={data}
         renderColumnsWithPage={renderColumnsWithPage}
         showAddButton={false}
@@ -174,7 +174,7 @@ export default function DraftPayroll() {
               disabled={isButtonDisabled}
               onClick={handleProcessDraft}
             >
-              {loading ? "Processing..." : "Draft Payroll"}
+              {loading ? "Processing..." : "Draft Process"}
             </button>
 
             <select
