@@ -25,7 +25,7 @@ module.exports = {
       },
       check_in_time: {
         type: Sequelize.TIME,
-        allowNull: false
+        allowNull: true
       },
       check_out_time: {
         type: Sequelize.TIME,
@@ -39,11 +39,6 @@ module.exports = {
       notes: {
         type: Sequelize.TEXT
       },
-      // status_processed: {
-      //   type: Sequelize.ENUM("Unprocessed", "Processed"),
-      //   allowNull: false,
-      //   defaultValue: "Unprocessed",
-      // },
     });
   },
 

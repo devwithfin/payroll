@@ -48,7 +48,8 @@ const Navbar = () => {
     "/finance/dashboard": "Finance Dashboard",
     "/finance/attendances": "Attendance Overview",
     "/finance/payroll-periods": "Payroll Period Management",
-    "/finance/payroll-process": "Payroll Finalize",
+    "/finance/payroll-final": "Payroll Finalize",
+    "/finance/payroll-transfer": "Payroll Transfer",
     "/finance/profile": "Finance Profile",
 
     "/employee/dashboard": "Employee Dashboard",
