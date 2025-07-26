@@ -1,20 +1,22 @@
-# 🚀 Payroll App
+# 🚀 HRIS & Payroll System
 
-A web-based Payroll Management System designed to simplify and automate employee salary calculations. This system enables HR or finance departments to manage payroll, taxes, deductions, and salary slips efficiently.
+A comprehensive web-based Human Resource Information System (HRIS) combined with a powerful payroll engine. Designed to streamline HR operations, manage employee data, track attendance, and automate salary processing — all in one place.
 
 ## 🧰 Tech Stack
 - **Frontend**: React.js  
 - **Backend**: Node.js, Express.js  
 - **Database**: MySQL  
-- **Styling**: Bootstrap 5
+- **UI Framework**: Bootstrap 5
 
 ## 📌 Features
-- 🧑 Employee data management  
-- 🕒 Attendance & leave tracking  
-- 💰 Automatic salary calculation (base salary, allowances, deductions)  
-- 📄 Digital payslip generation  
-- 🧾 Tax (PPh 21) and BPJS calculation  
-- 📊 Payroll reporting and export (PDF/Excel)
+- 🧑 Employee data management
+- 🕒 Attendance & leave tracking
+- 💰 Automatic salary calculation (base salary, allowances, deductions)
+- 📄 Digital payslip generation
+- 🧾 Tax (PPh 21) and BPJS calculation
+- 🎯 Draft & final payroll processing
+- 🧾 Overtime, allowance management
+- 🔐 Role-based access & account activation
 
 ## 📦 Setup Instructions
 
@@ -58,13 +60,13 @@ USE payroll;
 
 ```bash
 cd backend
-npm run migrate
-npm run seed
+npm run start-db
 ```
 
 ### 6. Run the Project  🚀 
 
 ```bash
+# in root folder
 npm run dev
 ```
 > Backend Running on : http://localhost:4000
@@ -80,7 +82,7 @@ email : bayuanggara@gmail.com
 password : password123
 
 # as Finance
-email : dewipustis@gmail.com
+email : puspitadewi@gmail.com
 password : password123
 
 # as Employee
@@ -92,7 +94,7 @@ password : password123
 ```
 backend/
 ├── config/
-│   └── db.js
+│   └── config.js
 ├── controllers/
 │   └── ...
 ├── middlewares/
@@ -120,9 +122,13 @@ frontend/
 │   │   └── ...
 │   │   ├── common/
 │   │       └── ...
-│   │   ├── dashboard/
+│   │   ├── employee/
 │   │       └── ...
-│   │   ├── modals/
+│   │   ├── finance/
+│   │       └── ...
+│   │   ├── hr/
+│   │       └── ...
+│   ├── contexts/
 │   │       └── ...
 │   ├── hooks/
 │   │       └── ...
@@ -134,6 +140,8 @@ frontend/
 │   │   ├── Dashboard.jsx
 │   │   ├── Profile.jsx
 │   │   └── ...
+│   ├── providers/
+│   │       └── ...
 │   ├── services/
 │   │   └── ...
 │   ├── routers/
