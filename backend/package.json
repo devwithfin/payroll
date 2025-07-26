@@ -10,7 +10,7 @@
     "drop-migrate": "npx sequelize-cli db:migrate:undo:all",
     "seed": "npx sequelize-cli db:seed:all",
     "drop-seed": "npx sequelize-cli db:seed:undo:all",
-    "reset-db": "npm run drop-seed && npm run drop-migrate && npm run migrate && npm run seed"
+    "start-db": "npm run drop-seed && npm run drop-migrate && npm run migrate && npm run seed"
   },
   "author": "",
   "license": "ISC",
