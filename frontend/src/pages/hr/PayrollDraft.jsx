@@ -36,29 +36,28 @@ export default function DraftPayroll() {
   const [selectedPeriod, setSelectedPeriod] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    getAllPayrollPeriods()
-      .then((res) => {
-        const filtered = res.data.data.filter((p) => {
-          return p.start_date === "2025-06-26" && p.end_date === "2025-07-25";
+   useEffect(() => {
+      getAllPayrollPeriods()
+        .then((res) => {
+          const list = res.data?.data || [];
+          setPeriods(list);
+          if (list.length > 0) {
+            setSelectedPeriod(list[0]);
+          }
+        })
+        .catch((err) => {
+          toast.error("Failed to load periods");
+          console.error(err);
         });
-
-        setPeriods(filtered);
-
-        if (filtered.length > 0) {
-          setSelectedPeriod(filtered[0]);
-        }
-      })
-      .catch((err) => {
-        console.error("Failed to fetch payroll periods", err);
-      });
-  }, []);
+    }, []);
 
   const fetchData = useCallback(async () => {
     if (!selectedPeriod) return;
     try {
       const res = await getPayrollDetailsByPeriod(selectedPeriod.period_id);
       setData(res.data.data || []);
+      console.log(res.data.data);
+      
     } catch (err) {
       console.error("Failed to fetch payroll details", err);
       setData([]);
@@ -96,7 +95,7 @@ export default function DraftPayroll() {
     },
     {
       name: "Employee",
-      selector: (row) => row.full_name || "-",
+      selector: (row) => row.employee.full_name || "-",
     },
     {
       name: "Base Salary",

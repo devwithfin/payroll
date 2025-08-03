@@ -284,7 +284,7 @@ const PayrollPeriodController = {
       const brackets = rules.PKP || [];
 
       const payrolls = await PayrollDetail.findAll({
-        where: { period_id: id },
+        where: { period_id: periodId },
         include: [
           {
             model: Employee,

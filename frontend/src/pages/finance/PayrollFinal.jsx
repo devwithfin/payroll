@@ -37,23 +37,19 @@ export default function PayrollFinal() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getAllPayrollPeriods()
-      .then((res) => {
-        const filtered = res.data.data.filter((p) => {
-          return p.start_date === "2025-06-26" && p.end_date === "2025-07-25";
-        });
-
-        setPeriods(filtered);
-
-        if (filtered.length > 0) {
-          setSelectedPeriod(filtered[0]);
-        }
-      })
-      .catch((err) => {
-        console.error("Failed to fetch payroll periods", err);
-      });
-  }, []);
-
+     getAllPayrollPeriods()
+       .then((res) => {
+         const list = res.data?.data || [];
+         setPeriods(list);
+         if (list.length > 0) {
+           setSelectedPeriod(list[0]);
+         }
+       })
+       .catch((err) => {
+         toast.error("Failed to load periods");
+         console.error(err);
+       });
+   }, []);
   const fetchData = useCallback(async () => {
     if (!selectedPeriod) return;
     try {
@@ -94,7 +90,7 @@ export default function PayrollFinal() {
     },
     {
       name: "Employee",
-      selector: (row) => row.full_name || "-",
+      selector: (row) => row.employee.full_name || "-",
     },
     {
       name: "Base Salary",
