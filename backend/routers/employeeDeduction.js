@@ -1,7 +1,7 @@
 // router/employee-deduction
 const express = require("express");
 const router = express.Router();
-const employeeDeductionController = require("../controllers/EmployeeDeductionController");
+const employeeDeductionController = require("../controllers/employeeDeductionController");
 
 const verifyToken = require("../middlewares/verifyToken");
 const allowedRole = require("../middlewares/roleMiddleware");
